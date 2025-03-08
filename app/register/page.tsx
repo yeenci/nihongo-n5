@@ -4,8 +4,8 @@ import Link from "next/link";
 function Page() {
   return (
     <>
-      <Link href="/register" className="mb-5">
-        Register
+      <Link href="/login">
+        Log In
       </Link>
       <form className="mt-10">
         <div>
@@ -14,6 +14,10 @@ function Page() {
         </div>
         <div>
           <p>Enter your password: </p>
+          <input type="password" placeholder="••••••••" />
+        </div>
+        <div>
+          <p>Confirm your password: </p>
           <input type="password" placeholder="••••••••" />
         </div>
         <button type="submit">Submit</button>
