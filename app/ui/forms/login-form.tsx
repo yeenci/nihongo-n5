@@ -27,7 +27,7 @@ export default function LoginForm() {
     }
   }, [user, router, loading]);
 
-  if (user && loading) {
+  if (user || loading) {
     return <Loading />;
   }
 

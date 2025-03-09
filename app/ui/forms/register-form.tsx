@@ -29,7 +29,7 @@ export default function RegisterForm() {
     }
   }, [user, router, loading]);
 
-  if (user && loading) {
+  if (user || loading) {
     return <Loading />;
   }
 

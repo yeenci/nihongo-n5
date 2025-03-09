@@ -1,4 +1,3 @@
-
 import { Metadata } from "next";
 import RegisterForm from "../ui/forms/register-form";
 
@@ -9,7 +8,7 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-primary/40">
-          <RegisterForm />
+      <RegisterForm />
     </div>
   );
 }
