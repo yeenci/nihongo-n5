@@ -1,7 +1,14 @@
-import React from "react";
+"use client";
 
-function page() {
-  return <></>;
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+export default function Page() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/login"); // ✅ Redirect to /login automatically
+  }, [router]);
+
+  return null; // ⛔ No need to render anything
 }
-
-export default page;

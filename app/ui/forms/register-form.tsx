@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/config";
@@ -9,6 +9,8 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/app/context/AuthContext";
+import Loading from "../loading";
 
 export default function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -19,6 +21,17 @@ export default function RegisterForm() {
   const [createUserWithEmailAndPassword] =
     useCreateUserWithEmailAndPassword(auth);
   const router = useRouter();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (user && !loading) {
+      router.push("/dashboard");
+    }
+  }, [user, router, loading]);
+
+  if (user && loading) {
+    return <Loading />;
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

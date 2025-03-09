@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/app/context/AuthContext";
+import Loading from "../loading";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -27,11 +28,7 @@ export default function LoginForm() {
   }, [user, router, loading]);
 
   if (user && loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p>Loading...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   const handleLogin = async (e: React.FormEvent) => {

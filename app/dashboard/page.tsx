@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react"; // Icon library for menu
 import { auth } from "../firebase/config";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
+import Loading from "../ui/loading";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -20,9 +21,7 @@ const Dashboard = () => {
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p>Loading...</p>
-      </div>
+      <Loading />
     );
   }
 
