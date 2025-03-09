@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/config";
@@ -9,6 +9,7 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,21 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (user && !loading) {
+      router.push("/dashboard");
+    }
+  }, [user, router, loading]);
+
+  if (user && loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +58,6 @@ export default function LoginForm() {
       if (!res) {
         throw new Error("Login Failed. Please Check your Credentials.");
       }
-      router.push("/dashboard");
       return router.push("/dashboard");
     } catch (err) {
       setError((err as Error).message);

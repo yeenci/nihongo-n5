@@ -3,22 +3,22 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react"; // Icon library for menu
-import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/config";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [user, loading] = useAuthState(auth);
+  const { user } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
-      return router.push("/login");
+    if (!user) {
+      router.push("/login");
     }
-  }, [user, loading, router]);
+  }, [user, router]);
 
-  if (loading || (!loading && !user)) {
+  if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p>Loading...</p>
