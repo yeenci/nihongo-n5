@@ -50,13 +50,13 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="relative w-full max-w-4xl flex shadow-lg bg-white/40 rounded-xl p-8">
+    <div className="relative w-fit md:w-full md:mx-2 max-w-4xl flex shadow-lg bg-white/40 rounded-xl p-8">
       {/* form */}
-      <div className="w-1/2 p-6 flex flex-col justify-center">
+      <div className="w-full md:w-1/2 p-6 flex flex-col justify-center">
         <h2 className="text-xl font-semibold text-primary mb-6">Nihongo N5</h2>
         <h1 className="text-3xl font-bold mb-4">Login</h1>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div>
             <label className="block text-sm font-medium">Email</label>
             <div className="form-input">
@@ -113,7 +113,7 @@ export default function LoginForm() {
       </div>
 
       {/* image */}
-      <div className="w-1/2 flex items-center justify-center">
+      <div className="w-1/2 items-center justify-center hidden md:flex">
         <Image
           src="/assets/cat-throwing-a-vase-animate.svg"
           width={400}
