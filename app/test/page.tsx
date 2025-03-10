@@ -13,48 +13,46 @@ const JapaneseTextToSpeech: React.FC = () => {
     const loadVoices = () => {
       const availableVoices = speechSynthesis.getVoices();
       setVoices(availableVoices);
+      console.log("Available voices:", availableVoices);
 
-      console.log("Available Voices:", availableVoices);
-
-      const femaleVoice = availableVoices.find(
-        (voice) => voice.name.includes("Nanami") && voice.lang === "ja-JP"
+      // 1️⃣ Try to find a female Japanese voice (Nanami or Kyoko)
+      let japaneseVoice = availableVoices.find(
+        (voice) =>
+          (voice.name.includes("Nanami") || voice.name.includes("Kyoko")) &&
+          voice.lang === "ja-JP"
       );
 
-      if (femaleVoice) {
-        setSelectedVoice(femaleVoice);
-        console.log("Selected Voice:", femaleVoice.name);
-      } else if (availableVoices.length > 0) {
-        // Fallback to any Japanese voice
-        const anyJapaneseVoice = availableVoices.find(
-          (voice) => voice.lang === "ja-JP"
-        );
-        setSelectedVoice(anyJapaneseVoice || null);
-        console.log("Fallback Voice:", anyJapaneseVoice?.name);
+      // 2️⃣ If Nanami/Kyoko is not found, fallback to any Japanese voice
+      if (!japaneseVoice) {
+        japaneseVoice = availableVoices.find((voice) => voice.lang === "ja-JP");
       }
+
+      // 3️⃣ If no Japanese voice is found, leave selectedVoice as null
+      setSelectedVoice(japaneseVoice || null);
+      console.log("Selected Voice:", japaneseVoice?.name || "None");
     };
 
-    // Load voices on mount and listen for changes
+    // Load voices immediately
+    loadVoices();
+
+    // Ensure voices are properly loaded on iOS
     if (speechSynthesis.onvoiceschanged !== undefined) {
       speechSynthesis.onvoiceschanged = loadVoices;
     }
-
-    // Load voices immediately in case they are already available
-    loadVoices();
   }, []);
 
   const handleTextToSpeech = () => {
     if (!text.trim()) return;
 
     const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "ja-JP";
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
 
     if (selectedVoice) {
       utterance.voice = selectedVoice;
       console.log("Using Voice:", selectedVoice.name);
     }
-
-    utterance.lang = "ja-JP";
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
 
     speechSynthesis.speak(utterance);
   };
