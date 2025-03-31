@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Home, Inbox, Search, Settings, LogOut } from "lucide-react";
+import { Calendar, Home, Inbox, Search, Settings, LogOut, ChevronRight, ChevronLeft } from "lucide-react";
 
 import {
   Sidebar,
@@ -16,6 +16,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/app/context/AuthContext";
+import { useState } from "react";
+import clsx from "clsx";
 
 // Menu items.
 const items = [
@@ -48,6 +50,7 @@ const items = [
 
 export function AppSidebar() {
   const { logout } = useAuth();
+  const [collapsed, setCollapsed] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -58,10 +61,23 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar>
+    <Sidebar
+      className={`relative transition-all duration-300 ${collapsed ? "w-16" : "w-64"}`}
+    >
+      <button
+        onClick={() => {
+          setCollapsed(!collapsed);
+        }}
+        className={clsx(
+          "absolute -right-3 top-4 z-10 bg-white border rounded-full p-1 shadow",
+          "transition-transform duration-300",
+          collapsed ? "rotate-180" : ""
+        )}
+      >
+        {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}</button>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          {!collapsed && <SidebarGroupLabel>Application</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -69,7 +85,7 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      {!collapsed && <span>{item.title}</span>}
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -87,7 +103,7 @@ export function AppSidebar() {
           className="w-full justify-start gap-2 text-red-600 hover:bg-red-50"
         >
           <LogOut size={16} />
-          Logout
+          {!collapsed && <span>Logout</span>}
         </Button>
       </SidebarFooter>
     </Sidebar>
