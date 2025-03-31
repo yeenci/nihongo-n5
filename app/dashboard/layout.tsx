@@ -1,7 +1,7 @@
 "use client";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import Loading from "./loading";
 import { useAuth } from "../context/AuthContext";
