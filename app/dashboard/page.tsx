@@ -1,23 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "../context/AuthContext";
-import Loading from "../ui/loading";
+import React, {  } from "react";
 
 const Dashboard = () => {
-  const { user } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    }
-  }, [user, router]);
-
-  if (!user) {
-    return <Loading />;
-  }
 
   return (
     <div className="flex h-screen bg-gray-100">

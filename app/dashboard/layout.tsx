@@ -4,22 +4,28 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React, { useEffect, useState } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import Loading from "./loading";
+import { useAuth } from "../context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-    const [isLoading, setIsLoading] = useState(true);
+  const {user, loading} = useAuth();
+    const router = useRouter();
 
-    useEffect(()=> {
-        const timeout = setTimeout(() => setIsLoading(false), 800)
-        return () => clearTimeout(timeout);
-    }, []);
+    useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user, router]);
 
-    if (isLoading) return <Loading/>
+  if (loading || !user) {
+    return <Loading />;
+  }
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen w-full">
         <AppSidebar />
-        <main>
+        <main className="flex-1 ">
           <SidebarTrigger />
           {children}
         </main>
