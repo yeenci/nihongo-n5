@@ -7,8 +7,6 @@ import {
   Search,
   Settings,
   LogOut,
-  ChevronRight,
-  ChevronLeft,
 } from "lucide-react";
 
 import {
