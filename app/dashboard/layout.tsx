@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React, { useEffect } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import Loading from "./loading";
@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             key="dashboard"
             className="flex-1 "
           >
-            {/* <SidebarTrigger className="fixed"/> */}
+            <SidebarTrigger className="fixed"/>
             {children}
           </motion.main>
         </AnimatePresence>
