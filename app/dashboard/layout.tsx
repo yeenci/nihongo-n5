@@ -6,7 +6,6 @@ import { AppSidebar } from "@/components/app-sidebar";
 import Loading from "./loading";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -26,15 +25,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
         <AppSidebar />
-        <AnimatePresence>
-          <motion.main
-            key="dashboard"
-            className="flex-1 "
-          >
-            <SidebarTrigger className="fixed"/>
-            {children}
-          </motion.main>
-        </AnimatePresence>
+        <main className="flex-1">
+          <SidebarTrigger className="bg-sidebar hover:bg-sidebar text-opacity-70 absolute my-3 hover:opacity-100 -ml-4 z-50" />
+          {children}
+        </main>
       </div>
     </SidebarProvider>
   );

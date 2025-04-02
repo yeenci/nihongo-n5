@@ -22,9 +22,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/app/context/AuthContext";
+import Image from 'next/image';
+import logo from '@/public/logo.png';
 
 // Menu items.
 const items = [
@@ -67,10 +68,15 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel className="gap-2 items-center !mt-0 !opacity-100">
+          <Image src={logo} alt="Logo" width={30} height={30} />
+            <span className="text-base group-data-[state=collapsed]:hidden">
+              Nihongo N5
+            </span>
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -89,14 +95,14 @@ export function AppSidebar() {
       </SidebarContent>
 
       {/* ✅ SidebarFooter với Logout */}
-      <SidebarFooter className="border-t p-4">
+      <SidebarFooter className="border-t">
         <Button
           variant="ghost"
           onClick={handleLogout}
           className="w-full justify-start gap-2 text-red-600 hover:bg-red-50"
         >
           <LogOut size={16} />
-          <span>Logout</span>
+          <span className="group-data-[collapsible=icon]:hidden">Logout</span>
         </Button>
       </SidebarFooter>
     </Sidebar>
