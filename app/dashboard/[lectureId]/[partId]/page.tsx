@@ -2,7 +2,6 @@
 
 import Crumbs from "@/app/ui/breadcrumbs";
 import { useParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { getLecturePart } from "@/app/constants/lectureParts";
 import { getLectureName } from "@/app/constants/lectures";
 
