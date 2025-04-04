@@ -2,20 +2,22 @@
 
 import Crumbs from "@/app/ui/breadcrumbs";
 import { useParams } from "next/navigation";
+import { getLectureName } from "@/app/constants/lectures";
 
 export default function LecturePage() {
-  const { lecture } = useParams() as { lecture: string };
-  const lectureName = decodeURIComponent(lecture);
+  const { lectureId } = useParams() as { lectureId: string };
+  const name = getLectureName(lectureId);
+  console.log(lectureId);
 
   const paths = [
     { label: "Dashboard", href: "/dashboard" },
-    { label: lectureName },
+    { label: name },
   ];
 
   return (
     <div className="p-6">
       <Crumbs paths={paths} />
-      <h2 className="text-xl font-bold mb-4">{lectureName}</h2>
+      <h2 className="text-xl font-bold mb-4">{name}</h2>
     </div>
   );
 }
