@@ -2,32 +2,50 @@
 
 import { getLecturePart } from "@/app/constants/lectureParts";
 import { getLectureName } from "@/app/constants/lectures";
+import {
+  LectureLoadingProvider,
+  useLectureLoading,
+} from "@/app/context/LectureLoadingContext";
 import Crumbs from "@/app/ui/breadcrumbs";
 import { useParams, usePathname } from "next/navigation";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect } from "react";
 
-export default function PartLayout({ children }: { children: ReactNode }) {
-  const { lectureId } = useParams() as { lectureId: string };
-  const lectureName = getLectureName(lectureId);
+function LayoutContent({ children }: { children: ReactNode }) {
+  const { isLoading } = useLectureLoading();
   const pathname = usePathname();
+  const { lectureId } = useParams() as { lectureId: string };
   const partId = pathname.split("/").pop();
   const partName = partId ? getLecturePart(partId) : "Unknown Part";
 
-  const [isLoading, setLoading] = useState(true);
-
   const paths = [
     { label: "Dashboard", href: "/dashboard" },
-    { label: lectureName, href: `/dashboard/${lectureId}` },
+    { label: getLectureName(lectureId), href: `/dashboard/${lectureId}` },
     { label: partName },
   ];
 
-  useEffect(() => {}, );
+  useEffect(() => {});
 
   return (
     <div className="p-6">
       <Crumbs paths={paths} />
       <h2 className="text-xl font-bold mb-4">{partName}</h2>
-      {isLoading && <>{children}</>}
+      {isLoading ? (
+        <p className="text-gray-500">⏳ Loading content...</p>
+      ) : (
+        children
+      )}
     </div>
+  );
+}
+
+export default function LecturePartWrapper({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  return (
+    <LectureLoadingProvider>
+      <LayoutContent>{children}</LayoutContent>
+    </LectureLoadingProvider>
   );
 }
