@@ -4,7 +4,7 @@ import { getLecturePart } from "@/app/constants/lectureParts";
 import { getLectureName } from "@/app/constants/lectures";
 import Crumbs from "@/app/ui/breadcrumbs";
 import { useParams, usePathname } from "next/navigation";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 
 export default function PartLayout({ children }: { children: ReactNode }) {
   const { lectureId } = useParams() as { lectureId: string };
@@ -21,11 +21,13 @@ export default function PartLayout({ children }: { children: ReactNode }) {
     { label: partName },
   ];
 
+  useEffect(() => {}, );
+
   return (
     <div className="p-6">
       <Crumbs paths={paths} />
       <h2 className="text-xl font-bold mb-4">{partName}</h2>
-      {isLoading && <>Ok</>}
+      {isLoading && <>{children}</>}
     </div>
   );
 }
