@@ -4,10 +4,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type LecturePart =
   | "vocabulary"
   | "exercises"
-  | "reading-practices"
+  | "reading_practices"
   | "grammar"
-  | "listening-practices"
-  | ""
+  | "listening_practices"
+  | "examination"
   | "references";
 
 type LectureState = {

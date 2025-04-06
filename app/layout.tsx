@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { poppins } from "./ui/font";
-import { AuthProvider } from "./context/AuthContext";
+import AppProvider from "./provider";
 
 export const metadata: Metadata = {
   title: {
@@ -19,9 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} antialiased`}>
-        <AuthProvider>
-                {children}
-        </AuthProvider>
+        <AppProvider>{children}</AppProvider>
       </body>
     </html>
   );
