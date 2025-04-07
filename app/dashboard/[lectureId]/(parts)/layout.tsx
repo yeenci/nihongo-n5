@@ -21,7 +21,7 @@ export default function LecturePartWrapper({ children }: { children: ReactNode }
   return (
     <div className="p-6">
       <Crumbs paths={paths} />
-      <h2 className="text-xl font-bold mb-4">{partName}</h2>
+      <h1 className="text-3xl font-bold my-4">{partName}</h1>
         {children}
     </div>
   );

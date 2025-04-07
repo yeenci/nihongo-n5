@@ -28,12 +28,17 @@ const lectureSlice = createSlice({
   reducers: {
     saveLecturePart: (
       state,
-      action: PayloadAction<{ id: string; part: LecturePart; data: any }>
+      action: PayloadAction<{
+        partId: LecturePart;
+        lectureId: string;
+        data: any;
+      }>
     ) => {
-      if (!state.data[action.payload.id]) {
-        state.data[action.payload.id] = {};
+      if (!state.data[action.payload.lectureId]) {
+        state.data[action.payload.lectureId] = {};
       }
-      state.data[action.payload.id][action.payload.part] = action.payload.data;
+      state.data[action.payload.lectureId][action.payload.partId] =
+        action.payload.data;
     },
   },
 });
