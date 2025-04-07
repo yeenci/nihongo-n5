@@ -13,11 +13,24 @@ const s3 = new S3Client({
   forcePathStyle: true,
 });
 
-export async function GET() {
+export async function GET(request: Request) {
+  const {searchParams} = new URL(request.url)
+  const partId = searchParams.get("partId");
+  const lectureId = searchParams.get("lectureId");
+
+  if (!partId) {
+    return new NextResponse("Missing params - partId", {status: 400})
+  }
+  if (!lectureId) {
+    return new NextResponse("Missing params - lectureId", {status: 400})
+  }
+
+  const key = `${partId}/${lectureId}.json`
+
   try {
     const command = new GetObjectCommand({
       Bucket: "nihongo-n5",
-      Key: "Vocabulary/Lecture1.json",
+      Key: key,
     });
 
     const result = await s3.send(command);

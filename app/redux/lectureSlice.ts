@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type LecturePart =
+export type LecturePart =
   | "vocabulary"
   | "exercises"
   | "reading_practices"
@@ -13,7 +13,7 @@ type LecturePart =
 type LectureState = {
   data: {
     [lectureId: string]: {
-      [part in LecturePart]?: any;
+      [key in LecturePart]?: any;
     };
   };
 };
