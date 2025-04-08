@@ -39,7 +39,7 @@ export default function VocabularyPage() {
                   {key}
                 </th>
               ))}
-              <th className="border p-2 bg-gray-100">Pronounce</th>
+              <th className="border p-2 bg-gray-100">pronounce</th>
             </tr>
           </thead>
           <tbody>
