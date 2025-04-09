@@ -39,7 +39,7 @@ const items = [
   },
   {
     title: "Progress",
-    href: "/progress",
+    href: "/dashboard/progress",
     icon: ChartLine,
   },
   {
