@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  Calendar,
   Home,
-  Inbox,
   Search,
   Settings,
   LogOut,
+  ChartLine,
+  BookText,
 } from "lucide-react";
 
 import {
@@ -29,27 +29,27 @@ import logo from '@/public/logo.png';
 const items = [
   {
     title: "Home",
-    url: "#",
+    href: "/dashboard",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
+    title: "All Lectures",
+    href: "/dashboard/lectures",
+    icon: BookText,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
+    title: "Progress",
+    href: "/progress",
+    icon: ChartLine,
   },
   {
     title: "Search",
-    url: "#",
+    href: "#",
     icon: Search,
   },
   {
     title: "Settings",
-    url: "#",
+    href: "#",
     icon: Settings,
   },
 ];
@@ -80,7 +80,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <a href={item.href}>
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
