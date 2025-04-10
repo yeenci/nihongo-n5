@@ -4,11 +4,12 @@ import {
   Home,
   LogOut,
   ChartLine,
-  BookText,
+  Library,
   Share2,
   BookmarkCheck,
   BadgeHelp,
   Settings,
+  BookA,
 } from "lucide-react";
 
 import {
@@ -36,9 +37,14 @@ const menu_items = [
     icon: Home,
   },
   {
+    title: "JP Alphabets",
+    href: "/dashboard/alphabets",
+    icon: BookA,
+  },
+  {
     title: "All Lectures",
     href: "/dashboard/lectures",
-    icon: BookText,
+    icon: Library,
   },
   {
     title: "Progress",

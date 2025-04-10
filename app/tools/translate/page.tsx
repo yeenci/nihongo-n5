@@ -1,8 +1,7 @@
 "use client";
 import React, { useState } from "react";
 // import {toRomaji} from "wanakana"
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const JapaneseToEnglishTranslator: React.FC = () => {
   const [text, setText] = useState("");
@@ -18,7 +17,7 @@ const JapaneseToEnglishTranslator: React.FC = () => {
     // setRomajiText("");
     if (!text.trim()) return;
     setLoading(true);
-  
+
     try {
       const [translateRes, hiraRes] = await Promise.all([
         fetch(
@@ -32,11 +31,11 @@ const JapaneseToEnglishTranslator: React.FC = () => {
           body: JSON.stringify({ text }),
         }).then((res) => res.json()),
       ]);
-  
+
       setTranslatedText(translateRes[0][0][0]);
       setHiraganaText(hiraRes.reading || "");
       setMeaningText(hiraRes.meaning || "");
-  
+
       // if (hiraRes.reading) {
       //   setRomajiText(toRomaji(hiraRes.reading));
       // }
@@ -47,20 +46,17 @@ const JapaneseToEnglishTranslator: React.FC = () => {
       setMeaningText("");
       // setRomajiText("");
     }
-  
+
     setLoading(false);
   };
 
   const Spinner = () => (
-    
     <DotLottieReact
       src="https://lottie.host/3c7002b8-b6ee-4ac6-9711-4c14a3e122d4/9DBayMX23g.lottie"
       loop
       autoplay
     />
   );
-  
-  
 
   return (
     <div className="p-4 max-w-xl mx-auto">
@@ -79,27 +75,27 @@ const JapaneseToEnglishTranslator: React.FC = () => {
       >
         {loading ? "Translating..." : "Translate"}
       </button>
-  
+
       {loading && <Spinner />}
-  
+
       {translatedText && (
         <p className="mt-4 p-2 bg-gray-100 border rounded-md">
           <strong>Google Translate:</strong> {translatedText}
         </p>
       )}
-  
+
       {hiraganaText && (
         <p className="mt-2 p-2 bg-green-100 border rounded-md">
           <strong>Hiragana:</strong> {hiraganaText}
         </p>
       )}
-  
+
       {/* {romajiText && (
         <p className="mt-2 p-2 bg-purple-100 border rounded-md">
           <strong>Romaji:</strong> {romajiText}
         </p>
       )} */}
-  
+
       {meaningText && (
         <p className="mt-2 p-2 bg-yellow-100 border rounded-md">
           <strong>Meaning:</strong> {meaningText}
@@ -107,7 +103,6 @@ const JapaneseToEnglishTranslator: React.FC = () => {
       )}
     </div>
   );
-  
 };
 
 export default JapaneseToEnglishTranslator;
