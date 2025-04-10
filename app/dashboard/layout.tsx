@@ -9,6 +9,7 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { Header } from "@/app/components/header";
 import { Footer } from "@/app/components/footer";
+import { TranslatePopup } from "../components/translate-popup";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -35,6 +36,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {children}
           </main>
           <Footer />
+          <TranslatePopup/>
         </div>
       </div>
     </SidebarProvider>

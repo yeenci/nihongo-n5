@@ -29,7 +29,8 @@
     "react-firebase-hooks": "^5.1.1",
     "react-redux": "^9.2.0",
     "tailwind-merge": "^3.0.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "wanakana": "^5.3.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -3,7 +3,8 @@
         "backblaze",
         "Kyoko",
         "Nanami",
-        "Nihongo"
+        "Nihongo",
+        "nums"
     ],
     "git.ignoreLimitWarning": true
 }
