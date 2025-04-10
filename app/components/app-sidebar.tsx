@@ -25,8 +25,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/app/context/AuthContext";
-import Image from 'next/image';
-import logo from '@/public/logo.png';
+import Image from "next/image";
+import logo from "@/public/logo.png";
 
 // Menu items.
 const menu_items = [
@@ -83,12 +83,12 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-    <SidebarHeader className="gap-2 flex flex-row items-center !mt-0 !opacity-100">
-      <Image src={logo} alt="Logo" width={30} height={30} />
-      <span className="text-base group-data-[state=collapsed]:hidden">
-        Nihongo N5
-      </span>
-    </SidebarHeader>
+      <SidebarHeader className="gap-2 flex flex-row items-center !mt-0 !opacity-100">
+        <Image src={logo} alt="Logo" width={30} height={30} />
+        <span className="text-base group-data-[state=collapsed]:hidden">
+          Nihongo N5
+        </span>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
