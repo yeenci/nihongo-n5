@@ -91,6 +91,23 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
+@layer utilities {
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.3s ease-out;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -139,7 +156,7 @@
   }
 }
 
-.form-input{
+.form-input {
   @apply flex bg-primary-foreground shadow-xs transition-[color,box-shadow];
   @apply border-[3px] rounded-md pr-3 focus-within:border-ring/50;
 }

@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 // import {toRomaji} from "wanakana"
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+
 
 const JapaneseToEnglishTranslator: React.FC = () => {
   const [text, setText] = useState("");
@@ -10,6 +12,10 @@ const JapaneseToEnglishTranslator: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const translateText = async () => {
+    setTranslatedText("");
+    setHiraganaText("");
+    setMeaningText("");
+    // setRomajiText("");
     if (!text.trim()) return;
     setLoading(true);
   
@@ -46,9 +52,12 @@ const JapaneseToEnglishTranslator: React.FC = () => {
   };
 
   const Spinner = () => (
-    <div className="flex justify-center mt-4">
-      <div className="h-6 w-6 border-4 border-blue-300 border-t-blue-600 rounded-full animate-spin" />
-    </div>
+    
+    <DotLottieReact
+      src="https://lottie.host/3c7002b8-b6ee-4ac6-9711-4c14a3e122d4/9DBayMX23g.lottie"
+      loop
+      autoplay
+    />
   );
   
   
