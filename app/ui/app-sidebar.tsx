@@ -2,11 +2,13 @@
 
 import {
   Home,
-  Search,
-  Settings,
   LogOut,
   ChartLine,
   BookText,
+  Share2,
+  BookmarkCheck,
+  BadgeHelp,
+  Settings,
 } from "lucide-react";
 
 import {
@@ -15,7 +17,8 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  // SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -26,7 +29,7 @@ import Image from 'next/image';
 import logo from '@/public/logo.png';
 
 // Menu items.
-const items = [
+const menu_items = [
   {
     title: "Home",
     href: "/dashboard",
@@ -43,13 +46,26 @@ const items = [
     icon: ChartLine,
   },
   {
-    title: "Search",
-    href: "#",
-    icon: Search,
+    title: "Shared Docs",
+    href: "/dashboard/shared",
+    icon: Share2,
+  },
+  {
+    title: "Saved words",
+    href: "/dashboard/saved",
+    icon: BookmarkCheck,
+  },
+];
+
+const footer_items = [
+  {
+    title: "Help Center",
+    href: "/dashboard/progress",
+    icon: BadgeHelp,
   },
   {
     title: "Settings",
-    href: "#",
+    href: "/dashboard/shared",
     icon: Settings,
   },
 ];
@@ -67,17 +83,17 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
+    <SidebarHeader className="gap-2 flex flex-row items-center !mt-0 !opacity-100">
+      <Image src={logo} alt="Logo" width={30} height={30} />
+      <span className="text-base group-data-[state=collapsed]:hidden">
+        Nihongo N5
+      </span>
+    </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="gap-2 items-center !mt-0 !opacity-100">
-          <Image src={logo} alt="Logo" width={30} height={30} />
-            <span className="text-base group-data-[state=collapsed]:hidden">
-              Nihongo N5
-            </span>
-          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {menu_items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a href={item.href}>
@@ -94,6 +110,18 @@ export function AppSidebar() {
 
       {/* ✅ SidebarFooter với Logout */}
       <SidebarFooter className="border-t">
+        <SidebarMenu>
+          {footer_items.map((item) => (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton asChild>
+                <a href={item.href}>
+                  <item.icon />
+                  <span>{item.title}</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
         <Button
           variant="ghost"
           onClick={handleLogout}
