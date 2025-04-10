@@ -76,7 +76,7 @@ export function TranslatePopup() {
         >
           <h3 className="relative font-semibold text-primary text-xl flex justify-between">
             Meowlate
-            <PawPrint width={40} height={40} className="absolute right-0" />
+            <PawPrint width={36} height={36} className="absolute right-0" />
           </h3>
 
           <h6 className="text-xs mb-2 text-gray-400">
@@ -103,7 +103,7 @@ export function TranslatePopup() {
               <h3 className="text-lg font-medium text-primary mb-1">{word}</h3>
               <p className="text-xs text-gray-500 mb-1">({hiraganaText} - {romajiText})</p>
               {/* <p className="text-xs">{romajiText}</p> */}
-              <p className="font-medium text-sm">{translatedText}</p>
+              <p className="font-medium text-sm text-gray-700">{translatedText}</p>
             </div>
           )}
           {/* {text && <h3 className="text-lg font-normal text-primary">{text}</h3>}
