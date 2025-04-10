@@ -4,7 +4,11 @@ export async function POST(req: NextRequest) {
   const { text } = await req.json();
 
   try {
-    const res = await fetch(`https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(text)}`);
+    const res = await fetch(
+      `https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(
+        text
+      )}`
+    );
     const data = await res.json();
 
     const firstEntry = data.data?.[0];
@@ -14,6 +18,10 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ reading, meaning });
   } catch (err) {
-    return NextResponse.json({ error: "Failed to fetch data from Jisho" }, { status: 500 });
+    console.error(err);
+    return NextResponse.json(
+      { error: "Failed to fetch data from Jisho" },
+      { status: 500 }
+    );
   }
 }
