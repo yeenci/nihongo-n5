@@ -2,10 +2,11 @@
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React, { useEffect } from "react";
-import { AppSidebar } from "@/app/ui/app-sidebar";
+import { AppSidebar } from "@/app/components/app-sidebar";
 import Loading from "./loading";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
+import { Header } from "@/app/components/header";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -25,10 +26,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
         <AppSidebar />
-        <main className="flex-1">
-          <SidebarTrigger className="bg-sidebar hover:bg-sidebar text-opacity-70 absolute my-3 hover:opacity-100 -ml-4 z-50" />
-          {children}
-        </main>
+        <div className="flex-1 flex flex-col">
+          <Header />
+          <main className="flex-1">
+            <SidebarTrigger className="bg-sidebar hover:bg-sidebar text-opacity-70 absolute my-3 hover:opacity-100 -ml-4 z-50" />
+            {children}
+          </main>
+        </div>
       </div>
     </SidebarProvider>
   );

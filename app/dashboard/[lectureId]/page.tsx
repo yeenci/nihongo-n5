@@ -1,6 +1,6 @@
 "use client";
 
-import Crumbs from "@/app/ui/breadcrumbs";
+import Crumbs from "@/app/components/breadcrumbs";
 import { useParams, useRouter } from "next/navigation";
 import { getLectureName } from "@/app/constants/lectures";
 import { Button } from "@/components/ui/button";

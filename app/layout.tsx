@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { poppins } from "./ui/font";
+import { poppins } from "./components/font";
 import AppProvider from "./provider";
 
 export const metadata: Metadata = {

@@ -1,1 +1,1 @@
-export { default } from "@/app/ui/loading";
+export { default } from "@/app/components/loading";

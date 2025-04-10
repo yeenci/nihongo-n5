@@ -2,7 +2,7 @@
 
 import { getLecturePart } from "@/app/constants/lectureParts";
 import { getLectureName } from "@/app/constants/lectures";
-import Crumbs from "@/app/ui/breadcrumbs";
+import Crumbs from "@/app/components/breadcrumbs";
 import { useParams, usePathname } from "next/navigation";
 import React, { ReactNode } from "react";
 
