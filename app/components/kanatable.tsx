@@ -9,13 +9,13 @@ export default function KanaTable({
   alphabet: [string, string][][];
 }) {
   return (
-    <div className="border rounded-lg px-6">
+    <div className="border rounded-lg px-6 group ">
       <div className="flex justify-between items-center py-1 my-4">
-        <h2 className="text-xl font-semibold">
+        <h2 className="text-xl font-semibold group-hover:underline">
           {title}{" "}
           <span className="text-muted-foreground text-xs">(清音 - seion)</span>
         </h2>
-        <Expand size={16} className="text-muted hover:text-muted-foreground" />
+        <Expand size={16} className="text-muted group-hover:text-muted-foreground" />
       </div>
       <table className="w-full border border-muted mb-4">
         {/* <thead className="border-b border-b-muted"> */}

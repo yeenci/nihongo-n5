@@ -7,8 +7,8 @@ export default function Page() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace("/login"); // ✅ Redirect to /login automatically
+    router.replace("/login");
   }, [router]);
 
-  return null; // ⛔ No need to render anything
+  return null;
 }

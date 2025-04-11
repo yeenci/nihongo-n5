@@ -4,12 +4,13 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 // import { SidebarProvider } from "@/components/ui/sidebar";
 import React, { useEffect } from "react";
 import { AppSidebar } from "@/app/components/app-sidebar";
-import Loading from "./loading";
+// import Loading from "./loading";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { Header } from "@/app/components/header";
 import { Footer } from "@/app/components/footer";
 import { TranslatePopup } from "../components/translate-popup";
+import Loading from "../components/loading";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();

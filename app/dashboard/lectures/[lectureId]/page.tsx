@@ -12,7 +12,7 @@ export default function LecturePage() {
   const router = useRouter();
 
   const paths = [
-    { label: "Dashboard", href: "/dashboard" },
+    { label: "All Lectures", href: "/dashboard/lectures" },
     { label: name },
   ];
 
