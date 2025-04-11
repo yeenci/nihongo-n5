@@ -13,12 +13,10 @@ import {
 } from "lucide-react";
 
 import {
-  Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  // SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -29,6 +27,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import Image from "next/image";
 import logo from "@/public/logo.png";
 import { usePathname } from "next/navigation";
+import ResponsiveSidebar from "./responsive-sidebar";
 
 // Menu items.
 const menu_items = [
@@ -38,7 +37,7 @@ const menu_items = [
     icon: Home,
   },
   {
-    title: "JP Alphabets",
+    title: "Alphabets",
     href: "/dashboard/alphabets",
     icon: BookA,
   },
@@ -90,7 +89,7 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon">
+    <ResponsiveSidebar collapsible="icon">
       <SidebarHeader className="gap-2 flex flex-row items-center !mt-0 !opacity-100">
         <Image src={logo} alt="Logo" width={30} height={30} />
         <span className="text-base group-data-[state=collapsed]:hidden">
@@ -122,16 +121,6 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 );
               })}
-              {/* {menu_items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton className="" asChild>
-                    <a href={item.href}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))} */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -160,6 +149,6 @@ export function AppSidebar() {
           <span className="group-data-[collapsible=icon]:hidden">Logout</span>
         </Button>
       </SidebarFooter>
-    </Sidebar>
+    </ResponsiveSidebar>
   );
 }
