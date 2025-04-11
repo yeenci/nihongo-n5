@@ -10,6 +10,9 @@ export const hiragana: [string, string][][] = [
     [["ら", "ra"], ["り", "ri"], ["る", "ru"], ["れ", "re"], ["ろ", "ro"]],
     [["わ", "wa"], ["", ""], ["", ""], ["", ""], ["を", "wo"]],
     [["ん", "n"], ["", ""], ["", ""], ["", ""], ["", ""]],
+];
+
+export const hiraganaDakuon: [string, string][][] = [
     [["が", "ga"], ["ぎ", "gi"], ["ぐ", "gu"], ["げ", "ge"], ["ご", "go"]],
     [["ざ", "za"], ["じ", "ji"], ["ず", "zu"], ["ぜ", "ze"], ["ぞ", "zo"]],
     [["だ", "da"], ["ぢ", "ji"], ["づ", "zu"], ["で", "de"], ["ど", "do"]],
@@ -17,7 +20,7 @@ export const hiragana: [string, string][][] = [
     [["ぱ", "pa"], ["ぴ", "pi"], ["ぷ", "pu"], ["ぺ", "pe"], ["ぽ", "po"]],
 ];
 
-export const hiragana_yoon: [string, string][][] = [
+export const hiraganaYoon: [string, string][][] = [
     [["きゃ", "kya"], ["きゅ", "kyu"], ["きょ", "kyo"]],
     [["しゃ", "sha"], ["しゅ", "shu"], ["しょ", "sho"]],
     [["ちゃ", "cha"], ["ちゅ", "chu"], ["ちょ", "cho"]],
@@ -35,15 +38,10 @@ export const hiragana_yoon: [string, string][][] = [
 export const katakana: [string, string][][] = [
     [["ア", "a"], ["イ", "i"], ["ウ", "u"], ["エ", "e"], ["オ", "o"]],
     [["カ", "ka"], ["キ", "ki"], ["ク", "ku"], ["ケ", "ke"], ["コ", "ko"]],
-    [["ガ", "ga"], ["ギ", "gi"], ["グ", "gu"], ["ゲ", "ge"], ["ゴ", "go"]],
     [["サ", "sa"], ["シ", "shi"], ["ス", "su"], ["セ", "se"], ["ソ", "so"]],
-    [["ザ", "za"], ["ジ", "ji"], ["ズ", "zu"], ["ゼ", "ze"], ["ゾ", "zo"]],
     [["タ", "ta"], ["チ", "chi"], ["ツ", "tsu"], ["テ", "te"], ["ト", "to"]],
-    [["ダ", "da"], ["ヂ", "ji"], ["ヅ", "zu"], ["デ", "de"], ["ド", "do"]],
     [["ナ", "na"], ["ニ", "ni"], ["ヌ", "nu"], ["ネ", "ne"], ["ノ", "no"]],
     [["ハ", "ha"], ["ヒ", "hi"], ["フ", "fu"], ["ヘ", "he"], ["ホ", "ho"]],
-    [["バ", "ba"], ["ビ", "bi"], ["ブ", "bu"], ["ベ", "be"], ["ボ", "bo"]],
-    [["パ", "pa"], ["ピ", "pi"], ["プ", "pu"], ["ペ", "pe"], ["ポ", "po"]],
     [["マ", "ma"], ["ミ", "mi"], ["ム", "mu"], ["メ", "me"], ["モ", "mo"]],
     [["ヤ", "ya"], ["", ""], ["ユ", "yu"], ["", ""], ["ヨ", "yo"]],
     [["ラ", "ra"], ["リ", "ri"], ["ル", "ru"], ["レ", "re"], ["ロ", "ro"]],
@@ -51,7 +49,15 @@ export const katakana: [string, string][][] = [
     [["ン", "n"], ["", ""], ["", ""], ["", ""], ["", ""]],
 ];
 
-export const katakana_yoon: [string, string][][] = [
+export const katakanaDakuon: [string, string][][] = [
+    [["ガ", "ga"], ["ギ", "gi"], ["グ", "gu"], ["ゲ", "ge"], ["ゴ", "go"]],
+    [["ザ", "za"], ["ジ", "ji"], ["ズ", "zu"], ["ゼ", "ze"], ["ゾ", "zo"]],
+    [["ダ", "da"], ["ヂ", "ji"], ["ヅ", "zu"], ["デ", "de"], ["ド", "do"]],
+    [["バ", "ba"], ["ビ", "bi"], ["ブ", "bu"], ["ベ", "be"], ["ボ", "bo"]],
+    [["パ", "pa"], ["ピ", "pi"], ["プ", "pu"], ["ペ", "pe"], ["ポ", "po"]],
+  ];  
+
+export const katakanaYoon: [string, string][][] = [
     [["キャ", "kya"], ["キュ", "kyu"], ["キョ", "kyo"]],
     [["シャ", "sha"], ["シュ", "shu"], ["ショ", "sho"]],
     [["チャ", "cha"], ["チュ", "chu"], ["チョ", "cho"]],
@@ -65,3 +71,5 @@ export const katakana_yoon: [string, string][][] = [
     [["ピャ", "pya"], ["ピュ", "pyu"], ["ピョ", "pyo"]],
 ];
 
+export const column_headers = ["", "a", "i", "u", "e", "o"]
+export const row_labels = ["", "k", "s", "t", "n", "h", "m", "y", "r", "w", ""]
