@@ -33,32 +33,32 @@ import ResponsiveSidebar from "./responsive-sidebar";
 const menu_items = [
   {
     title: "Home",
-    href: "/dashboard",
+    href: "/",
     icon: Home,
   },
   {
     title: "Alphabets",
-    href: "/dashboard/alphabets",
+    href: "/alphabets",
     icon: BookA,
   },
   {
     title: "All Lectures",
-    href: "/dashboard/lectures",
+    href: "/lectures",
     icon: Library,
   },
   {
     title: "Progress",
-    href: "/dashboard/progress",
+    href: "/progress",
     icon: ChartLine,
   },
   {
-    title: "Shared Docs",
-    href: "/dashboard/shared",
+    title: "Resources",
+    href: "/resources",
     icon: Share2,
   },
   {
-    title: "Saved words",
-    href: "/dashboard/saved",
+    title: "Saved Words",
+    href: "/words",
     icon: BookmarkCheck,
   },
 ];
@@ -66,12 +66,12 @@ const menu_items = [
 const footer_items = [
   {
     title: "Help Center",
-    href: "/dashboard/progress",
+    href: "/progress",
     icon: BadgeHelp,
   },
   {
     title: "Settings",
-    href: "/dashboard/shared",
+    href: "/shared",
     icon: Settings,
   },
 ];
@@ -101,7 +101,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {menu_items.map((item) => {
-                const isActive = pathname === item.href;
+                const isActive = pathname.startsWith(item.href + "/") || pathname === item.href;
 
                 return (
                   <SidebarMenuItem key={item.title}>

@@ -13,8 +13,8 @@ export default function LecturePartWrapper({ children }: { children: ReactNode }
   const partName = partId ? getLecturePart(partId) : "Unknown Part";
 
   const paths = [
-    { label: "Dashboard", href: "/dashboard" },
-    { label: getLectureName(lectureId), href: `/dashboard/${lectureId}` },
+    { label: "All Lectures", href: "/lectures" },
+    { label: getLectureName(lectureId), href: `/lectures/${lectureId}` },
     { label: partName },
   ];
 

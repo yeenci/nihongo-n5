@@ -11,11 +11,14 @@ export default function KanaTable({
   return (
     <div className="border rounded-lg px-6 group ">
       <div className="flex justify-between items-center py-1 my-4">
-        <h2 className="text-xl font-semibold group-hover:underline">
+        <h2 className="text-xl font-semibold group-hover:underline group-hover:cursor-pointer">
           {title}{" "}
           <span className="text-muted-foreground text-xs">(清音 - seion)</span>
         </h2>
-        <Expand size={16} className="text-muted group-hover:text-muted-foreground" />
+        <Expand
+          size={16}
+          className="text-muted group-hover:text-muted-foreground group-hover:cursor-pointer"
+        />
       </div>
       <table className="w-full border border-muted mb-4">
         {/* <thead className="border-b border-b-muted"> */}
@@ -37,7 +40,7 @@ export default function KanaTable({
               {row.map(([kana, romaji], cIndex) => (
                 <td key={cIndex} className="text-center py-2">
                   <div className="text-base">{kana}</div>
-                  <div className="text-xs text-muted-foreground mt-[-2px]">
+                  <div className="text-xs text-muted-foreground mt-[-4px]">
                     {romaji}
                   </div>
                 </td>

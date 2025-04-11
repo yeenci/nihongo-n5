@@ -29,7 +29,7 @@ const Crumbs: React.FC<Props> = ({ paths }) => {
                   <Link href={path.href}>{path.label}</Link>
                 </BreadcrumbLink>
               ) : (
-                <BreadcrumbLink className="text-foreground transition-colors cursor-default">{path.label}</BreadcrumbLink>
+                <BreadcrumbLink className="text-foreground transition-colors cursor-default font-medium">{path.label}</BreadcrumbLink>
               )}
             </BreadcrumbItem>
             {index < paths.length - 1 && <BreadcrumbSeparator />}

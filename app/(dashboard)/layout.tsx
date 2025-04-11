@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { Header } from "@/app/components/header";
 import { Footer } from "@/app/components/footer";
 import { TranslatePopup } from "../components/translate-popup";
-import Loading from "../components/loading";
+// import Loading from "../components/loading";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -22,9 +22,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     }
   }, [user, loading, router]);
 
-  if (loading || !user) {
-    return <Loading />;
-  }
+  // if (loading || !user) {
+  //   return <Loading />;
+  // }
 
   return (
     <SidebarProvider>
