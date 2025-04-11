@@ -2,7 +2,7 @@
 
 export default function JPAlphabets() {
   return (
-    <div>
+    <div >
       <div>Hiragana</div>
       <div>Katakana</div>
     </div>
