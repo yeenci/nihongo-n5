@@ -72,7 +72,7 @@ export function TranslatePopup() {
 
         <PopoverContent
           align="center"
-          className="w-72 mb-4 mr-6 bg-white border border-secondary rounded-md shadow-secondary p-4"
+          className="w-80 mb-4 mr-6 bg-white border border-secondary rounded-md shadow-secondary p-4"
         >
           <h3 className="relative font-semibold text-primary text-xl flex justify-between">
             Meowlate
@@ -106,11 +106,6 @@ export function TranslatePopup() {
               <p className="font-medium text-sm text-gray-700">{translatedText}</p>
             </div>
           )}
-          {/* {text && <h3 className="text-lg font-normal text-primary">{text}</h3>}
-          {hiraganaText && <p className="text-xs">{hiraganaText}</p>}
-          {romajiText && <p className="text-xs">{romajiText}</p>}
-
-          {translatedText && <p className="">{translatedText}</p>} */}
 
           {error && <p className="">{error}</p>}
         </PopoverContent>

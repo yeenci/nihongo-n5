@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/app/context/AuthContext";
 import Image from "next/image";
 import logo from "@/public/logo.png";
+import { usePathname } from "next/navigation";
 
 // Menu items.
 const menu_items = [
@@ -78,6 +79,7 @@ const footer_items = [
 
 export function AppSidebar() {
   const { logout } = useAuth();
+  const pathname = usePathname();
 
   const handleLogout = async () => {
     try {
@@ -99,16 +101,37 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menu_items.map((item) => (
+              {menu_items.map((item) => {
+                const isActive = pathname === item.href;
+
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      className={`${
+                        isActive
+                          ? "bg-sidebar-accent text-primary font-semibold"
+                          : "hover:bg-sidebar-accent"
+                      } py-4  my-0.5`}
+                    >
+                      <a href={item.href}>
+                        <item.icon />
+                        <span className="text-base">{item.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+              {/* {menu_items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton className="" asChild>
                     <a href={item.href}>
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              ))}
+              ))} */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
