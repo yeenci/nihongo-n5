@@ -22,16 +22,16 @@ export const hiraganaDakuon: [string, string][][] = [
 
 export const hiraganaYoon: [string, string][][] = [
     [["きゃ", "kya"], ["きゅ", "kyu"], ["きょ", "kyo"]],
+    [["ぎゃ", "gya"], ["ぎゅ", "gyu"], ["ぎょ", "gyo"]],
     [["しゃ", "sha"], ["しゅ", "shu"], ["しょ", "sho"]],
+    [["じゃ", "ja"], ["じゅ", "ju"], ["じょ", "jo"]],
     [["ちゃ", "cha"], ["ちゅ", "chu"], ["ちょ", "cho"]],
     [["にゃ", "nya"], ["にゅ", "nyu"], ["にょ", "nyo"]],
     [["ひゃ", "hya"], ["ひゅ", "hyu"], ["ひょ", "hyo"]],
-    [["みゃ", "mya"], ["みゅ", "myu"], ["みょ", "myo"]],
-    [["りゃ", "rya"], ["りゅ", "ryu"], ["りょ", "ryo"]],
-    [["ぎゃ", "gya"], ["ぎゅ", "gyu"], ["ぎょ", "gyo"]],
-    [["じゃ", "ja"], ["じゅ", "ju"], ["じょ", "jo"]],
     [["びゃ", "bya"], ["びゅ", "byu"], ["びょ", "byo"]],
+    [["みゃ", "mya"], ["みゅ", "myu"], ["みょ", "myo"]],
     [["ぴゃ", "pya"], ["ぴゅ", "pyu"], ["ぴょ", "pyo"]],
+    [["りゃ", "rya"], ["りゅ", "ryu"], ["りょ", "ryo"]],
 ];
 
 
@@ -55,21 +55,26 @@ export const katakanaDakuon: [string, string][][] = [
     [["ダ", "da"], ["ヂ", "ji"], ["ヅ", "zu"], ["デ", "de"], ["ド", "do"]],
     [["バ", "ba"], ["ビ", "bi"], ["ブ", "bu"], ["ベ", "be"], ["ボ", "bo"]],
     [["パ", "pa"], ["ピ", "pi"], ["プ", "pu"], ["ペ", "pe"], ["ポ", "po"]],
-  ];  
+  ];
 
 export const katakanaYoon: [string, string][][] = [
     [["キャ", "kya"], ["キュ", "kyu"], ["キョ", "kyo"]],
+    [["ギャ", "gya"], ["ギュ", "gyu"], ["ギョ", "gyo"]],
     [["シャ", "sha"], ["シュ", "shu"], ["ショ", "sho"]],
+    [["ジャ", "ja"], ["ジュ", "ju"], ["ジョ", "jo"]],
     [["チャ", "cha"], ["チュ", "chu"], ["チョ", "cho"]],
     [["ニャ", "nya"], ["ニュ", "nyu"], ["ニョ", "nyo"]],
     [["ヒャ", "hya"], ["ヒュ", "hyu"], ["ヒョ", "hyo"]],
-    [["ミャ", "mya"], ["ミュ", "myu"], ["ミョ", "myo"]],
-    [["リャ", "rya"], ["リュ", "ryu"], ["リョ", "ryo"]],
-    [["ギャ", "gya"], ["ギュ", "gyu"], ["ギョ", "gyo"]],
-    [["ジャ", "ja"], ["ジュ", "ju"], ["ジョ", "jo"]],
     [["ビャ", "bya"], ["ビュ", "byu"], ["ビョ", "byo"]],
+    [["ミャ", "mya"], ["ミュ", "myu"], ["ミョ", "myo"]],
     [["ピャ", "pya"], ["ピュ", "pyu"], ["ピョ", "pyo"]],
+    [["リャ", "rya"], ["リュ", "ryu"], ["リョ", "ryo"]],
 ];
 
-export const column_headers = ["", "a", "i", "u", "e", "o"]
-export const row_labels = ["", "k", "s", "t", "n", "h", "m", "y", "r", "w", ""]
+export const column_headers = ["", "a", "i", "u", "e", "o"];
+export const row_labels = ["", "k", "s", "t", "n", "h", "m", "y", "r", "w", "n"];
+
+export const dakuon_labels = ["g", "z", "d", "b", "p"];
+
+export const yoon_headers = ["", "a", "u", "o"];
+export const yoon_labels = ["ky", "gy", "sh", "j", "ch", "ny", "hy", "by", "my", "py", "ry"];
