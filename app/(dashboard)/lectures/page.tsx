@@ -5,7 +5,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { lectures } from "@/app/constants/lectures";
 
-const Dashboard: React.FC = () => {
+const LecturesPage: React.FC = () => {
   const router = useRouter();
 
   return (
@@ -18,4 +18,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default LecturesPage;

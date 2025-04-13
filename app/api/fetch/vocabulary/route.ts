@@ -43,8 +43,8 @@ export async function GET(request: Request) {
 
     const json = JSON.parse(Buffer.concat(chunks).toString("utf-8"));
     return NextResponse.json(json);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     return new NextResponse("Failed to fetch data", { status: 500 });
   }
 }
