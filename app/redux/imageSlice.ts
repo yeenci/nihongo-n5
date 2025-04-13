@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type ImageState = {
-  data: {
-    [key: string]: string;
-  };
+  data: { [key: string]: string };
 };
 
 const initialState: ImageState = {
@@ -28,5 +26,5 @@ const imageSlice = createSlice({
   },
 });
 
-export const {saveImage, saveMultipleImages} = imageSlice.actions;
+export const { saveImage, saveMultipleImages } = imageSlice.actions;
 export default imageSlice.reducer;

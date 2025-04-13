@@ -1,0 +1,177 @@
+[
+  {
+    "id": "lecture1",
+    "url": "lecture01",
+    "name": "Lecture 1",
+    "jp": "はじめまして",
+    "en": "Nice to meet you"
+  },
+  {
+    "id": "lecture2",
+    "url": "lecture02",
+    "name": "Lecture 2",
+    "jp": "これから お世話に なります",
+    "en": "I will be in your care from now on"
+  },
+  {
+    "id": "lecture3",
+    "url": "lecture03",
+    "name": "Lecture 3",
+    "jp": "これを ください",
+    "en": "Please give me this"
+  },
+  {
+    "id": "lecture4",
+    "url": "lecture04",
+    "name": "Lecture 4",
+    "jp": "そちらは 何時までですか",
+    "en": "Until what time is it over there?"
+  },
+  {
+    "id": "lecture5",
+    "url": "lecture05",
+    "name": "Lecture 5",
+    "jp": "この電車は 甲子園へ 行きますか",
+    "en": "Does this train go to Koshien?"
+  },
+  {
+    "id": "lecture6",
+    "url": "lecture06",
+    "name": "Lecture 6",
+    "jp": "いっしょに 行きませんか",
+    "en": "Shall we go together?"
+  },
+  {
+    "id": "lecture7",
+    "url": "lecture07",
+    "name": "Lecture 7",
+    "jp": "いらっしゃい",
+    "en": "Welcome!"
+  },
+  {
+    "id": "lecture8",
+    "url": "lecture08",
+    "name": "Lecture 8",
+    "jp": "そろそろ 失礼します",
+    "en": "It's about time for me to leave"
+  },
+  {
+    "id": "lecture9",
+    "url": "lecture09",
+    "name": "Lecture 9",
+    "jp": "残念ですが",
+    "en": "Unfortunately..."
+  },
+  {
+    "id": "lecture10",
+    "url": "lecture10",
+    "name": "Lecture 10",
+    "jp": "ナンプラー、ありますか",
+    "en": "Do you have nam pla (fish sauce)?"
+  },
+  {
+    "id": "lecture11" ,
+    "url": "lecture11",
+    "name": "Lecture 11",
+    "jp": "これ、お願いします",
+    "en": "This one, please"
+  },
+  {
+    "id": "lecture12" ,
+    "url": "lecture12",
+    "name": "Lecture 12",
+    "jp": "祇園祭は どうでしたか？",
+    "en": "How was the Gion Festival?"
+  },
+  {
+    "id": "lecture13" ,
+    "url": "lecture13",
+    "name": "Lecture 13",
+    "jp": "別々に お願いします",
+    "en": "Separate checks, please"
+  },
+  {
+    "id": "lecture14" ,
+    "url": "lecture14",
+    "name": "Lecture 14",
+    "jp": "みどり町まで お願いします",
+    "en": "To Midori Town, please"
+  },
+  {
+    "id": "lecture15" ,
+    "url": "lecture15",
+    "name": "Lecture 15",
+    "jp": "ご家族は？",
+    "en": "How is your family?"
+  },
+  {
+    "id": "lecture16" ,
+    "url": "lecture16",
+    "name": "Lecture 16",
+    "jp": "使い方を 教えて ください",
+    "en": "Please show me how to use this"
+  },
+  {
+    "id": "lecture17" ,
+    "url": "lecture17",
+    "name": "Lecture 17",
+    "jp": "どう しましたか？",
+    "en": "What happened?"
+  },
+  {
+    "id": "lecture18" ,
+    "url": "lecture18",
+    "name": "Lecture 18",
+    "jp": "趣味は 何ですか",
+    "en": "What is your hobby?"
+  },
+  {
+    "id": "lecture19" ,
+    "url": "lecture19",
+    "name": "Lecture 19",
+    "jp": "ダイエットは あしたから します",
+    "en": "I'll start my diet tomorrow"
+  },
+  {
+    "id": "lecture20" ,
+    "url": "lecture20",
+    "name": "Lecture 20",
+    "jp": "いっしょに 行かない？",
+    "en": "Why don't we go together?"
+  },
+  {
+    "id": "lecture21" ,
+    "url": "lecture21",
+    "name": "Lecture 21",
+    "jp": "わたしも そう 思います",
+    "en": "I think so too/I agree"
+  },
+  {
+    "id": "lecture22" ,
+    "url": "lecture22",
+    "name": "Lecture 22",
+    "jp": "どんな 部屋を お探しですか",
+    "en": "What kind of room are you looking for?"
+  },
+  {
+    "id": "lecture23" ,
+    "url": "lecture23",
+    "name": "Lecture 23",
+    "jp": "どうやって 行きますか",
+    "en": "How do you get there?"
+  },
+  {
+    "id": "lecture24",
+    "url": "lecture24",
+    "name": "Lecture 24",
+    "jp": "手伝いに 行きましょうか",
+    "en": "Shall I come help you?"
+  },
+  {
+    "id": "lecture25" ,
+    "url": "lecture25",
+    "name": "Lecture 25",
+    "jp": "いろいろ お世話に なりました",
+    "en": "Thank you for all the care and support"
+  }
+]

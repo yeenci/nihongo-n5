@@ -27,8 +27,9 @@ export async function GET() {
     for (const file of files) {
       const key = file.Key!;
       const id = key.split("/").pop()?.replace(".png", "") || key;
-      const url = `https://s3.us-west-004.backblazeb2.com/nihongo-n5/${key}`;
-      imageMap[id] = url;
+      imageMap[id] = `/api/image/${encodeURIComponent(
+        key.replace("images/lectures/", "")
+      )}`;
     }
 
     return NextResponse.json(imageMap);
