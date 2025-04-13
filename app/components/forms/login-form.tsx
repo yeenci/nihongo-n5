@@ -55,7 +55,7 @@ export default function LoginForm() {
       if (!res) {
         throw new Error("Login Failed. Please Check your Credentials.");
       }
-      return router.push("/dashboard");
+      return router.push("/");
     } catch (err) {
       setError((err as Error).message);
     }

@@ -25,7 +25,7 @@ export default function RegisterForm() {
 
   useEffect(() => {
     if (user && !loading) {
-      router.push("/dashboard");
+      router.push("/");
     }
   }, [user, router, loading]);
 
@@ -65,8 +65,8 @@ export default function RegisterForm() {
       if (!res) {
         throw new Error("Register Failed. Email Address Already in Use.");
       }
-      router.push("/dashboard");
-      return router.push("/dashboard");
+      router.push("/");
+      return router.push("/");
     } catch (err) {
       setError((err as Error).message);
     }
