@@ -13,8 +13,8 @@ const s3 = new S3Client({
 
 export async function GET(
   request: NextRequest,
-//   {params}: { params: { key: string } }
-    context: {params: {key: string}}
+  //   {params}: { params: { key: string } }
+  context: { params: Record<string, string> }
 ) {
   const key = decodeURIComponent(context.params.key);
 
