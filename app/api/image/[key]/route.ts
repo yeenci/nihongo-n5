@@ -13,9 +13,10 @@ const s3 = new S3Client({
 
 export async function GET(
   request: NextRequest,
-  {params}: { params: { key: string } }
+//   {params}: { params: { key: string } }
+    context: {params: {key: string}}
 ) {
-  const key = decodeURIComponent(params.key);
+  const key = decodeURIComponent(context.params.key);
 
   try {
     const command = new GetObjectCommand({
@@ -30,7 +31,7 @@ export async function GET(
       status: 200,
       headers: {
         "Content-Type": response.ContentType || "image/png",
-        // "Cache-Control": "public, max-age=31536000",
+        "Cache-Control": "public, max-age=31536000",
       },
     });
   } catch (error) {
