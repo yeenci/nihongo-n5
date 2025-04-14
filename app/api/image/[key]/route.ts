@@ -11,9 +11,11 @@ const s3 = new S3Client({
   forcePathStyle: true,
 });
 
-export async function GET(_: NextRequest, {params}: {params: {key:string}}) {
+export async function GET(request: NextRequest,
+  context: { params: { key: string } }) {
   // const key = searchParams.get("key");
-  const key = params.key;
+  // const key = params.key;
+  const key = context.params;
 
   if (!key) {
     return new NextResponse("Missing key", { status: 400 });
