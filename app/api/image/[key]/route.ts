@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -12,12 +13,14 @@ const s3 = new S3Client({
 });
 
 export async function GET(request: NextRequest,
-  context: { params: { key: string } }) {
+  context: any) {
   // const key = searchParams.get("key");
   // const key = params.key;
-  const key = context.params;
+  // const key = context.params;
+  const key = context.params.key;
 
   if (!key) {
+    console.log("Missing key: ", key)
     return new NextResponse("Missing key", { status: 400 });
   }
 
