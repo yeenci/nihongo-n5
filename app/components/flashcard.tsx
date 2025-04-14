@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Star, Volume2 } from "lucide-react";
 import { useState } from "react";
 import { Vocab } from "../constants/flashcard";
+import { speakJapanese } from "@/lib/speech";
+import { useVoiceFemale } from "@/hooks/useVoice";
 
 interface FlashcardProps {
   vocab: Vocab[];
@@ -22,11 +24,11 @@ export default function Flashcard({ vocab }: FlashcardProps) {
 
   const currentItem = filtered[currentIndex] || null;
 
+  const { jpVoice } = useVoiceFemale();
+
   return (
     <div className="flex flex-col items-center justify-center space-y-4 mt-8">
-      <div
-        className="relative w-full sm:w-[500px] h-[300px] [perspective:1000px]"
-      >
+      <div className="relative w-full sm:w-[500px] h-[300px] [perspective:1000px]">
         <div
           className={cn(
             "relative w-full h-full duration-500 transform-style-preserve-3d cursor-pointer",
@@ -40,6 +42,21 @@ export default function Flashcard({ vocab }: FlashcardProps) {
               【{currentItem.chinese_char}】{currentItem.vocabulary}
             </p>
             <p className="text-sm text-muted-foreground">{currentItem.group}</p>
+            <div className="fixed right-2 top-2">
+              <Button
+                variant={"ghost"}
+                className=""
+                onClick={(e) => {
+                  e.stopPropagation();
+                  speakJapanese(currentItem.vocabulary, jpVoice ?? undefined);
+                }}
+              >
+                <Volume2 />
+              </Button>
+              <Button variant={"ghost"} className="">
+                <Star />
+              </Button>
+            </div>
           </div>
 
           {/* Back = Meaning */}
@@ -60,7 +77,7 @@ export default function Flashcard({ vocab }: FlashcardProps) {
             disabled={currentIndex === 0}
             className="w-18 h-12"
           >
-            <ArrowLeft/>
+            <ArrowLeft />
           </Button>
 
           <Button
