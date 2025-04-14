@@ -27,6 +27,8 @@ export async function GET() {
     for (const file of files) {
       const key = file.Key!;
       const id = key.split("/").pop()?.replace(".png", "") || key;
+      // const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+      // imageMap[id] = `${baseUrl}/api/image/${encodeURIComponent(key.replace("images/lectures/", ""))}`
       imageMap[id] = `/api/image/${encodeURIComponent(
         key.replace("images/lectures/", "")
       )}`;

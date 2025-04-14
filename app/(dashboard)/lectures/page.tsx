@@ -34,13 +34,6 @@ const LecturesPage: React.FC = () => {
   const allLoading = imageLoading || metaLoading;
 
   return (
-    // <div className="p-6">
-    //   <h2 className="text-xl font-semibold mb-2">All Lectures</h2>
-    //   <div className="flex flex-wrap gap-2">{Object.entries(lectures).map(([lectureId, lectureName]) => (
-    //     <Button key={lectureId} className="" variant={"outline"} onClick={() => router.push(`/lectures/${lectureId}`)}>{lectureName}</Button>
-    //   ))}</div>
-    // </div>
-
     <div className="p-6">
       <h2 className="text-xl font-semibold mb-2">All Lectures</h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">

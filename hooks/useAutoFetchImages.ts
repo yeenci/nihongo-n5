@@ -13,7 +13,7 @@ export function useAutoFetchImages() {
   useEffect(() => {
     if (Object.keys(images).length === 0) {
       setLoading(true);
-      fetch("/api/fetch/images")
+      fetch("/api/images")
         .then((res) => res.json())
         .then((imageMap) => dispatch(saveMultipleImages(imageMap)))
         .finally(() => setLoading(false));
