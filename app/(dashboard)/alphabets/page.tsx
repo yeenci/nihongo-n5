@@ -29,7 +29,7 @@ export default function Alphabets() {
         </p>
       </div>
       <div
-        className={`grid grid-cols-1 gap-4 px-4 ${
+        className={`grid grid-cols-1 gap-4 px-4 pb-6 ${
           focused ? "" : "sm:grid-cols-2 sm:px-2 sm:gap-2 md:gap-10"
         }`}
         // className="p-12 grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 sm:px-2 sm:gap-2 md:gap-10 lg:gap-16 lg:px-16 xl:px-32 xl:gap-20"

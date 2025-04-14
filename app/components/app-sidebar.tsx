@@ -66,12 +66,12 @@ const menu_items = [
 const footer_items = [
   {
     title: "Help Center",
-    href: "/progress",
+    href: "/help",
     icon: BadgeHelp,
   },
   {
     title: "Settings",
-    href: "/shared",
+    href: "/settings",
     icon: Settings,
   },
 ];

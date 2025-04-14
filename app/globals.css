@@ -160,3 +160,14 @@
   @apply flex bg-primary-foreground shadow-xs transition-[color,box-shadow];
   @apply border-[3px] rounded-md pr-3 focus-within:border-ring/50;
 }
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+

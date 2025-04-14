@@ -6,8 +6,8 @@ import {
   yoon_headers,
   yoon_labels,
 } from "../constants/alphabets";
-import { useEffect, useState } from "react";
 import { speakJapanese } from "@/lib/speech";
+import { useVoiceMale } from "@/hooks/useVoice";
 
 export default function KanaTable({
   title,
@@ -26,18 +26,7 @@ export default function KanaTable({
   isFocused: boolean;
   isHidden: boolean;
 }) {
-  const [jpVoice, setJpVoice] = useState<SpeechSynthesisVoice | null>(null);
-
-  useEffect(() => {
-    const loadVoices = () => {
-      const voices = speechSynthesis.getVoices();
-      const voice = voices.find((v) => v.lang === "ja-JP");
-      setJpVoice(voice || null);
-    };
-
-    loadVoices();
-    speechSynthesis.onvoiceschanged = loadVoices;
-  }, []);
+  const {jpVoice} = useVoiceMale();
 
   if (isHidden) return null;
   return (
