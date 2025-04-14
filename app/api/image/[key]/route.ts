@@ -17,7 +17,7 @@ export async function GET(request: NextRequest,
   // const key = searchParams.get("key");
   // const key = params.key;
   // const key = context.params;
-  const key = context.params.key;
+  const key = await context.params.key;
 
   if (!key) {
     console.log("Missing key: ", key)

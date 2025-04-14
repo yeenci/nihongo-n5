@@ -6,6 +6,8 @@ import {
   yoon_headers,
   yoon_labels,
 } from "../constants/alphabets";
+import { useEffect, useState } from "react";
+import { speakJapanese } from "@/lib/speech";
 
 export default function KanaTable({
   title,
@@ -24,6 +26,19 @@ export default function KanaTable({
   isFocused: boolean;
   isHidden: boolean;
 }) {
+  const [jpVoice, setJpVoice] = useState<SpeechSynthesisVoice | null>(null);
+
+  useEffect(() => {
+    const loadVoices = () => {
+      const voices = speechSynthesis.getVoices();
+      const voice = voices.find((v) => v.lang === "ja-JP");
+      setJpVoice(voice || null);
+    };
+
+    loadVoices();
+    speechSynthesis.onvoiceschanged = loadVoices;
+  }, []);
+
   if (isHidden) return null;
   return (
     <div
@@ -87,7 +102,10 @@ export default function KanaTable({
                 {row.map(([kana, romaji], cIndex) => (
                   <td
                     key={cIndex}
-                    className="text-center py-2 border border-muted"
+                    className="text-center py-2 border border-muted cursor-pointer"
+                    onClick={() => {
+                      speakJapanese(kana, jpVoice ?? undefined);
+                    }}
                   >
                     <div className="text-base xl:text-lg">{kana}</div>
                     <div className="text-xs xl:text-sm text-muted-foreground mt-[-4px]">
@@ -107,7 +125,10 @@ export default function KanaTable({
                     {row.map(([kana, romaji], cIndex) => (
                       <td
                         key={cIndex}
-                        className="text-center py-2 border border-muted"
+                        className="text-center py-2 border border-muted cursor-pointer"
+                        onClick={() => {
+                          speakJapanese(kana, jpVoice ?? undefined);
+                        }}
                       >
                         <div className="text-base xl:text-lg">{kana}</div>
                         <div className="text-xs xl:text-sm text-muted-foreground mt-[-4px]">
@@ -150,7 +171,10 @@ export default function KanaTable({
                   {row.map(([kana, romaji], cIndex) => (
                     <td
                       key={cIndex}
-                      className="text-center py-2 border border-muted"
+                      className="text-center py-2 border border-muted cursor-pointer"
+                      onClick={() => {
+                        speakJapanese(kana, jpVoice ?? undefined);
+                      }}
                     >
                       <div className="text-base xl:text-lg">{kana}</div>
                       <div className="text-xs xl:text-sm text-muted-foreground mt-[-4px]">
