@@ -5,21 +5,13 @@ import Flashcard from "@/app/components/flashcard";
 import FlashcardButton from "@/app/components/flashcard-btn";
 import Spinner from "@/app/components/spinner";
 import TOC from "@/app/components/toc";
+import { Vocab } from "@/app/constants/flashcard";
 // import { Button } from "@/components/ui/button";
 import { useLecturePartData } from "@/hooks/useLecturePartData";
 // import { speakJapanese } from "@/lib/speech";
 // import { cn } from "@/lib/utils";
 // import { List, SquareAsterisk, Volume2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-
-type Vocab = {
-  // id: string;
-  vocabulary: string;
-  chinese_char: string;
-  yin_han: string;
-  meaning: string;
-  group: "word" | "phrase";
-};
 
 const vocab: Vocab[] = [
   {
@@ -140,7 +132,6 @@ export default function VocabularyPage() {
   // Flashcard
   const [flashcardMode, setFlashcardMode] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
 
   // Search
   const [search, setSearch] = useState("");
@@ -157,69 +148,32 @@ export default function VocabularyPage() {
     vocab: filtered.filter((w) => w.group === grp),
   }));
 
-  // Current Item
-  const currentItem = filtered[currentIndex] || null;
-
   return (
-    <div className="">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold my-4 text-primary">Vocabulary</h1>
-        {!loading && data && (
-          <FlashcardButton
-            flashcardMode={flashcardMode}
-            setFlashcardMode={setFlashcardMode}
-          />
-        )}
-      </div>
-      {loading && <Spinner />}
-      {!loading && data && (
-        <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 sm:px-2 sm:gap-2 md:gap-10">
-          {/* Flashcard Mode */}
-          {flashcardMode && currentItem && (
-            <Flashcard isFlipped={isFlipped}/>
+    <div className="flex flex-row h-full justify-between gap-4">
+      <div className="w-4/5">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold my-4 text-primary">Vocabulary</h1>
+          {!loading && data && (
+            <FlashcardButton
+              flashcardMode={flashcardMode}
+              setFlashcardMode={setFlashcardMode}
+            />
           )}
         </div>
-      )}
-      <TOC groups={groups} scrollRefs={refs} />
+        {loading && <Spinner />}
+        {!loading && data && (
+          <>
+            {flashcardMode ? (
+              <Flashcard vocab={vocab} />
+            ) : (
+              <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 sm:px-2 sm:gap-2 md:gap-10"></div>
+            )}
+          </>
+        )}
+      </div>
+      <div className="mt-4">
+        <TOC groups={groups} scrollRefs={refs} />
+      </div>
     </div>
-    // <div className="">
-    //   {loading && <p className="text-gray-500">Loading...</p>}
-    //   {!loading && data && (
-    //     <table className="table-auto border w-full">
-    //       <thead>
-    //         <tr>
-    //           {Object.keys(data[0] || {}).map((key) => (
-    //             <th key={key} className="border p-2 bg-gray-100">
-    //               {key}
-    //             </th>
-    //           ))}
-    //           <th className="border p-2 bg-gray-100">pronounce</th>
-    //         </tr>
-    //       </thead>
-    //       <tbody>
-    //         {data.map((row: any, idx: number) => (
-    //           <tr key={idx}>
-    //             {Object.values(row).map((val: any, i: number) => (
-    //               <td key={i} className="border p-2">
-    //                 {val}
-    //               </td>
-    //             ))}
-    //             <td className="border p-2">
-    //               <Button
-    //                 variant={"outline"}
-    //                 className="sm"
-    //                 onClick={() =>
-    //                   speakJapanese(row.vocabulary, jpVoice ?? undefined)
-    //                 }
-    //               >
-    //                 <Volume2 />
-    //               </Button>
-    //             </td>
-    //           </tr>
-    //         ))}
-    //       </tbody>
-    //     </table>
-    //   )}
-    // </div>
   );
 }

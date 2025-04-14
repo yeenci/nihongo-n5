@@ -10,10 +10,6 @@ export default function FlashcardButton({
   flashcardMode,
   setFlashcardMode,
 }: flashcardProps) {
-  //   const [flashcardMode, setFlashcardMode] = useState(false);
-  //   const [currentIndex, setCurrentIndex] = useState(0);
-  //   const [isFlipped, setIsFlipped] = useState(false);
-
   return (
     <Button
       variant="outline"

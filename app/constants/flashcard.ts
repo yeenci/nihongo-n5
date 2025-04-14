@@ -16,3 +16,12 @@ export const flashcards: FlashcardType[] = [
   { id: 9, front: "けんきゅうしゃ", back: "Researcher" },
   { id: 10, front: "びょういん	", back: "Hospital" },
 ];
+
+export type Vocab = {
+  // id: string;
+  vocabulary: string;
+  chinese_char: string;
+  yin_han: string;
+  meaning: string;
+  group: "word" | "phrase";
+};
