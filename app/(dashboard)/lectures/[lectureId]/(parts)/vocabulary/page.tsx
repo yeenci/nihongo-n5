@@ -11,8 +11,6 @@ import { useState } from "react";
 export default function VocabularyPage() {
   const { data, loading } = useLecturePartData();
 
-  // Table of Content Scroll
-
   // Flashcard
   const [flashcardMode, setFlashcardMode] = useState(false);
 
