@@ -72,14 +72,14 @@ export function TranslatePopup() {
 
         <PopoverContent
           align="center"
-          className="w-80 mb-4 mr-6 bg-white border border-secondary rounded-md shadow-secondary p-4"
+          className="w-80 mb-4 mr-6 bg-background shadow-lg border border-secondary rounded-md shadow-secondary p-4"
         >
           <h3 className="relative font-semibold text-primary text-xl flex justify-between">
             Meowlate
             <PawPrint width={36} height={36} className="absolute right-0" />
           </h3>
 
-          <h6 className="text-xs mb-2 text-gray-400">
+          <h6 className="text-xs mb-2 text-muted-foreground">
             Translate from JP to EN
           </h6>
           <div className="flex border-2 rounded-md mb-2">

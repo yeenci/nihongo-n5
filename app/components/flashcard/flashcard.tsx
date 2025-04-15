@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, ArrowRight, Star, Volume2 } from "lucide-react";
 import { useState } from "react";
-import { Vocabulary } from "../constants/flashcard";
+import { Vocabulary } from "../../constants/flashcard";
 import { speakJapanese } from "@/lib/speech";
 import { useVoiceFemale } from "@/hooks/useVoice";
 
@@ -38,7 +38,7 @@ export default function Flashcard({ vocabulary, search }: FlashcardProps) {
         >
           {/* Front = Vocabulary */}
           <div className="absolute w-full h-full bg-card rounded-2xl shadow-lg p-6 flex flex-col justify-center items-center backface-hidden">
-            <p className="text-2xl font-bold mb-2">
+            <p className="text-2xl font-bold mb-2 text-ring">
               【{currentItem.chinese_char}】{currentItem.vocabulary}
             </p>
             <p className="text-sm text-muted-foreground">{currentItem.type}</p>
