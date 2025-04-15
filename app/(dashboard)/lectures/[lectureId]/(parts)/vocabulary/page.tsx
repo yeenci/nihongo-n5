@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import Flashcard from "@/app/components/flashcard";
@@ -7,14 +6,7 @@ import ListView from "@/app/components/list-view";
 import Spinner from "@/app/components/spinner";
 import TOC from "@/app/components/toc";
 import { vocabulary } from "@/app/constants/flashcard";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-// import { Button } from "@/components/ui/button";
 import { useLecturePartData } from "@/hooks/useLecturePartData";
-import { Volume2 } from "lucide-react";
-// import { speakJapanese } from "@/lib/speech";
-// import { cn } from "@/lib/utils";
-// import { List, SquareAsterisk, Volume2 } from "lucide-react";
 import { useRef, useState } from "react";
 
 export default function VocabularyPage() {
@@ -25,7 +17,6 @@ export default function VocabularyPage() {
 
   // Flashcard
   const [flashcardMode, setFlashcardMode] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   // Search
   const [search] = useState("");
@@ -35,11 +26,11 @@ export default function VocabularyPage() {
     )
   );
 
-  // Group
-  const groups = ["word", "phrase"];
-  const grouped = groups.map((grp) => ({
-    group: grp,
-    vocabulary: filtered.filter((w) => w.group === grp),
+  // type
+  const types = ["Noun", "Verb", "Adjective", "Phrase"];
+  const grouped = types.map((g) => ({
+    type: g,
+    vocabulary: filtered.filter((w) => w.type === g),
   }));
 
   return (
@@ -61,16 +52,15 @@ export default function VocabularyPage() {
             {flashcardMode && (
               <Flashcard vocabulary={vocabulary} search={search} />
             )}
-            {/* <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 sm:px-2 sm:gap-2 md:gap-10"></div> */}
             {!flashcardMode &&
               grouped.map(
-                ({ group, vocabulary }) =>
-                  vocabulary.length && (
+                ({ type, vocabulary }) =>
+                  vocabulary.length > 0 && (
                     <ListView
-                      key={group}
+                      key={type}
                       vocabulary={vocabulary}
                       refs={refs}
-                      group={group}
+                      type={type}
                     />
                   )
               )}
@@ -78,7 +68,7 @@ export default function VocabularyPage() {
         )}
       </div>
       <div className="mt-4">
-        <TOC groups={groups} scrollRefs={refs} />
+        <TOC types={types} scrollRefs={refs} />
       </div>
     </div>
   );

@@ -26,7 +26,7 @@ export default function KanaTable({
   isFocused: boolean;
   isHidden: boolean;
 }) {
-  const {jpVoice} = useVoiceMale();
+  const {maleVoice} = useVoiceMale();
 
   if (isHidden) return null;
   return (
@@ -93,7 +93,7 @@ export default function KanaTable({
                     key={cIndex}
                     className="text-center py-2 border border-muted cursor-pointer"
                     onClick={() => {
-                      speakJapanese(kana, jpVoice ?? undefined);
+                      speakJapanese(kana, maleVoice ?? undefined);
                     }}
                   >
                     <div className="text-base xl:text-lg">{kana}</div>
@@ -116,7 +116,7 @@ export default function KanaTable({
                         key={cIndex}
                         className="text-center py-2 border border-muted cursor-pointer"
                         onClick={() => {
-                          speakJapanese(kana, jpVoice ?? undefined);
+                          speakJapanese(kana, maleVoice ?? undefined);
                         }}
                       >
                         <div className="text-base xl:text-lg">{kana}</div>
@@ -162,7 +162,7 @@ export default function KanaTable({
                       key={cIndex}
                       className="text-center py-2 border border-muted cursor-pointer"
                       onClick={() => {
-                        speakJapanese(kana, jpVoice ?? undefined);
+                        speakJapanese(kana, maleVoice ?? undefined);
                       }}
                     >
                       <div className="text-base xl:text-lg">{kana}</div>

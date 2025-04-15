@@ -8,7 +8,7 @@ import { useVoiceFemale } from "@/hooks/useVoice";
 
 interface FlashcardProps {
   vocabulary: Vocabulary[];
-  search: String
+  search: string
 }
 
 export default function Flashcard({ vocabulary, search }: FlashcardProps) {
@@ -41,7 +41,7 @@ export default function Flashcard({ vocabulary, search }: FlashcardProps) {
             <p className="text-2xl font-bold mb-2">
               【{currentItem.chinese_char}】{currentItem.vocabulary}
             </p>
-            <p className="text-sm text-muted-foreground">{currentItem.group}</p>
+            <p className="text-sm text-muted-foreground">{currentItem.type}</p>
             <div className="fixed right-2 top-2">
               <Button
                 variant={"ghost"}
