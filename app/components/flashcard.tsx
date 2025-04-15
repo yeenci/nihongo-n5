@@ -2,21 +2,21 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, ArrowRight, Star, Volume2 } from "lucide-react";
 import { useState } from "react";
-import { Vocab } from "../constants/flashcard";
+import { Vocabulary } from "../constants/flashcard";
 import { speakJapanese } from "@/lib/speech";
 import { useVoiceFemale } from "@/hooks/useVoice";
 
 interface FlashcardProps {
-  vocab: Vocab[];
+  vocabulary: Vocabulary[];
+  search: String
 }
 
-export default function Flashcard({ vocab }: FlashcardProps) {
+export default function Flashcard({ vocabulary, search }: FlashcardProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
   // Search
-  const [search] = useState("");
-  const filtered = vocab.filter((w) =>
+  const filtered = vocabulary.filter((w) =>
     [w.vocabulary, w.chinese_char, w.meaning].some((s) =>
       s.toLowerCase().includes(search.toLowerCase())
     )
@@ -24,7 +24,7 @@ export default function Flashcard({ vocab }: FlashcardProps) {
 
   const currentItem = filtered[currentIndex] || null;
 
-  const { jpVoice } = useVoiceFemale();
+  const { femaleVoice } = useVoiceFemale();
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4 mt-8">
@@ -48,7 +48,7 @@ export default function Flashcard({ vocab }: FlashcardProps) {
                 className=""
                 onClick={(e) => {
                   e.stopPropagation();
-                  speakJapanese(currentItem.vocabulary, jpVoice ?? undefined);
+                  speakJapanese(currentItem.vocabulary, femaleVoice ?? undefined);
                 }}
               >
                 <Volume2 />

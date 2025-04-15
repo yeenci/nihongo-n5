@@ -17,8 +17,8 @@ export const flashcards: FlashcardType[] = [
   { id: 10, front: "びょういん	", back: "Hospital" },
 ];
 
-export type Vocab = {
-  // id: string;
+export type Vocabulary = {
+  id: string;
   vocabulary: string;
   chinese_char: string;
   yin_han: string;
@@ -26,8 +26,9 @@ export type Vocab = {
   group: "word" | "phrase";
 };
 
-export const vocab: Vocab[] = [
+export const vocabulary: Vocabulary[] = [
   {
+    id: "1",
     vocabulary: "わたし",
     chinese_char: "",
     yin_han: "",
@@ -35,6 +36,7 @@ export const vocab: Vocab[] = [
     group: "word",
   },
   {
+    id: "2",
     vocabulary: "あなた",
     chinese_char: "",
     yin_han: "",
@@ -42,6 +44,7 @@ export const vocab: Vocab[] = [
     group: "word",
   },
   {
+    id: "3",
     vocabulary: "あのひと",
     chinese_char: "あの人",
     yin_han: "NHÂN",
@@ -49,6 +52,7 @@ export const vocab: Vocab[] = [
     group: "word",
   },
   {
+    id: "4",
     vocabulary: "あのかた",
     chinese_char: "あの方",
     yin_han: "",
@@ -56,6 +60,7 @@ export const vocab: Vocab[] = [
     group: "word",
   },
   {
+    id: "5",
     vocabulary: "〜さん",
     chinese_char: "",
     yin_han: "",
@@ -63,6 +68,7 @@ export const vocab: Vocab[] = [
     group: "word",
   },
   {
+    id: "6",
     vocabulary: "〜ちゃん",
     chinese_char: "",
     yin_han: "",
@@ -70,6 +76,7 @@ export const vocab: Vocab[] = [
     group: "word",
   },
   {
+    id: "7",
     vocabulary: "〜じん",
     chinese_char: "〜人",
     yin_han: "NHÂN",
@@ -77,6 +84,7 @@ export const vocab: Vocab[] = [
     group: "word",
   },
   {
+    id: "8",
     vocabulary: "せんせい",
     chinese_char: "先生",
     yin_han: "TIÊN SINH",
@@ -85,6 +93,7 @@ export const vocab: Vocab[] = [
     group: "word",
   },
   {
+    id: "9",
     vocabulary: "いいえ",
     chinese_char: "",
     yin_han: "",
@@ -92,6 +101,7 @@ export const vocab: Vocab[] = [
     group: "word",
   },
   {
+    id: "10",
     vocabulary: "はじめまして",
     chinese_char: "初めまして",
     yin_han: "",
@@ -99,6 +109,7 @@ export const vocab: Vocab[] = [
     group: "phrase",
   },
   {
+    id: "11",
     vocabulary: "〜からきました",
     chinese_char: "〜から来ました",
     yin_han: "",
@@ -106,6 +117,7 @@ export const vocab: Vocab[] = [
     group: "phrase",
   },
   {
+    id: "12",
     vocabulary: "よろしくおねがいします",
     chinese_char: "[どうぞ] よろしく [お願いします]",
     yin_han: "",
@@ -113,6 +125,7 @@ export const vocab: Vocab[] = [
     group: "phrase",
   },
   {
+    id: "13",
     vocabulary: "しつれいですが",
     chinese_char: "失礼ですが",
     yin_han: "",
@@ -121,6 +134,7 @@ export const vocab: Vocab[] = [
     group: "phrase",
   },
   {
+    id: "14",
     vocabulary: "おなまえは？",
     chinese_char: "お名前は？",
     yin_han: "",
@@ -128,6 +142,7 @@ export const vocab: Vocab[] = [
     group: "phrase",
   },
   {
+    id: "15",
     vocabulary: "こちらは〜さんです",
     chinese_char: "",
     yin_han: "",

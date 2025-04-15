@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export function useVoiceFemale() {
-  const [jpVoice, setJpVoice] = useState<SpeechSynthesisVoice | null>(null);
+  const [femaleVoice, setJpVoice] = useState<SpeechSynthesisVoice | null>(null);
 
   useEffect(() => {
     const loadVoices = () => {
@@ -21,11 +21,11 @@ export function useVoiceFemale() {
     speechSynthesis.onvoiceschanged = loadVoices;
   }, []);
 
-  return { jpVoice };
+  return { femaleVoice };
 }
 
 export function useVoiceMale() {
-  const [jpVoice, setJpVoice] = useState<SpeechSynthesisVoice | null>(null);
+  const [maleVoice, setJpVoice] = useState<SpeechSynthesisVoice | null>(null);
 
   useEffect(() => {
     const loadVoices = () => {
@@ -39,5 +39,5 @@ export function useVoiceMale() {
     speechSynthesis.onvoiceschanged = loadVoices;
   }, []);
 
-  return { jpVoice };
+  return { maleVoice };
 }

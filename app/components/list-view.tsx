@@ -1,31 +1,70 @@
 import React, { useEffect, useState } from "react";
-import { Vocab, vocab } from "../constants/flashcard";
+import { Vocabulary } from "../constants/flashcard";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Volume2 } from "lucide-react";
+import { speakJapanese } from "@/lib/speech";
+import { useVoiceFemale, useVoiceMale } from "@/hooks/useVoice";
 
 interface ListViewProps {
-  vocab: Vocab[];
+  vocabulary: Vocabulary[];
   refs: React.MutableRefObject<Record<string, HTMLDivElement | null>>;
+  group: string;
+  
 }
 
-export default function ListView({ vocab, refs }: ListViewProps) {
-  const [search, setSearch] = useState("");
-  const filtered = vocab.filter((w) =>
-    [w.vocabulary, w.chinese_char, w.meaning].some((s) =>
-      s.toLowerCase().includes(search.toLowerCase())
-    )
-  );
-  const groups = ["Words", "Phrases"];
-  const grouped = groups.map((g) => ({
-    group: g,
-    vocab: filtered.filter((w) => w.group === g),
-  }));
+export default function ListView({
+  vocabulary,
+  refs,
+  group,
+}: ListViewProps) {
+
+  const { maleVoice } = useVoiceMale();
+  const { femaleVoice } = useVoiceFemale();
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 mt-8">
-      {grouped.map(({ group, vocab }) =>
-        vocab.length ? (
-          <div key={group} ref={(el) => (refs.current[vocab] = el)}></div>
-        ) : null
-      )}
+    // <div className="flex flex-col items-center justify-center space-y-4 mt-8">
+    // </div>
+    <div>
+      <div ref={(el) => (refs.current[group] = el)}>
+        {vocabulary.map((word) => (
+          <Card key={word.id} className="my-4">
+            <CardContent className="w-full px-4 flex flex-col">
+              {/* <Badge variant="default" className="mb-2">{word.group}</Badge> */}
+              <div className="flex justify-between">
+                <p className="text-lg font-semibold text-primary">
+                  {word.vocabulary}
+                  {word.chinese_char !== "" && <span className="text-muted-foreground">【{word.chinese_char}】</span>}
+                </p>
+                <div className="flex gap-4">
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      speakJapanese(word.vocabulary, maleVoice ?? undefined);
+                    }}
+                    className="flex cursor-pointer gap-1 text-xs items-center hover:text-primary"
+                  >
+                    Male
+                    <Volume2 size={16} />
+                  </div>
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      speakJapanese(word.vocabulary, femaleVoice ?? undefined);
+                    }}
+                    className="flex cursor-pointer gap-1 text-xs items-center hover:text-primary"
+                  >
+                    Female
+                    <Volume2 size={16} />
+                  </div>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground">{word.meaning}</p>
+              <Badge variant="secondary" className="mt-2">{word.group}</Badge>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
