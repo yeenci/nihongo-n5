@@ -4,9 +4,9 @@ import Flashcard from "@/app/components/flashcard/flashcard";
 import FlashcardButton from "@/app/components/flashcard/flashcard-btn";
 import ListView from "@/app/components/list-view";
 import Spinner from "@/app/components/spinner";
-import { vocabulary, Vocabulary } from "@/app/constants/flashcard";
+import { vocabulary } from "@/app/constants/flashcard";
 import { useLecturePartData } from "@/hooks/useLecturePartData";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 export default function VocabularyPage() {
   const { data, loading } = useLecturePartData();
