@@ -2,12 +2,11 @@
 
 export default function GrammarPage() {
   return (
-    <div className="flex h-full justify-center w-full">
+    <div className="flex flex-col h-full justify-center w-full">
+      <h1 className="text-3xl font-bold my-4 text-primary">Grammar</h1>
       <div className="w-full flex flex-row gap-4">
         {/* <div className="w-full lg:w-4/5 xl:w-3/5 2xl:w-1/2"> */}
         <div className="flex flex-col justify-between">
-          <h1 className="text-3xl font-bold my-4 text-primary">Grammar</h1>
-
           {grammarData.map((item) => (
             <section
               key={item.id}

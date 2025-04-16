@@ -23,7 +23,7 @@ export default function Alphabets() {
       <div className={`py-6 px-4 ${
           focused ? "" : "sm:px-2"
         }`}>
-        <h1 className="text-2xl font-bold text-primary">Hiragana & Katakana</h1>
+        <h1 className="text-3xl font-bold text-primary">Hiragana & Katakana</h1>
         <p className="text-sm text-muted-foreground">
         Click on each kana to listen to its correct pronunciation.
         </p>

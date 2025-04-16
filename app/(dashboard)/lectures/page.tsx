@@ -34,8 +34,9 @@ const LecturesPage: React.FC = () => {
   const allLoading = imageLoading || metaLoading;
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-semibold mb-2">All Lectures</h2>
+    <div className="py-6 px-4">
+      <h1 className="text-3xl font-bold text-primary">All Lectures</h1>
+
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
         {allLoading &&
           Array.from({ length: placeholderCount }).map((_, index) => (
