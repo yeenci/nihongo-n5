@@ -1,8 +1,10 @@
 "use client";
 
 import NumberPart from "@/app/components/examination/number";
+import ConfirmationModal from "@/app/components/modal";
 import { questions } from "@/app/constants/questions";
 import { Button } from "@/components/ui/button";
+import { FileText, PartyPopper, RotateCcw } from "lucide-react";
 import { useState } from "react";
 
 // const questions = allQuestions;
@@ -12,7 +14,10 @@ export default function ExaminationPage() {
   const [answers, setAnswers] = useState<number[]>(
     new Array(questions.length).fill(-1)
   );
+  const [score, setScore] = useState<number | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showAnswers, setShowAnswers] = useState(false);
 
   const handleSelect = (index: number) => {
     const newAnswers = [...answers];
@@ -31,6 +36,54 @@ export default function ExaminationPage() {
   const confirmSubmit = () => {
     setShowConfirm(true);
   };
+
+  const handleFinalSubmit = () => {
+    let total = 0;
+    answers.forEach((answer, idx) => {
+      if (answer == questions[idx].correctIndex) total += 1;
+    });
+    setScore(total);
+    setIsSubmitted(true);
+    setShowConfirm(false);
+  };
+
+  const handleRestart = () => {
+    setAnswers(new Array(questions.length).fill(-1));
+    setCurrent(0);
+    setIsSubmitted(false);
+    setScore(null);
+    setShowAnswers(false);
+  };
+
+  if (isSubmitted && score !== null) {
+    return (
+      <div className="flex flex-col">
+        <div className="">
+          <h1 className="text-3xl font-bold my-4 text-primary">Examination</h1>
+          <div className="flex flex-col items-center">
+            <h2 className="flex gap-2 text-primary font-bold text-xl">
+              <PartyPopper /> Exam Completed
+            </h2>
+            <p className="text-lg mt-2">Your Score:</p>
+            <p className="text-4xl font-bold text-primary mt-1">
+              {score} / {questions.length}
+            </p>
+
+            <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
+              <Button variant="outline" onClick={handleRestart}>
+                <RotateCcw />
+                Redo Test
+              </Button>
+              <Button onClick={() => setShowAnswers(true)}>
+                <FileText />
+                View Answers
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-row h-full justify-center w-full">
@@ -114,16 +167,12 @@ export default function ExaminationPage() {
           </Button>
         </div>
 
-        {showConfirm && (
-          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center w-[90%] max-w-sm">
-              {" "}
-              <h3 className="text-lg font-semibold mb-4">
-                Are you sure you want to submit?
-              </h3>
-            </div>
-          </div>
-        )}
+        <ConfirmationModal
+          open={showConfirm}
+          title="Are you sure you want to submit?"
+          onCancel={() => setShowConfirm(false)}
+          onConfirm={handleFinalSubmit}
+        />
       </div>
     </div>
   );
