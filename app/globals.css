@@ -171,3 +171,17 @@
   transform: rotateY(180deg);
 }
 
+/* Scrollbar */
+::-webkit-scrollbar{
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track{
+  @apply bg-muted;
+}
+::-webkit-scrollbar-thumb{
+  @apply bg-primary border border-muted-foreground;
+}
+::-webkit-scrollbar-thumb:hover{
+  @apply bg-primary/90;
+}

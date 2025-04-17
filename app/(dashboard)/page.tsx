@@ -4,70 +4,104 @@ import { Button } from "@/components/ui/button";
 import { useAutoFetchImages } from "@/hooks/useAutoFetchImages";
 import {
   ArrowRight,
-  BookText,
+  BookOpen,
   FileText,
   Headphones,
-  PawPrint,
   Pen,
   Search,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function HomePage() {
   useAutoFetchImages();
+  const router = useRouter();
 
   return (
-    <div className="py-6 px-4 h-full">
-      {/* <h1 className="text-3xl font-bold text-primary">Nihongo N5</h1>
-      <p className="text-muted-foreground">
-        Let&apos;s start learning! You can view lectures now.
-      </p> */}
-      <section className="relative flex flex-col md:flex-row items-center md:justify-between justify-center h-full overflow-hidden">
-        <div className="absolute w-full top-6 md:top-1/2 -left-12 -translate-y-1/2 md:-rotate-90 z-0">
-          <h1 className="text-[10vw] md:text-[7vw] tracking-tight font-extrabold text-muted select-none whitespace-nowrap">
-            NIHONGO N5
-          </h1>
+    <div className="py-6 px-4">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-8 py-16 bg-background">
+        <div className="flex justify-center">
+          <div className="relative w-[70vw] h-[70vw] md:w-[50vw] md:h-[50vw]">
+            <Image
+              src="/assets/homepage.svg"
+              alt="Home Page"
+              fill
+              className="object-contain"
+            />
+          </div>
         </div>
-
-        <div className="relative z-10 w-[50vw] h-[50vw] md:ml-20">
-          <Image
-            src={"/assets/homepage.svg"}
-            alt="Home Image"
-            fill
-            className="object-contain"
-          />
-        </div>
-
-        <div className="z-10 max-w-md">
-          {/* <h1 className="text-3xl font-bold text-primary mb-2">Nihongo N5</h1> */}
-          <p className="text-primary text-lg font-medium mb-2">
-            <strong className="font-bold text-xl rounded">Nihongo N5</strong> is
-            your all-in-one website to master the basics of Japanese.
+        <div className="px-8">
+          <p className="text-primary text-xl sx:text-lg xl:text-xl font-medium mb-2">
+            <strong className="font-bold text-2xl sx:text-xl xl:text-2xl rounded">
+              Nihongo N5
+            </strong>{" "}
+            is your all-in-one website to master the basics of Japanese.
           </p>
-          <ul className="list-none text-sm text-muted-foreground mb-4">
+          <ul className="list-none text-base sx:text-sm xl:text-base text-muted-foreground mb-4 space-y-2">
             <li className="flex gap-2 items-center">
-              <BookText width={16} /> Study vocabulary, grammar, and sentence
-              patterns
+              <BookOpen className="w-6" /> Study vocabulary, grammar, and
+              sentence patterns
             </li>
             <li className="flex gap-2 items-center">
-              <Headphones width={16} /> Listen to native pronunciations
+              <Headphones className="w-5" /> Listen to native pronunciations
             </li>
             <li className="flex gap-2 items-center">
-              <FileText width={16} /> Practice with exercises and quizzes
+              <FileText className="w-5" /> Practice with exercises and quizzes
             </li>
             <li className="flex gap-2 items-center">
-              <Pen width={16} /> Write your answers with handwriting or typing
+              <Pen className="w-5" /> Write your answers with handwriting or
+              typing
             </li>
             <li className="flex gap-2 items-center">
-              <Search width={16} /> Save and review hard-to-remember words
+              <Search className="w-5" /> Save and review hard-to-remember words
             </li>
           </ul>
           <div className="flex items-start gap-2">
-            <Button>Get Started</Button>
-            <Button variant="link" className="w-fit">
+            <Button
+              className="w-fit text-base sx:text-sm xl:text-base"
+              onClick={() => router.push(`/lectures/lecture1`)}
+            >
+              Get Started
+            </Button>
+            <Button
+              variant="link"
+              className="w-fit text-base sx:text-sm xl:text-base"
+              onClick={() => router.push(`/lectures`)}
+            >
               View All Lectures <ArrowRight />
             </Button>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-primary text-background px-8 py-12">
+        <h2 className="text-2xl font-semibold mb-6">
+          Explore Your Japanese Study Companion
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-background text-primary p-6 rounded-md shadow-md">
+            <h3 className="font-bold text-lg mb-2">Vocabulary & Grammar</h3>
+            <p className="text-sm">
+              Build a strong foundation with N5-level vocabulary lists and
+              easy-to-understand grammar explanations tailored for beginners.
+            </p>
+          </div>
+          <div className="bg-background text-primary p-6 rounded-md shadow-md">
+            <h3 className="font-bold text-lg mb-2">Alphabets</h3>
+            <p className="text-sm">
+              Learn Hiragana and Katakana with interactive tables, pronunciation
+              guides, and stroke order visuals - perfect for first-time.
+              learners.
+            </p>
+          </div>
+          <div className="bg-background text-primary p-6 rounded-md shadow-md">
+            <h3 className="font-bold text-lg mb-2">Shared Resources</h3>
+            <p className="text-sm">
+              Access downloadable worksheets, learning schedules, and
+              recommended tools contributed by fellow learners to boost your
+              study routine.
+            </p>
           </div>
         </div>
       </section>
