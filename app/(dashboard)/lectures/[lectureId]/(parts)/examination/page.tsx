@@ -4,7 +4,7 @@ import NumberPart from "@/app/components/examination/number";
 import ConfirmationModal from "@/app/components/modal";
 import { questions } from "@/app/constants/questions";
 import { Button } from "@/components/ui/button";
-import { FileText, PartyPopper, RotateCcw } from "lucide-react";
+import { Book, Check, FileText, PartyPopper, RotateCcw, X } from "lucide-react";
 import { useState } from "react";
 
 // const questions = allQuestions;
@@ -81,6 +81,54 @@ export default function ExaminationPage() {
             </div>
           </div>
         </div>
+        {showAnswers && (
+    <div className="flex flex-row h-full justify-center w-full">
+      <div className="w-full lg:w-4/5 xl:w-3/5 2xl:w-1/2">
+            <h3 className="flex gap-2 text-primary font-bold text-lg">
+              <Book /> Your Answers
+            </h3>
+            {questions.map((q, idx) => (
+              <div key={q.id} className="mb-6 p-4 bg-white rounded-lg shadow">
+                <p className="font-semibold text-muted-foreground mb-2">
+                  Q{idx + 1}. {q.text}
+                </p>
+                <ul className="space-y-2">
+                  {q.options.map((opt, optIdx) => {
+                    const isSelected = answers[idx] === optIdx;
+                    const isCorrect = q.correctIndex === optIdx;
+                    const isWrongChoice = isSelected && !isCorrect;
+
+                    return (
+                      <li
+                        key={optIdx}
+                        className={`flex px-3 py-2 rounded-md border ${
+                          isCorrect
+                            ? "bg-green-100 border-green-500"
+                            : isWrongChoice
+                            ? "bg-red-100 border-red-500"
+                            : isSelected
+                            ? "bg-blue-100 border-blue-500"
+                            : "border-muted"
+                        }`}
+                      >
+                        {opt}
+                        {isCorrect && (
+                          <span className="flex ml-2 text-green-700">
+                            <Check /> Correct
+                          </span>
+                        )}
+                        {isWrongChoice && (
+                          <span className="flex ml-2 text-red-600"><X /> Your Choice</span>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+          </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -140,14 +188,25 @@ export default function ExaminationPage() {
 
         {/* Button */}
         <div className="flex justify-between mt-6">
-          <Button
-            variant="default"
-            onClick={prev}
-            disabled={current === 0}
-            className="text-base"
-          >
-            Previous
-          </Button>
+          <div className="flex gap-4">
+            <Button
+              variant="default"
+              onClick={prev}
+              disabled={current === 0}
+              className="text-base"
+            >
+              Previous
+            </Button>
+
+            <Button
+              variant="default"
+              onClick={next}
+              disabled={answers[current] === answers[questions.length - 1]}
+              className="text-base"
+            >
+              Next
+            </Button>
+          </div>
 
           <Button
             variant="outline"
@@ -155,15 +214,6 @@ export default function ExaminationPage() {
             className="text-base"
           >
             Submit
-          </Button>
-
-          <Button
-            variant="default"
-            onClick={next}
-            disabled={answers[current] === answers[questions.length - 1]}
-            className="text-base"
-          >
-            Next
           </Button>
         </div>
 
