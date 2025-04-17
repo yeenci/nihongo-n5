@@ -17,9 +17,10 @@ export default function LecturePage() {
   ];
 
   return (
-    <div className="p-6">
+    <div className="py-6 px-4">
       <Crumbs paths={paths} />
-      <h2 className="text-xl font-bold mb-4">{name}</h2>
+      {/* <h2 className="text-xl font-bold mb-4">{name}</h2> */}
+      <h1 className="text-3xl font-bold my-4 text-primary">{name}</h1>
       <div className="flex flex-wrap gap-2">{Object.entries(lectureParts).map(([partId, partName]) => (
         <Button key={partId} className="" variant={"outline"} onClick={() => router.push(`${lectureId}/${partId}`)}>{partName}</Button>
       ))}</div>
