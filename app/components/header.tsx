@@ -10,15 +10,17 @@ import {
 } from "@/components/ui/popover";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { PawPrint } from "lucide-react";
+// import { ModeToggle } from "./theme-toggle";
 
 export function Header() {
   return (
     <header className="sticky top-0 z-50 px-4 py-2 border-b bg-white shadow-sm flex items-center justify-between">
-      <SidebarTrigger className="bg-sidebar hover:bg-sidebar text-opacity-70 absolute my-3 hover:opacity-100 -ml-8 z-50" />
-      <h1 className="text-xl font-semibold text-cyan-900 flex gap-3">
+      <SidebarTrigger className="bg-sidebar hover:bg-sidebar text-opacity-70 absolute my-3 hover:opacity-100 -ml-4 md:-ml-8 z-50" />
+      <h1 className="text-xl font-semibold text-cyan-900 flex gap-3 ml-6 md:ml-0">
         Nihongo N5 <PawPrint/>
       </h1>
       {/* You can add user info, logout button, dark mode toggle here */}
+      {/* <ModeToggle /> */}
       <Popover>
         <PopoverTrigger asChild>
           <Button

@@ -92,7 +92,7 @@ export function AppSidebar() {
     <ResponsiveSidebar collapsible="icon">
       <SidebarHeader className="gap-2 flex flex-row items-center !mt-0 !opacity-100">
         <Image src={logo} alt="Logo" width={30} height={30} />
-        <span className="text-base group-data-[state=collapsed]:hidden">
+        <span className="text-base group-data-[state=collapsed]:hidden hidden md:block">
           Nihongo N5
         </span>
       </SidebarHeader>
@@ -101,7 +101,9 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {menu_items.map((item) => {
-                const isActive = pathname.startsWith(item.href + "/") || pathname === item.href;
+                const isActive =
+                  pathname.startsWith(item.href + "/") ||
+                  pathname === item.href;
 
                 return (
                   <SidebarMenuItem key={item.title}>
@@ -115,7 +117,9 @@ export function AppSidebar() {
                     >
                       <a href={item.href}>
                         <item.icon />
-                        <span className="text-base">{item.title}</span>
+                        <span className="text-base hidden md:block">
+                          {item.title}
+                        </span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -134,7 +138,7 @@ export function AppSidebar() {
               <SidebarMenuButton asChild>
                 <a href={item.href}>
                   <item.icon />
-                  <span>{item.title}</span>
+                  <span className="hidden md:block">{item.title}</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -146,7 +150,7 @@ export function AppSidebar() {
           className="w-full justify-start gap-2 text-red-600 hover:bg-red-50"
         >
           <LogOut size={16} />
-          <span className="group-data-[collapsible=icon]:hidden">Logout</span>
+          <span className="group-data-[collapsible=icon]:hidden hidden md:block">Logout</span>
         </Button>
       </SidebarFooter>
     </ResponsiveSidebar>
