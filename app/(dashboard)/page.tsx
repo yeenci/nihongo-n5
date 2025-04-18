@@ -19,15 +19,15 @@ export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="py-6 px-4">
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-8 py-16 bg-background">
+    <div className="px-4 -mt-8">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-8 bg-background">
         <div className="flex justify-center">
-          <div className="relative w-[70vw] h-[70vw] md:w-[50vw] md:h-[50vw]">
+          <div className="relative w-[70vw] md:w-[50vw] md:h-[50vw]">
             <Image
               src="/assets/homepage.svg"
               alt="Home Page"
               fill
-              className="object-contain"
+              className=""
             />
           </div>
         </div>

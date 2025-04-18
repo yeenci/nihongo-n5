@@ -7,7 +7,7 @@ import {
   yoon_labels,
 } from "../constants/alphabets";
 import { speakJapanese } from "@/lib/speech";
-import { useVoiceMale } from "@/hooks/useVoice";
+import { useVoiceFemale } from "@/hooks/useVoice";
 
 export default function KanaTable({
   title,
@@ -26,7 +26,8 @@ export default function KanaTable({
   isFocused: boolean;
   isHidden: boolean;
 }) {
-  const {maleVoice} = useVoiceMale();
+  // const { speak } = useVoiceMale();
+  const { femaleVoice } = useVoiceFemale();
 
   if (isHidden) return null;
   return (
@@ -37,10 +38,7 @@ export default function KanaTable({
     >
       <div className="flex justify-between items-center py-1 my-4">
         {/* Title */}
-        <h2
-          className="text-xl xl:text-3xl font-semibold group-hover:underline group-hover:cursor-pointer"
-          onClick={onClick}
-        >
+        <h2 className="text-xl xl:text-3xl font-semibold" onClick={onClick}>
           {title}{" "}
           <span className="text-muted-foreground text-xs xl:text-sm">
             (清音 - seion)
@@ -93,7 +91,10 @@ export default function KanaTable({
                     key={cIndex}
                     className="text-center py-2 border border-muted cursor-pointer"
                     onClick={() => {
-                      speakJapanese(kana, maleVoice ?? undefined);
+                      // speak(kana);
+                      // speakJapanese(kana, femaleVoice ?? undefined);
+                      speakJapanese(kana, femaleVoice ?? undefined);
+                      // console.log("Speak " + kana);
                     }}
                   >
                     <div className="text-base xl:text-lg">{kana}</div>
@@ -116,7 +117,9 @@ export default function KanaTable({
                         key={cIndex}
                         className="text-center py-2 border border-muted cursor-pointer"
                         onClick={() => {
-                          speakJapanese(kana, maleVoice ?? undefined);
+                          // speak(kana);
+                          speakJapanese(kana, femaleVoice ?? undefined);
+                          // console.log("Speak " + kana);
                         }}
                       >
                         <div className="text-base xl:text-lg">{kana}</div>
@@ -162,7 +165,10 @@ export default function KanaTable({
                       key={cIndex}
                       className="text-center py-2 border border-muted cursor-pointer"
                       onClick={() => {
-                        speakJapanese(kana, maleVoice ?? undefined);
+                        // speak(kana);
+
+                        speakJapanese(kana, femaleVoice ?? undefined);
+                        // console.log("Speak " + kana);
                       }}
                     >
                       <div className="text-base xl:text-lg">{kana}</div>
