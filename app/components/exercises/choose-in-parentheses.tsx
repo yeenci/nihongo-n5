@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
+// 2. Choose in parentheses
 
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
