@@ -22,7 +22,7 @@ export default function ChooseInParentheses({ question, onSubmit }: any) {
           onChange={(e) => setSelected(e.target.value)}
         >
           <option value="">--Choose--</option>
-          {options.map(({ opt, idx }: any) => (
+          {options.map((opt: string, idx: number) => (
             <option key={idx} value={opt}>
               {opt}
             </option>
