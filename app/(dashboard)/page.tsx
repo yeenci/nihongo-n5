@@ -19,26 +19,26 @@ export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="px-4 -mt-8">
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-8 bg-background">
+    <div className="py-6 px-4">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-8 py-16 bg-background">
         <div className="flex justify-center">
-          <div className="relative w-[70vw] md:w-[50vw] md:h-[50vw]">
-            <Image
-              src="/assets/homepage.svg"
-              alt="Home Page"
-              fill
-              className=""
-            />
+        <div className="relative w-[70vw] h-[70vw] md:w-[50vw] md:h-[50vw] lg:w-[40vw] lg:h-[40vw]">
+          <Image
+            src="/assets/homepage.svg"
+            alt="Home Page"
+            fill
+            className="object-contain"
+          />
           </div>
         </div>
         <div className="px-8">
-          <p className="text-primary text-xl sx:text-lg xl:text-xl font-medium mb-2">
-            <strong className="font-bold text-2xl sx:text-xl xl:text-2xl rounded">
+          <p className="text-primary text-xl md:text-lg xl:text-xl font-medium mb-2">
+            <strong className="font-bold text-2xl md:text-xl xl:text-2xl rounded">
               Nihongo N5
             </strong>{" "}
             is your all-in-one website to master the basics of Japanese.
           </p>
-          <ul className="list-none text-base sx:text-sm xl:text-base text-muted-foreground mb-4 space-y-2">
+          <ul className="list-none text-base md:text-sm xl:text-base text-muted-foreground mb-4 space-y-2">
             <li className="flex gap-2 items-center">
               <BookOpen className="w-6" /> Study vocabulary, grammar, and
               sentence patterns
@@ -59,14 +59,14 @@ export default function HomePage() {
           </ul>
           <div className="flex items-start gap-2">
             <Button
-              className="w-fit text-base sx:text-sm xl:text-base"
+              className="w-fit text-base md:text-sm xl:text-base"
               onClick={() => router.push(`/lectures/lecture1`)}
             >
               Get Started
             </Button>
             <Button
               variant="link"
-              className="w-fit text-base sx:text-sm xl:text-base"
+              className="w-fit text-base md:text-sm xl:text-base"
               onClick={() => router.push(`/lectures`)}
             >
               View All Lectures <ArrowRight />
