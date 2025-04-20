@@ -9,8 +9,6 @@ import { useVoiceFemale, useVoiceMale } from "@/hooks/useVoice";
 
 interface ListViewProps {
   vocabulary: Vocabulary[];
-  // refs: React.MutableRefObject<Record<string, HTMLDivElement | null>>;
-  // type: string;
 }
 
 export default function ListView({ vocabulary }: ListViewProps) {

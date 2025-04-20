@@ -6,14 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAutoFetchImages } from "@/hooks/useAutoFetchImages";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
-
-type LectureMeta = {
-  id: string;
-  url: string;
-  name: string;
-  jp: string;
-  en: string;
-};
+import { LectureMeta } from "@/app/constants/lectures";
 
 const LecturesPage: React.FC = () => {
   const router = useRouter();

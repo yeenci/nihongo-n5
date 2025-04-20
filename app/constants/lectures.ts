@@ -9,3 +9,11 @@ export const lectures: Record<string, string> = Object.fromEntries(
 export function getLectureName(id: string): string {
   return lectures[id] || "Unknown Lecture";
 }
+
+export type LectureMeta = {
+  id: string;
+  url: string;
+  name: string;
+  jp: string;
+  en: string;
+};

@@ -4,7 +4,6 @@ import Flashcard from "@/app/components/flashcard/flashcard";
 import FlashcardButton from "@/app/components/flashcard/flashcard-btn";
 import ListView from "@/app/components/list-view";
 import Spinner from "@/app/components/spinner";
-import { vocabulary } from "@/app/constants/flashcard";
 import { useLecturePartData } from "@/hooks/useLecturePartData";
 import { useState } from "react";
 
@@ -34,9 +33,9 @@ export default function VocabularyPage() {
         {!loading && data && (
           <>
             {flashcardMode && (
-              <Flashcard vocabulary={vocabulary} search={search} />
+              <Flashcard vocabulary={data} search={search} />
             )}
-            {!flashcardMode && <ListView vocabulary={vocabulary} />}
+            {!flashcardMode && <ListView vocabulary={data} />}
           </>
         )}
       </div>

@@ -18,12 +18,12 @@ export const flashcards: FlashcardType[] = [
 ];
 
 export type Vocabulary = {
-  id: string;
-  vocabulary: string;
-  chinese_char: string;
-  yin_han: string;
-  meaning: string;
-  type: "Noun" | "Verb" | "Adjective" | "Phrase";
+  "id": string;
+  "vocabulary": string;
+  "chinese_char": string;
+  "yin_han": string;
+  "meaning": string;
+  "type": "Noun" | "Verb" | "Adjective" | "Phrase";
 };
 
 export const vocabulary: Vocabulary[] = [
