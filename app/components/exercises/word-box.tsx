@@ -17,7 +17,7 @@ export default function WordBoxFill({ question, onSubmit }: any) {
         {question.options.map((opt: string, i: number) => (
           <Button
             key={i}
-            variant="default"
+            variant="outline"
             onClick={() => {
               setInput(opt);
             }}

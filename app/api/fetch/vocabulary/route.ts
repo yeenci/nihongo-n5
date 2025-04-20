@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     return new NextResponse("Missing params - lectureId", {status: 400})
   }
 
-  const key = `${partId}/${lectureId}.json`
+  const key = `theories/${partId}/${lectureId}.json`
 
   try {
     const command = new GetObjectCommand({

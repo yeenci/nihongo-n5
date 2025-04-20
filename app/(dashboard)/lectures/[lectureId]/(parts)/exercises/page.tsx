@@ -20,21 +20,21 @@ export default function ExercisesPage() {
   return (
     <div className="flex flex-row h-full justify-center w-full">
       <div className="w-full lg:w-4/5 xl:w-3/5 2xl:w-1/2">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold my-4 text-primary">Vocabulary</h1>
-        </div>
+        {/* <div className="flex"> */}
+        <h1 className="text-3xl font-bold my-4 text-primary">Exercises</h1>
+        {/* </div> */}
         {exerciseParts.map((part) => (
           <div
             key={part.id}
             className="mb-4 border rounded-lg bg-background shadow"
           >
-            <Button
-              value="outline"
-              className="w-full px-4 py-3 text-left font-semibold"
+            <button
+              // value="outline"
+              className="flex text-left w-full px-4 py-3 font-semibold cursor-pointer"
               onClick={() => togglePart(part.id)}
             >
               {part.title}
-            </Button>
+            </button>
 
             {expandedParts[part.id] && (
               <div className="p-4 border-t space-y-6">
@@ -97,7 +97,14 @@ const exerciseParts = [
     id: "part4",
     type: "finish-sentence",
     title: "Part 4: Finish the sentence based on the answer/image",
-    questions: [{ id: "5", question: "A: おなまえは？\nB: _________" }],
+    questions: [
+      {
+        id: "5",
+        image: "/img/src.png",
+        question: "A: おなまえは？ B: _________",
+        correctAnswer: "なまえはたなかです",
+      },
+    ],
   },
   {
     id: "part5",
