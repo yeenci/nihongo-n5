@@ -32,5 +32,6 @@ export type Vocabulary = {
     | "Adjective"
     | "Adjective [な]"
     | "Adjective [い]"
+    | "Adverb"
     | "Phrase";
 };
