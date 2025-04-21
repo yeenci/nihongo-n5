@@ -1,6 +1,6 @@
 "use client";
 
-import { FlashcardType } from "@/app/constants/flashcard";
+import { FlashcardType } from "@/app/constants/vocabulary";
 
 type Props = {
   card: FlashcardType;

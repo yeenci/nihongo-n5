@@ -1,4 +1,4 @@
-import { flashcards } from "@/app/constants/flashcard";
+import { flashcards } from "@/app/constants/vocabulary";
 import FlashcardList from "../../components/flashcards/FlashcardList";
 export default function Flashcard() {
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Vocabulary } from "../constants/flashcard";
+import { Vocabulary } from "../constants/vocabulary";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Volume2 } from "lucide-react";

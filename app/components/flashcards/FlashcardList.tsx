@@ -1,6 +1,6 @@
 "use client";
 
-import { FlashcardType } from "@/app/constants/flashcard";
+import { FlashcardType } from "@/app/constants/vocabulary";
 import { useState } from "react";
 import Flashcard from "./Flashcard";
 import { Button } from "@/components/ui/button";

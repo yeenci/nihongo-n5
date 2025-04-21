@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, ArrowRight, Star, Volume2 } from "lucide-react";
 import { useState } from "react";
-import { Vocabulary } from "../../constants/flashcard";
+import { Vocabulary } from "../../constants/vocabulary";
 import { speakJapanese } from "@/lib/speech";
 import { useVoiceFemale } from "@/hooks/useVoice";
 
