@@ -18,135 +18,19 @@ export const flashcards: FlashcardType[] = [
 ];
 
 export type Vocabulary = {
-  "id": string;
-  "vocabulary": string;
-  "chinese_char": string;
-  "yin_han": string;
-  "meaning": string;
-  "type": "Noun" | "Verb" | "Adjective" | "Phrase";
+  id: string;
+  vocabulary: string;
+  chinese_char: string;
+  yin_han: string;
+  meaning: string;
+  type:
+    | "Noun"
+    | "Verb"
+    | "Verb (I)"
+    | "Verb (II)"
+    | "Verb (III)"
+    | "Adjective"
+    | "Adjective [な]"
+    | "Adjective [い]"
+    | "Phrase";
 };
-
-export const vocabulary: Vocabulary[] = [
-  {
-    id: "1",
-    vocabulary: "わたし",
-    chinese_char: "",
-    yin_han: "",
-    meaning: "tôi",
-    type: "Noun",
-  },
-  {
-    id: "2",
-    vocabulary: "あなた",
-    chinese_char: "",
-    yin_han: "",
-    meaning: "anh/chị, ông/bà, bạn (ngôi thứ II số ít)",
-    type: "Noun",
-  },
-  {
-    id: "3",
-    vocabulary: "あのひと",
-    chinese_char: "あの人",
-    yin_han: "NHÂN",
-    meaning: "người kia, người đó, anh kia, chị kia",
-    type: "Noun",
-  },
-  {
-    id: "4",
-    vocabulary: "あのかた",
-    chinese_char: "あの方",
-    yin_han: "",
-    meaning: "(あのかた: là cách nói lịch sự của あのひと)",
-    type: "Noun",
-  },
-  {
-    id: "5",
-    vocabulary: "〜さん",
-    chinese_char: "",
-    yin_han: "",
-    meaning: "anh, chị, ông, bà (hậu tố thể hiện lịch sự)",
-    type: "Noun",
-  },
-  {
-    id: "6",
-    vocabulary: "〜ちゃん",
-    chinese_char: "",
-    yin_han: "",
-    meaning: "(hậu tố thêm vào sau tên của trẻ em thay cho ～さん)",
-    type: "Noun",
-  },
-  {
-    id: "7",
-    vocabulary: "〜じん",
-    chinese_char: "〜人",
-    yin_han: "NHÂN",
-    meaning: "(hậu tố mang nghĩa “người ~”, ví dụ アメリカじん: người Mỹ)",
-    type: "Noun",
-  },
-  {
-    id: "8",
-    vocabulary: "せんせい",
-    chinese_char: "先生",
-    yin_han: "TIÊN SINH",
-    meaning:
-      "thầy/cô (không dùng khi giới thiệu về nghề giáo viên của chính mình)",
-      type: "Noun",
-  },
-  {
-    id: "9",
-    vocabulary: "いいえ",
-    chinese_char: "",
-    yin_han: "",
-    meaning: "không",
-    type: "Noun",
-  },
-  {
-    id: "10",
-    vocabulary: "はじめまして",
-    chinese_char: "初めまして",
-    yin_han: "",
-    meaning: "Rất hân hạnh được gặp anh/chị. (Câu chào lần đầu khi giới thiệu)",
-    type: "Phrase",
-  },
-  {
-    id: "11",
-    vocabulary: "〜からきました",
-    chinese_char: "〜から来ました",
-    yin_han: "",
-    meaning: "Tôi đến từ ~.",
-    type: "Phrase",
-  },
-  {
-    id: "12",
-    vocabulary: "よろしくおねがいします",
-    chinese_char: "[どうぞ] よろしく [お願いします]",
-    yin_han: "",
-    meaning: "Rất vui được làm quen với anh/chị. (Rất mong được giúp đỡ)",
-    type: "Phrase",
-  },
-  {
-    id: "13",
-    vocabulary: "しつれいですが",
-    chinese_char: "失礼ですが",
-    yin_han: "",
-    meaning:
-      "Xin lỗi... (dùng để mở đầu câu hỏi thông tin cá nhân như tên, địa chỉ)",
-    type: "Phrase",
-  },
-  {
-    id: "14",
-    vocabulary: "おなまえは？",
-    chinese_char: "お名前は？",
-    yin_han: "",
-    meaning: "Tên anh/chị là gì?",
-    type: "Phrase",
-  },
-  {
-    id: "15",
-    vocabulary: "こちらは〜さんです",
-    chinese_char: "",
-    yin_han: "",
-    meaning: "Đây là anh/chị/ông/bà ~.",
-    type: "Phrase",
-  },
-];
