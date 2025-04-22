@@ -25,13 +25,10 @@ export type Vocabulary = {
   meaning: string;
   type:
     | "Noun"
+    | "Proper Noun"
     | "Verb"
-    | "Verb (I)"
-    | "Verb (II)"
-    | "Verb (III)"
     | "Adjective"
-    | "Adjective [な]"
-    | "Adjective [い]"
+    | "Preposition"
     | "Adverb"
     | "Phrase";
 };
