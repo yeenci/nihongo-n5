@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
-export default function TrueFalseParagraph({ question, onSubmit }: any) {
+export default function ReadParagraph({ question, onSubmit }: any) {
   const [answer, setAnswer] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const isCorrect = answer === question.correctAnswer;
