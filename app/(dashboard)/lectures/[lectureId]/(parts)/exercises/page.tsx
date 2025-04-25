@@ -108,7 +108,7 @@ const exerciseParts = [
   },
   {
     id: "part5",
-    type: "true-false",
+    type: "read-and-answer",
     title: "Part 5: Read the paragraph and choose True/False",
     questions: [
       {
