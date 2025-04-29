@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// 1. Fill in the blank
+//  Fill in the table
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
