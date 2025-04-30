@@ -15,17 +15,17 @@ export default function RenderQuestionByType({
   switch (type) {
     case "fill-in-the-blank":
       return <FillInTheBlank question={question} onSubmit={onSubmit} />;
-    case "choose-in-parentheses":
-      return <ChooseInParentheses question={question} onSubmit={onSubmit} />;
-    case "rearrange":
-      return <Rearrange question={question} onSubmit={onSubmit} />;
-    case "finish-sentence":
-      return <FinishSentence question={question} onSubmit={onSubmit} />;
-    case "read-and-answer":
-      return <ReadParagraph question={question} onSubmit={onSubmit} />;
-    case "word-box":
-      return <WordBoxFill question={question} onSubmit={onSubmit} />;
+    // case "choose-in-parentheses":
+    //   return <ChooseInParentheses question={question} onSubmit={onSubmit} />;
+    // case "rearrange":
+    //   return <Rearrange question={question} onSubmit={onSubmit} />;
+    // case "finish-sentence":
+    //   return <FinishSentence question={question} onSubmit={onSubmit} />;
+    // case "read-and-answer":
+    //   return <ReadParagraph question={question} onSubmit={onSubmit} />;
+    // case "word-box":
+    //   return <WordBoxFill question={question} onSubmit={onSubmit} />;
     default:
-      return <WordBoxFill question={question} onSubmit={onSubmit} />;
+      return <FillInTheBlank question={question} onSubmit={onSubmit} />;
   }
 }
