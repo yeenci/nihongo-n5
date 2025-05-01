@@ -15,7 +15,7 @@ export interface Question {
   options?: string[];
   options_kana?: string[];
   sentence?: string;
-  // correctAnswer?: string;
+  correctAnswer?: string;
   words?: string[];
 }
 

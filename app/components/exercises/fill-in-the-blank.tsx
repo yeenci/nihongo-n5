@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // 1. Fill in the blank
 
 "use client";
@@ -102,6 +102,33 @@ export default function FillInTheTable({
 
     return `${borderColor} ${focusRingColor} ${bgColor} ${textColor} ${cursor}`;
   };
+
+  const isOverallCorrect =
+    isPartSubmitted &&
+    resultsArray.length === expectedInputs &&
+    resultsArray.every((r) => r === true);
+
+  const isAnyIncorrect =
+    isPartSubmitted && resultsArray.some((r) => r === false);
+
+  const isReset = isPartSubmitted && resultsArray.some((r) => r === null);
+
+  // get correct answer
+  const displayCorrectAnswers = () => {
+    const answersToDisplay = showKana ? questionData.answer_kana : questionData.answer;
+    const fallback = questionData.correctAnswer;
+
+    if (Array.isArray(answersToDisplay) && answersToDisplay.length > 0) {
+      return answersToDisplay.map(a => a ?? '?').join('、 ')
+    }
+
+    if (fallback) {
+      return fallback;
+    }
+
+    return "N/A";
+  }
+
   return (
     <div className={`p-4 border rounded transition-colors duration-300`}>
       <pre className="mb-2 font-sans whitespace-pre-wrap">
