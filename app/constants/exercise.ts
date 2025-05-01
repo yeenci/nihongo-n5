@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // --- Interfaces (keep as before) ---
-interface Question {
+export interface Question {
   id: string;
   uniqueId?: string;
   question: string;

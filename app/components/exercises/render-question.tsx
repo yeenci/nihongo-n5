@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import ChooseInParentheses from "./choose-in-parentheses";
+// import ChooseInParentheses from "./choose-in-parentheses";
 import FillInTheBlank from "./fill-in-the-blank";
-import FinishSentence from "./finish-sentence";
-import Rearrange from "./rearrange";
-import ReadParagraph from "./read-and-answer";
-import WordBoxFill from "./word-box";
+// import FinishSentence from "./finish-sentence";
+// import Rearrange from "./rearrange";
+// import ReadParagraph from "./read-and-answer";
+// import WordBoxFill from "./word-box";
 
 export default function RenderQuestionByType({
   type,
