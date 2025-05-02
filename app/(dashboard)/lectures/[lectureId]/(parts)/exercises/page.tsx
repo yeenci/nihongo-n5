@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { Question } from "@/app/constants/exercise";
@@ -68,6 +69,70 @@ export default function ExercisePage() {
 
     return question.correctAnswer ? 1 : 1;
   }, []);
+
+  // Checks answer against both kanji and katakana/hiragana
+  const checkAnswer = useCallback(
+    (
+      userInput: string | string[] | undefined,
+      question: Question,
+      isKanaMode: boolean
+    ): (boolean | null) | (boolean | null)[] => {
+      const expectedCount = getExpectedAnswerCount(question);
+
+      if (expectedCount > 1) {
+        const userInputsArray = Array.isArray(userInput) ? userInput : [];
+        const resultsArray: (boolean | null)[] = [];
+
+        for (let i = 0; i < expectedCount; i++) {
+          const userInputTrimmed = (userInputsArray[i] ?? "").trim();
+          const correctKanji = (question.answer?.[i] ?? null)?.trim();
+          const correctKana = (question.answer_kana?.[i] ?? null)?.trim();
+
+          let areCorrectAnswers = false;
+
+          // Check non-empty input
+          if (userInputTrimmed !== "") {
+            areCorrectAnswers =
+              (correctKana !== null && userInputTrimmed === correctKana) ||
+              (correctKanji !== null && userInputTrimmed === correctKanji);
+          }
+
+          // Check empty input
+          if (correctKanji === null && correctKana === null) {
+            resultsArray.push(null);
+          } else {
+            resultsArray.push(areCorrectAnswers);
+          }
+        }
+        return resultsArray;
+      } else {
+        const userInputTrimmed = (
+          typeof userInput === "string"
+            ? userInput
+            : (Array.isArray(userInput) ? userInput[0] : "") ?? ""
+        ).trim();
+        const correctKanji = (
+          question.answer?.[0] ??
+          question.correctAnswer ??
+          null
+        )?.trim();
+        const correctKana = (question.answer_kana?.[0] ?? null)?.trim();
+
+        let isCorrectAnswer = false;
+
+        if (userInputTrimmed !== "") {
+          isCorrectAnswer =
+            (correctKanji !== null && userInputTrimmed === correctKanji) ||
+            (correctKana !== null && userInputTrimmed === correctKana);
+        }
+
+        if (correctKanji === null && correctKana === null) {
+          return null;
+        } else return isCorrectAnswer;
+      }
+    },
+    [getExpectedAnswerCount]
+  );
 }
 
 const exerciseParts: ExercisePart[] = [
