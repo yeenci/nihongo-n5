@@ -179,6 +179,17 @@ export default function ExercisePage() {
 
       return newAnswers;
     });
+
+    // Reset results for the question if the part was already submitted
+    if (partSubmittedStatus[partId]) {
+      setResults((prev) => {
+        const partResults = { ...(prev[partId] || {}) };
+
+        // Reset by removing the result for this question entirely
+        delete partResults[questionId];
+        return { ...prev, [partId]: partResults };
+      });
+    }
   };
 }
 
