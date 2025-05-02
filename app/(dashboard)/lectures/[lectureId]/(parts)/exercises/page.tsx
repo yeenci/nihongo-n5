@@ -1,7 +1,7 @@
 "use client";
 
 import { Question } from "@/app/constants/exercise";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface ExercisePart {
   id: string;
@@ -46,6 +46,28 @@ export default function ExercisePage() {
       setActivePartId(data[0].id);
     }
   }, [data, activePartId]);
+
+  // Get the expected number of answers for a question
+  // Prioritizes `answer` length, falls back to `answer_kana`, then 1.
+  const getExpectedAnswerCount = useCallback((question: Question): number => {
+    if (
+      question.answer &&
+      Array.isArray(question.answer) &&
+      question.answer.length > 0
+    ) {
+      return question.answer.length;
+    }
+
+    if (
+      question.answer_kana &&
+      Array.isArray(question.answer_kana) &&
+      question.answer_kana.length > 0
+    ) {
+      return question.answer_kana.length;
+    }
+
+    return question.correctAnswer ? 1 : 1;
+  }, []);
 }
 
 const exerciseParts: ExercisePart[] = [
