@@ -4,9 +4,9 @@
 "use client";
 
 import { Question } from "@/app/constants/exercise";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useMemo } from "react";
 
 interface FillInTheBlankProps {
   questionData: Question;
@@ -160,7 +160,7 @@ export default function FillInTheTable({
           </Fragment>
         ))}
       </div>
-      
+
       {/* display if the answers are correct or not */}
       {isPartSubmitted && (
         <div className="mt-2 text-sm min-h-[1.25rem]">
