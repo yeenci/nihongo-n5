@@ -6,7 +6,7 @@
 import { Question } from "@/app/constants/exercise";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 
 interface FillInTheBlankProps {
   questionData: Question;
@@ -115,11 +115,13 @@ export default function FillInTheTable({
 
   // get correct answer
   const displayCorrectAnswers = () => {
-    const answersToDisplay = showKana ? questionData.answer_kana : questionData.answer;
+    const answersToDisplay = showKana
+      ? questionData.answer_kana
+      : questionData.answer;
     const fallback = questionData.correctAnswer;
 
     if (Array.isArray(answersToDisplay) && answersToDisplay.length > 0) {
-      return answersToDisplay.map(a => a ?? '?').join('、 ')
+      return answersToDisplay.map((a) => a ?? "?").join("、 ");
     }
 
     if (fallback) {
@@ -127,13 +129,56 @@ export default function FillInTheTable({
     }
 
     return "N/A";
-  }
+  };
 
   return (
-    <div className={`p-4 border rounded transition-colors duration-300`}>
-      <pre className="mb-2 font-sans whitespace-pre-wrap">
-        {displayQuestion}
-      </pre>
+    <div className="p-4 border rounded bg-muted/5- border-border transition-colors duration-300">
+      {/* （＿＿） as input bar */}
+      <div className="mb-3 leading-relaxed text-muted-foreground">
+        {questionParts.map((part, index) => (
+          <Fragment key={index}>
+            <span className="whitespace-pre-wrap font-sans">{part}</span>
+            {index < expectedInputs && (
+              <Input
+                type="text"
+                placeholder="your answer"
+                value={valuesArray[index]}
+                onChange={(e) =>
+                  onChange(partId, questionId, e.target.value, index)
+                }
+                aria-label={`Answer blank ${
+                  index + 1
+                } for question ${questionId}`}
+                className={`
+                  inline-block w-32 sm:w-40 h-7 px-2 mx-1 align-baseline border rounded
+                  text-sm transition-colors duration-200 ease-in-out
+                  focus:outline-none focus:ring-2 focus:ring-offset-1
+                  ${getInputClasses(index)}`}
+                disabled={isPartSubmitted && resultsArray[index] === true}
+              />
+            )}
+          </Fragment>
+        ))}
+      </div>
+      
+      {/* display if the answers are correct or not */}
+      {isPartSubmitted && (
+        <div className="mt-2 text-sm min-h-[1.25rem]">
+          {isOverallCorrect && (
+            <p className="text-green-600 font-semibold">Correct!</p>
+          )}
+          {isAnyIncorrect && (
+            <p className="text-red-600 font-semibold">
+              Incorrect. Correct answer(s): {displayCorrectAnswers()}
+            </p>
+          )}
+          {isReset && !isOverallCorrect && !isAnyIncorrect && (
+            <p className="text-orange-600 font-semibold">
+              Answer changed. Submit part again to re-check.
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
