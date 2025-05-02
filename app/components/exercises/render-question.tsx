@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 // import ChooseInParentheses from "./choose-in-parentheses";
 import { Question } from "@/app/constants/exercise";
 import FillInTheBlank from "./fill-in-the-blank";

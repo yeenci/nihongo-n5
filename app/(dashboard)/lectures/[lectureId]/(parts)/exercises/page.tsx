@@ -1,136 +1,153 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import RenderQuestionByType from "@/app/components/exercises/render-question";
-import { Button } from "@/components/ui/button";
-import { useLecturePartData } from "@/hooks/useLecturePartData";
-import { useState } from "react";
+import { Question } from "@/app/constants/exercise";
+import { useEffect, useState } from "react";
 
-export default function ExercisesPage() {
-  const { data, loading } = useLecturePartData();
-
-  const [expandedParts, setExpandedParts] = useState<{
-    [key: string]: boolean;
-  }>({});
-
-  const togglePart = (id: string) => {
-    setExpandedParts((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  return (
-    <div className="flex flex-row h-full justify-center w-full">
-      <div className="w-full lg:w-4/5 xl:w-3/5 2xl:w-1/2">
-        {/* <div className="flex"> */}
-        <h1 className="text-3xl font-bold my-4 text-primary">Exercises</h1>
-        {/* </div> */}
-        {exerciseParts.map((part) => (
-          <div
-            key={part.id}
-            className="mb-4 border rounded-lg bg-background shadow"
-          >
-            <button
-              // value="outline"
-              className="flex text-left w-full px-4 py-3 font-semibold cursor-pointer"
-              onClick={() => togglePart(part.id)}
-            >
-              {part.title}
-            </button>
-
-            {expandedParts[part.id] && (
-              <div className="p-4 border-t space-y-6">
-                {part.questions.map((question) => (
-                  <RenderQuestionByType
-                    key={question.id}
-                    type={part.type}
-                    question={question}
-                    onSubmit={() => {}}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+interface ExercisePart {
+  id: string;
+  type: string;
+  title: string;
+  questions: Question[];
+  examples?: Question[];
+  images?: string[];
 }
 
-const exerciseParts = [
+export default function ExercisePage() {
+  // const { data, loading } = useLecturePartData();
+  const data = exerciseParts;
+  const loading = false;
+
+  // State to track the currently visible part
+  const [activePartId, setActivePartId] = useState<string | null>(null);
+
+  // State to hold user answers
+  const [userAnswers, setUsersAnswers] = useState<{
+    [key: string]: string | string[];
+  }>({});
+
+  // State to hold results per part
+  const [results, setResults] = useState<{
+    [pardId: string]: {
+      [questionId: string]: (boolean | null) | (boolean | null)[];
+    };
+  }>({});
+
+  // State to track submission status per part
+  const [partSubmittedStatus, setPartSubmittedStatus] = useState<{
+    [pardId: string]: boolean;
+  }>({});
+
+  // State for Kana/Kanji toggle (true = show Kana)
+  const [showKana, setShowKana] = useState<boolean>(false);
+
+  // Set the first part as active initially when data is loaded
+  useEffect(() => {
+    if (data && data.length > 0 && activePartId === null) {
+      setActivePartId(data[0].id);
+    }
+  }, [data, activePartId]);
+}
+
+const exerciseParts: ExercisePart[] = [
   {
-    id: "part1",
+    id: "part1_old",
     type: "fill-in-the-blank",
-    title: "Part 1: Fill in the blank with the correct word",
+    title: "Part 1", // Use a suitable title for the button
     questions: [
-      { id: "1", question: "わたし ___ がくせいです。", correctAnswer: "は" },
+      {
+        id: "1",
+        question: "わたし （＿＿） がくせいです。",
+        question_kana: "わたし （＿＿） がくせい です。",
+        answer: ["は"],
+        answer_kana: ["は"],
+      },
       {
         id: "2",
-        question: "これは でんしゃ ___ きっぷです。",
-        correctAnswer: "の",
+        question: "これは でんしゃ （＿＿） きっぷです。",
+        question_kana: "これ は でんしゃ （＿＿） きっぷ です。",
+        answer: ["の"],
+        answer_kana: ["の"],
       },
     ],
   },
   {
     id: "part2",
-    type: "choose-in-parentheses",
-    title: "Part 2: Choose the appropriate answer in the parentheses",
+    type: "fill-in-the-blank",
+    title: "Part 2",
+    images: [],
+    examples: [
+      {
+        id: "ex1",
+        question:
+          "A：あした 暇ですか。\nB：あしたは 会社へ 行かなければ なりません。\n→ Bさんは あしたは （会社へ 行かなければ ならない）と 言いました。",
+        question_kana:
+          "A：あした ひまですか。\nB：あしたは かいしゃへ いかなければ なりません。\n→ Bさんは あしたは （かいしゃへ いかなければ ならない）と いいました。",
+        question_en:
+          "A: Are you free tomorrow?\nB: Tomorrow I must go to the company.\n→ B said that he must go to the company tomorrow.",
+        answer: ["会社へ 行かなければ ならない"],
+        answer_kana: ["かいしゃへ いかなければ ならない"],
+      },
+    ],
     questions: [
       {
-        id: "3",
-        question: "きょうは (あめ|ゆき|くもり) です。",
-        correctAnswer: "あめ",
+        id: "1",
+        question:
+          "A：桜の 季節ですね。どこか お花見に 行きませんか。\nB：ええ、日曜日 家族と 吉野山へ 行きます。\n→ Bさんは （＿＿）と 言いました。",
+        question_kana:
+          "A：さくらの きせつですね。どこか おはなみに いきませんか。\nB：ええ、にちようび かぞくと よしのやまへ いきます。\n→ Bさんは （＿＿）と いいました。",
+        question_en:
+          "A: It's cherry blossom season, isn't it? Won't you go somewhere for cherry blossom viewing?\nB: Yes, on Sunday I will go to Mt. Yoshino with my family.\n→ B said that he will go to Mt. Yoshino with his family on Sunday.",
+        answer: ["日曜日 家族と 吉野山へ 行く"],
+        answer_kana: ["にちようび かぞくと よしのやまへ いく"],
+      },
+      {
+        id: "2",
+        question:
+          "A：この 本、おもしろいですよ。\nB：そうですか。じゃ、貸して ください。\n→ Aさんは この 本は （＿＿）と 言いました。",
+        question_kana:
+          "A：この ほん、おもしろいですよ。\nB：そうですか。じゃ、かして ください。\n→ Aさんは この ほんは （＿＿）と いいました。",
+        question_en:
+          "A: This book is interesting, you know.\nB: Is that so? Then, please lend it to me.\n→ A said that this book is interesting.",
+        answer: ["おもしろい"],
+        answer_kana: ["おもしろい"],
       },
     ],
   },
   {
-    id: "part3",
-    type: "rearrange",
-    title: "Part 3: Rearrange words to make a complete sentence",
+    id: "part_multi_input",
+    type: "fill-in-the-blank",
+    title: "Part 3: Multi-Input", // Example title
     questions: [
       {
-        id: "4",
-        words: ["たなかさん", "です", "わたしは"],
-        correctAnswer: "わたしは たなかさん です",
+        id: "1", // Example with one input
+        question: "Aさんは （＿＿）と 言いました。",
+        question_kana: "Aさんは （＿＿）と いいました。",
+        answer: ["おもしろい"],
+        answer_kana: ["おもしろい"],
+      },
+      {
+        id: "2", // Example with two inputs
+        question:
+          "太郎ちゃんは　うちの　仕事を　手伝いますか。\n... ええ、（＿＿）り、（＿＿）り　しますよ。",
+        question_kana:
+          "たろうちゃんは　うちの　しごとを　てつだいますか。\n... ええ、（＿＿）り、（＿＿）り　しますよ。",
+        question_en:
+          "Does Taro help with the housework?\n... Yes, he does things like cleaning and going shopping.",
+        answer: ["掃除した", "買い物に 行った"],
+        answer_kana: ["そうじした", "かいものに いった"],
+      },
+      {
+        id: "3", // Example with two inputs
+        question:
+          "趣味は　何ですか。\n... 絵を（＿＿）り、音楽を（＿＿）り　する　ことです。",
+        question_kana:
+          "しゅみは　なんですか。\n... えを（＿＿）り、おんがくを（＿＿）り　する　ことです。",
+        question_en:
+          "What is your hobby?\n... It's doing things like drawing pictures and listening to music.",
+        answer: ["かいた", "聞いた"],
+        answer_kana: ["かいた", "きいた"],
       },
     ],
   },
-  {
-    id: "part4",
-    type: "finish-sentence",
-    title: "Part 4: Finish the sentence based on the answer/image",
-    questions: [
-      {
-        id: "5",
-        image: "/img/src.png",
-        question: "A: おなまえは？ B: _________",
-        correctAnswer: "なまえはたなかです",
-      },
-    ],
-  },
-  {
-    id: "part5",
-    type: "read-and-answer",
-    title: "Part 5: Read the paragraph and choose True/False",
-    questions: [
-      {
-        id: "6",
-        passage:
-          "たなかさんは にほんじん です。まいにち でんしゃで しごとに いきます。",
-        question: "Tanaka-san goes to work by train every day.",
-        correctAnswer: "True",
-      },
-    ],
-  },
-  {
-    id: "part6",
-    type: "word-box",
-    title: "Part 6: Choose appropriate word from the box and fill in the blank",
-    questions: [
-      {
-        id: "7",
-        sentence: "これは ___ ほんです。",
-        options: ["わたしの", "あなたの", "かれの"],
-        correctAnswer: "わたしの",
-      },
-    ],
-  },
+  // Add other parts...
 ];
