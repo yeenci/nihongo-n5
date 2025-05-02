@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 // --- Interfaces (keep as before) ---
 export interface Question {
   id: string;
@@ -19,8 +17,10 @@ export interface Question {
   words?: string[];
 }
 
+
 export interface ExercisePart {
   id: string;
+  partId: string;
   type: string;
   title: string;
   questions: Question[];
