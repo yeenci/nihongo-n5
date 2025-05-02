@@ -191,6 +191,24 @@ export default function ExercisePage() {
       });
     }
   };
+
+  // Submit answers for the currently active part
+  const handlePartSubmit = (partId: string) => {
+    const part = data.find((p) => p.id === partId);
+    if (!part) return;
+
+    const newPartResults: {
+      [questionId: string]: (boolean | null) | (boolean | null)[];
+    } = {};
+    part.questions.forEach((question) => {
+      const uniqueId = `${part.id}-${question.id}`;
+      const userAnswer = userAnswers[uniqueId];
+      newPartResults[question.id] = checkAnswer(userAnswer, question, showKana);
+    });
+
+    setResults((prev) => ({ ...prev, [partId]: newPartResults }));
+    setPartSubmittedStatus((prev) => ({ ...prev, [partId]: true }));
+  };
 }
 
 const exerciseParts: ExercisePart[] = [
