@@ -133,6 +133,53 @@ export default function ExercisePage() {
     },
     [getExpectedAnswerCount]
   );
+
+  // Handles input changes for single/multiple answers
+  const handleChange = (
+    partId: string,
+    questionId: string,
+    value: string,
+    blankIndex?: number
+  ) => {
+    const uniqueId = `${partId}-${questionId}`;
+    const part = data.find((p) => p.id === partId);
+    const question = part?.questions.find((q) => q.id === questionId);
+    if (!question) return;
+
+    const expectedCount = getExpectedAnswerCount(question);
+
+    setUsersAnswers((prev) => {
+      const newAnswers = { ...prev };
+      const currentAnswer = prev[uniqueId];
+
+      if (expectedCount > 1) {
+        let currentArray: string[] = [];
+
+        if (Array.isArray(currentAnswer)) {
+          currentArray = [...currentAnswer];
+        }
+
+        while (currentAnswer.length < expectedCount) {
+          currentArray.push("");
+        }
+
+        if (currentArray.length > expectedCount) {
+          currentArray = currentArray.slice(0, expectedCount);
+        }
+
+        // Update the specific index
+        if (blankIndex !== undefined && blankIndex < expectedCount) {
+          currentArray[blankIndex] = value;
+        }
+
+        newAnswers[uniqueId] = currentArray;
+      } else {
+        newAnswers[uniqueId] = value;
+      }
+
+      return newAnswers;
+    });
+  };
 }
 
 const exerciseParts: ExercisePart[] = [
