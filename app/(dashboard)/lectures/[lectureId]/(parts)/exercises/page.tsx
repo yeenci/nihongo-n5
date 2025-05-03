@@ -236,6 +236,34 @@ export default function ExercisePage() {
     });
   };
 
+  const handlePartReset = (partId: string) => {
+    const part = data.find((p) => p.id === partId);
+    if (!part) return;
+
+    // Clear user answers for this part
+    setUsersAnswers((prev) => {
+      const updatedAnswers = { ...prev };
+      part.questions.forEach((q) => {
+        const uniqueId = `${part.id}-${q.id}`;
+        delete updatedAnswers[uniqueId];
+      });
+      return updatedAnswers;
+    });
+
+    // Clear results for this part
+    setResults((prev) => {
+      const updateResults = { ...prev };
+      delete updateResults[partId];
+      return updateResults;
+    });
+
+    // Reset submission status for this part
+    setPartSubmittedStatus((prev) => ({
+      ...prev,
+      [partId]: false,
+    }));
+  };
+
   const activePart = data.find((part) => part.id === activePartId);
   const isPartSubmitted = activePartId
     ? partSubmittedStatus[activePartId] ?? false
@@ -258,7 +286,7 @@ export default function ExercisePage() {
         ) : Array.isArray(data) && data.length > 0 ? (
           <div>
             {/* --- Part Selection Buttons --- */}
-            <div className="flex flex-wrap justify-center gap-2 mb-8 border-b pb-4">
+            <div className="flex flex-wrap justify-center gap-2 mb-2 pb-4">
               {data.map((part) => (
                 <Button
                   key={part.id}
@@ -327,9 +355,19 @@ export default function ExercisePage() {
                       />
                     );
                   })}
+                  <div className="mt-6 flex gap-3 justify-end border-t pt-6">
+                    {/* --- Reset Button --- */}
+                    {isPartSubmitted && (
+                      <Button
+                        onClick={() => handlePartReset(activePart.id)}
+                        variant="outline"
+                        size="lg"
+                      >
+                        Reset Part
+                      </Button>
+                    )}
 
-                  {/* --- Button for Submit --- */}
-                  <div className="mt-6 flex justify-end border-t pt-6">
+                    {/* --- Button for Submit --- */}
                     <Button
                       onClick={() => handlePartSubmit(activePart.id)}
                       disabled={isPartSubmitted}

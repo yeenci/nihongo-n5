@@ -131,9 +131,11 @@ export default function FillInTheTable({
   };
 
   return (
-    <div className="p-4 border rounded bg-muted/5- border-border transition-colors duration-300">
+    <div className="p-4 border rounded transition-colors duration-300">
       {/* （＿＿） as input bar */}
-      <div className="mb-3 leading-relaxed">
+      
+      <span className="font-semibold mr-2 text-foreground/80">{questionData.id}.</span>
+      <div className="mb-3 leading-relaxed text-foreground/80">
         {questionParts.map((part, index) => (
           <Fragment key={index}>
             <span className="whitespace-pre-wrap font-sans">{part}</span>
