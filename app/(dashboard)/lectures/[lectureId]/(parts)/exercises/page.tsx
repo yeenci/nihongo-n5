@@ -1,273 +1,32 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
+import { renderExamples } from "@/app/components/exercises/helper";
 import RenderQuestionByType from "@/app/components/exercises/render-question";
 import Spinner from "@/app/components/spinner";
 import { ExercisePart, Question } from "@/app/constants/exercise";
 import { Button } from "@/components/ui/button";
-import { useCallback, useEffect, useState } from "react";
+import { useExerciseLogic } from "@/hooks/useExerciseLogic";
+import { useLecturePartData } from "@/hooks/useLecturePartData";
 
 export default function ExercisePage() {
-  // const { data, loading } = useLecturePartData();
-  const data = exerciseParts;
-  const loading = false;
+  const { data, loading } = useLecturePartData();
+  // const loading = false;
 
-  // State to track the currently visible part
-  const [activePartId, setActivePartId] = useState<string | null>(null);
-
-  // State to hold user answers
-  const [userAnswers, setUsersAnswers] = useState<{
-    [key: string]: string | string[];
-  }>({});
-
-  // State to hold results per part
-  const [results, setResults] = useState<{
-    [pardId: string]: {
-      [questionId: string]: (boolean | null) | (boolean | null)[];
-    };
-  }>({});
-
-  // State to track submission status per part
-  const [partSubmittedStatus, setPartSubmittedStatus] = useState<{
-    [pardId: string]: boolean;
-  }>({});
-
-  // State for Kana/Kanji toggle (true = show Kana)
-  const [showKana, setShowKana] = useState<boolean>(false);
-
-  // Set the first part as active initially when data is loaded
-  useEffect(() => {
-    if (data && data.length > 0 && activePartId === null) {
-      setActivePartId(data[0].id);
-    }
-  }, [data, activePartId]);
-
-  // Get the expected number of answers for a question
-  // Prioritizes `answer` length, falls back to `answer_kana`, then 1.
-  const getExpectedAnswerCount = useCallback((question: Question): number => {
-    if (
-      question.answer &&
-      Array.isArray(question.answer) &&
-      question.answer.length > 0
-    ) {
-      return question.answer.length;
-    }
-
-    if (
-      question.answer_kana &&
-      Array.isArray(question.answer_kana) &&
-      question.answer_kana.length > 0
-    ) {
-      return question.answer_kana.length;
-    }
-
-    return question.correctAnswer ? 1 : 1;
-  }, []);
-
-  // Checks answer against both kanji and katakana/hiragana
-  const checkAnswer = useCallback(
-    (
-      userInput: string | string[] | undefined,
-      question: Question,
-      isKanaMode: boolean
-    ): (boolean | null) | (boolean | null)[] => {
-      const expectedCount = getExpectedAnswerCount(question);
-
-      if (expectedCount > 1) {
-        const userInputsArray = Array.isArray(userInput) ? userInput : [];
-        const resultsArray: (boolean | null)[] = [];
-
-        for (let i = 0; i < expectedCount; i++) {
-          const userInputTrimmed = (userInputsArray[i] ?? "").trim();
-          const correctKanji = (question.answer?.[i] ?? null)?.trim();
-          const correctKana = (question.answer_kana?.[i] ?? null)?.trim();
-
-          let areCorrectAnswers = false;
-
-          // Check non-empty input
-          if (userInputTrimmed !== "") {
-            areCorrectAnswers =
-              (correctKana !== null && userInputTrimmed === correctKana) ||
-              (correctKanji !== null && userInputTrimmed === correctKanji);
-          }
-
-          // Check empty input
-          if (correctKanji === null && correctKana === null) {
-            resultsArray.push(null);
-          } else {
-            resultsArray.push(areCorrectAnswers);
-          }
-        }
-        return resultsArray;
-      } else {
-        const userInputTrimmed = (
-          typeof userInput === "string"
-            ? userInput
-            : (Array.isArray(userInput) ? userInput[0] : "") ?? ""
-        ).trim();
-        const correctKanji = (
-          question.answer?.[0] ??
-          question.correctAnswer ??
-          null
-        )?.trim();
-        const correctKana = (question.answer_kana?.[0] ?? null)?.trim();
-
-        let isCorrectAnswer = false;
-
-        if (userInputTrimmed !== "") {
-          isCorrectAnswer =
-            (correctKanji !== null && userInputTrimmed === correctKanji) ||
-            (correctKana !== null && userInputTrimmed === correctKana);
-        }
-
-        if (correctKanji === null && correctKana === null) {
-          return null;
-        } else return isCorrectAnswer;
-      }
-    },
-    [getExpectedAnswerCount]
-  );
-
-  // Handles input changes for single/multiple answers
-  const handleChange = (
-    partId: string,
-    questionId: string,
-    value: string,
-    blankIndex?: number
-  ) => {
-    const uniqueId = `${partId}-${questionId}`;
-    const part = data.find((p) => p.id === partId);
-    const question = part?.questions.find((q) => q.id === questionId);
-    if (!question) return;
-
-    const expectedCount = getExpectedAnswerCount(question);
-
-    setUsersAnswers((prev) => {
-      const newAnswers = { ...prev };
-      const currentAnswer = prev[uniqueId];
-
-      if (expectedCount > 1) {
-        let currentArray: string[] = [];
-
-        if (Array.isArray(currentAnswer)) {
-          currentArray = [...currentAnswer];
-        }
-
-        while (currentAnswer.length < expectedCount) {
-          currentArray.push("");
-        }
-
-        if (currentArray.length > expectedCount) {
-          currentArray = currentArray.slice(0, expectedCount);
-        }
-
-        // Update the specific index
-        if (blankIndex !== undefined && blankIndex < expectedCount) {
-          currentArray[blankIndex] = value;
-        }
-
-        newAnswers[uniqueId] = currentArray;
-      } else {
-        newAnswers[uniqueId] = value;
-      }
-
-      return newAnswers;
-    });
-
-    // Reset results for the question if the part was already submitted
-    if (partSubmittedStatus[partId]) {
-      setResults((prev) => {
-        const partResults = { ...(prev[partId] || {}) };
-
-        // Reset by removing the result for this question entirely
-        delete partResults[questionId];
-        return { ...prev, [partId]: partResults };
-      });
-    }
-  };
-
-  // Submit answers for the currently active part
-  const handlePartSubmit = (partId: string) => {
-    const part = data.find((p) => p.id === partId);
-    if (!part) return;
-
-    const newPartResults: {
-      [questionId: string]: (boolean | null) | (boolean | null)[];
-    } = {};
-    part.questions.forEach((question) => {
-      const uniqueId = `${part.id}-${question.id}`;
-      const userAnswer = userAnswers[uniqueId];
-      newPartResults[question.id] = checkAnswer(userAnswer, question, showKana);
-    });
-
-    setResults((prev) => ({ ...prev, [partId]: newPartResults }));
-    setPartSubmittedStatus((prev) => ({ ...prev, [partId]: true }));
-  };
-
-  // Toggles Kana/Kanji display mode and recalculates results for submitted parts
-  const toggleKana = () => {
-    const newKanaMode = !showKana;
-    setShowKana(newKanaMode);
-
-    // Recalculates results for submitted parts based on the new display mode
-    const updatedResults: typeof results = {};
-    const submittedPartIds = Object.keys(partSubmittedStatus).filter(
-      (id) => partSubmittedStatus[id]
-    );
-
-    data.forEach((part) => {
-      if (submittedPartIds.includes(part.id)) {
-        const newPartResults: (typeof results)[string] = {};
-
-        part.questions.forEach((question) => {
-          const uniqueId = `${part.id}-${question.id}`;
-          const userAnswer = userAnswers[uniqueId];
-          newPartResults[question.id] = checkAnswer(
-            userAnswer,
-            question,
-            newKanaMode
-          );
-          updatedResults[part.id] = newPartResults;
-        });
-      } else {
-        // Keep existing results (likely empty/null) for non-submitted parts
-        updatedResults[part.id] = results[part.id] || {};
-      }
-    });
-  };
-
-  const handlePartReset = (partId: string) => {
-    const part = data.find((p) => p.id === partId);
-    if (!part) return;
-
-    // Clear user answers for this part
-    setUsersAnswers((prev) => {
-      const updatedAnswers = { ...prev };
-      part.questions.forEach((q) => {
-        const uniqueId = `${part.id}-${q.id}`;
-        delete updatedAnswers[uniqueId];
-      });
-      return updatedAnswers;
-    });
-
-    // Clear results for this part
-    setResults((prev) => {
-      const updateResults = { ...prev };
-      delete updateResults[partId];
-      return updateResults;
-    });
-
-    // Reset submission status for this part
-    setPartSubmittedStatus((prev) => ({
-      ...prev,
-      [partId]: false,
-    }));
-  };
-
-  const activePart = data.find((part) => part.id === activePartId);
-  const isPartSubmitted = activePartId
-    ? partSubmittedStatus[activePartId] ?? false
-    : false;
+  const {
+    activePartId,
+    userAnswers,
+    results,
+    showKana,
+    activePart,
+    isPartSubmitted,
+    setActivePartId,
+    toggleKana,
+    handleChange,
+    handleSubmit,
+    handleReset,
+    getExpectedAnswerCount,
+  } = useExerciseLogic(data);
 
   return (
     <div className="flex flex-row h-full justify-center w-full">
@@ -287,7 +46,7 @@ export default function ExercisePage() {
           <div>
             {/* --- Part Selection Buttons --- */}
             <div className="flex flex-wrap justify-center gap-2 mb-2 pb-4">
-              {data.map((part) => (
+              {data.map((part, index) => (
                 <Button
                   key={part.id}
                   variant={part.id === activePartId ? "default" : "outline"}
@@ -295,7 +54,7 @@ export default function ExercisePage() {
                   className="rounded-full px-4 py-1 h-auto text-sm sm:text-base"
                   size="sm"
                 >
-                  {part.partId}
+                  Part {index+1}
                 </Button>
               ))}
             </div>
@@ -313,7 +72,7 @@ export default function ExercisePage() {
 
                   {/* --- Example (if any) --- */}
                   {activePart.examples && activePart.examples.length > 0 && (
-                    <div className="py-3 mb-4 rounded text-muted-foreground">
+                    <div className="p-4 border mb-4 rounded text-muted-foreground">
                       <h4 className="font-semibold mb-2">Example(s)</h4>
                       {activePart.examples.map((ex, index) => (
                         <pre
@@ -322,8 +81,8 @@ export default function ExercisePage() {
                         >
                           {renderExamples(
                             showKana && ex.question_kana
-                              ? ex.question_kana
-                              : ex.question
+                              ? "れい:" + ex.question_kana
+                              : "例:" + ex.question
                           )}
                         </pre>
                       ))}
@@ -359,36 +118,27 @@ export default function ExercisePage() {
                     {/* --- Reset Button --- */}
                     {isPartSubmitted && (
                       <Button
-                        onClick={() => handlePartReset(activePart.id)}
+                        onClick={() => handleReset(activePart.id)}
                         variant="outline"
                         size="lg"
                       >
-                        Reset Part
+                        Reset Answers
                       </Button>
                     )}
 
                     {/* --- Button for Submit --- */}
                     <Button
-                      onClick={() => handlePartSubmit(activePart.id)}
+                      onClick={() => handleSubmit(activePart.id)}
                       disabled={isPartSubmitted}
                       size="lg"
                     >
                       {isPartSubmitted
                         ? "Part Submitted"
-                        : `Submit ${activePart.title}`}
+                        : `Submit Answers`}
                     </Button>
                   </div>
                 </div>
               )}
-
-              {/* {!activePart && activePartId !== null && (
-                <div className="text-center text-muted-foreground">
-                  Select a part to begin.
-                </div>
-              )}
-              {!activePart && activePartId === null && data.length > 0 && (
-                <div className="text-center text-muted-foreground">Loading first part...</div>
-              )} */}
             </div>
           </div>
         ) : (
@@ -400,44 +150,6 @@ export default function ExercisePage() {
     </div>
   );
 }
-
-const renderExamples = (text: string | undefined | null): React.ReactNode[] => {
-  if (!text) return [];
-
-  const parts: React.ReactNode[] = [];
-  const regex = /（　(.*?)　）/g;
-  let lastIndex = 0;
-  let match;
-
-  while ((match = regex.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      parts.push(
-        <span key={`text-${lastIndex}`}>
-          {text.substring(lastIndex, match.index)}
-        </span>
-      );
-    }
-    parts.push(
-      <span
-        key={`underline-${match.index}`}
-        className="underline font-medium text-primary"
-      >
-        {"　"}
-        <span className="underline">{match[1]}</span>
-        {"　"}
-      </span>
-    );
-    lastIndex = regex.lastIndex;
-  }
-
-  if (lastIndex < text.length) {
-    parts.push(
-      <span key={`text-${lastIndex}`}>{text.substring(lastIndex)}</span>
-    );
-  }
-
-  return parts;
-};
 
 const exerciseParts: ExercisePart[] = [
   {

@@ -95,7 +95,7 @@ export default function FillInTheTable({
         textColor = "text-red-800 dark:text-red-300";
       }
     } else {
-      borderColor = "border-orange-400";
+      borderColor = "border-orange-200";
       focusRingColor = "focus:ring-orange-500";
     }
 
@@ -120,7 +120,7 @@ export default function FillInTheTable({
     const fallback = questionData.correctAnswer;
 
     if (Array.isArray(answersToDisplay) && answersToDisplay.length > 0) {
-      return answersToDisplay.map((a) => a ?? "?").join("、 ");
+      return answersToDisplay.map((a) => a ?? "?").join(",  ");
     }
 
     if (fallback) {
@@ -133,8 +133,10 @@ export default function FillInTheTable({
   return (
     <div className="p-4 border rounded transition-colors duration-300">
       {/* （＿＿） as input bar */}
-      
-      <span className="font-semibold mr-2 text-foreground/80">{questionData.id}.</span>
+
+      <span className="font-semibold mr-2 text-foreground/80">
+        Question {questionData.id}.
+      </span>
       <div className="mb-3 leading-relaxed text-foreground/80">
         {questionParts.map((part, index) => (
           <Fragment key={index}>
@@ -142,7 +144,7 @@ export default function FillInTheTable({
             {index < expectedInputs && (
               <Input
                 type="text"
-                placeholder="your answer"
+                placeholder="Your answer"
                 value={valuesArray[index]}
                 onChange={(e) =>
                   onChange(partId, questionId, e.target.value, index)
