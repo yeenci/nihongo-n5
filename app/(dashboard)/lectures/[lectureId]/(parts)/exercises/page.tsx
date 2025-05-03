@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
+import RenderQuestionByType from "@/app/components/exercises/render-question";
 import Spinner from "@/app/components/spinner";
 import { ExercisePart, Question } from "@/app/constants/exercise";
 import { Button } from "@/components/ui/button";
@@ -282,6 +283,7 @@ export default function ExercisePage() {
                     {activePart.title}
                   </h2>
 
+                  {/* --- Example (if any) --- */}
                   {activePart.examples && activePart.examples.length > 0 && (
                     <div className="py-3 mb-4 rounded text-muted-foreground">
                       <h4 className="font-semibold mb-2">Example(s)</h4>
@@ -290,15 +292,65 @@ export default function ExercisePage() {
                           key={`ex-${activePart.id}-${index}`}
                           className="whitespace-pre-wrap text-sm font-sans"
                         >
-                          {renderExamples(showKana && ex.question_kana
-                            ? ex.question_kana
-                            : ex.question)}
+                          {renderExamples(
+                            showKana && ex.question_kana
+                              ? ex.question_kana
+                              : ex.question
+                          )}
                         </pre>
                       ))}
                     </div>
                   )}
+
+                  {/* --- Questions --- */}
+                  {activePart.questions.map((question) => {
+                    const uniqueId = `${activePart.id}-${question.id}`;
+                    const questionValue = userAnswers[uniqueId];
+                    const questionResult =
+                      results[activePart.id]?.[question.id];
+
+                    return (
+                      <RenderQuestionByType
+                        key={uniqueId}
+                        type={activePart.type}
+                        questionData={{ ...question, uniqueId }}
+                        partId={activePart.id}
+                        questionId={question.id}
+                        value={questionValue}
+                        result={questionResult}
+                        onChange={handleChange}
+                        isPartSubmitted={isPartSubmitted}
+                        showKana={showKana}
+                        getExpectedAnswerCount={(q) =>
+                          getExpectedAnswerCount(q)
+                        }
+                      />
+                    );
+                  })}
+
+                  {/* --- Button for Submit --- */}
+                  <div className="mt-6 flex justify-end border-t pt-6">
+                    <Button
+                      onClick={() => handlePartSubmit(activePart.id)}
+                      disabled={isPartSubmitted}
+                      size="lg"
+                    >
+                      {isPartSubmitted
+                        ? "Part Submitted"
+                        : `Submit ${activePart.title}`}
+                    </Button>
+                  </div>
                 </div>
               )}
+
+              {/* {!activePart && activePartId !== null && (
+                <div className="text-center text-muted-foreground">
+                  Select a part to begin.
+                </div>
+              )}
+              {!activePart && activePartId === null && data.length > 0 && (
+                <div className="text-center text-muted-foreground">Loading first part...</div>
+              )} */}
             </div>
           </div>
         ) : (
@@ -320,23 +372,30 @@ const renderExamples = (text: string | undefined | null): React.ReactNode[] => {
   let match;
 
   while ((match = regex.exec(text)) !== null) {
-      if (match.index > lastIndex) {
-          parts.push(
-              <span key={`text-${lastIndex}`}>{text.substring(lastIndex, match.index)}</span>
-          );
-      }
+    if (match.index > lastIndex) {
       parts.push(
-          <span key={`underline-${match.index}`} className="underline font-medium text-primary">
-              {'　'}<span className="underline">{match[1]}</span>{'　'}
-          </span>
+        <span key={`text-${lastIndex}`}>
+          {text.substring(lastIndex, match.index)}
+        </span>
       );
-      lastIndex = regex.lastIndex;
+    }
+    parts.push(
+      <span
+        key={`underline-${match.index}`}
+        className="underline font-medium text-primary"
+      >
+        {"　"}
+        <span className="underline">{match[1]}</span>
+        {"　"}
+      </span>
+    );
+    lastIndex = regex.lastIndex;
   }
 
   if (lastIndex < text.length) {
-      parts.push(
-          <span key={`text-${lastIndex}`}>{text.substring(lastIndex)}</span>
-      );
+    parts.push(
+      <span key={`text-${lastIndex}`}>{text.substring(lastIndex)}</span>
+    );
   }
 
   return parts;
@@ -377,7 +436,7 @@ const exerciseParts: ExercisePart[] = [
         question:
           "A：あした 暇ですか。\nB：あしたは 会社へ 行かなければ なりません。\n→ Bさんは あしたは （　会社へ 行かなければ ならない　）と 言いました。",
         question_kana:
-          "A：あした ひまですか。\nB：あしたは かいしゃへ いかなければ なりません。\n→ Bさんは あしたは （かいしゃへ いかなければ ならない）と いいました。",
+          "A：あした ひまですか。\nB：あしたは かいしゃへ いかなければ なりません。\n→ Bさんは あしたは （　かいしゃへ いかなければ ならない　）と いいました。",
         question_en:
           "A: Are you free tomorrow?\nB: Tomorrow I must go to the company.\n→ B said that he must go to the company tomorrow.",
         answer: ["会社へ 行かなければ ならない"],
