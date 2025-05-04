@@ -8,17 +8,10 @@ const RomajiToHiragana: React.FC = () => {
   const transcribe = (input: string): string => {
     let car = input.toLowerCase();
 
-    // Long vowel replacements
-    // car = car.replace(/_/g, "ー");
-    // car = car.replace(/[ôō]/g, "oう");
-    // car = car.replace(/[ūû]/g, "uう");
-    // car = car.replace(/[âā]/g, "aあ");
-    // car = car.replace(/[îī]/g, "iい");
-    // car = car.replace(/[êē]/g, "eい");
-
     // Specific romaji-to-hiragana conversions
     const replaceJapan: [RegExp, string][] = [
       [/_/g, "ー"],
+      [/nn/g, "ん"],
       [/[âā]/g, "aあ"], [/[îī]/g, "iい"], [/[ūû]/g, "uう"], [/[êē]/g, "eい"], [/[ôō]/g, "oう"],
       [/n/g, "ん"],
       [/wa/g, "わ"], [/wo/g, "を"],
@@ -57,7 +50,7 @@ const RomajiToHiragana: React.FC = () => {
     return car;
   };
 
-  const textRoman = (input: string): string => {
+  const normalizeRomaji = (input: string): string => {
     let car = input.toLowerCase();
     const replaceText: [string, string][] = [
         ["hu", "fu"],
@@ -71,6 +64,7 @@ const RomajiToHiragana: React.FC = () => {
     replaceText.forEach(([pattern, replacement]) => {
       car = car.replace(pattern, replacement);
     });
+    car = car.replace(/nn/g, "n");
 
     return car;
   };
@@ -85,7 +79,7 @@ const RomajiToHiragana: React.FC = () => {
         value={text}
         onChange={(e) => {
         //   setText(e.target.value);
-          setText(textRoman(e.target.value));
+          setText(normalizeRomaji(e.target.value));
           setTranscribedText(transcribe(e.target.value)); // Convert in real-time
         }}
       />

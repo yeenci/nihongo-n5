@@ -3,9 +3,10 @@
 "use client";
 
 import { Question } from "@/app/constants/exercise";
-// import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Fragment, useMemo } from "react";
+import { transcribeToHiragana } from "@/lib/transcription";
+import { Fragment, useCallback, useMemo, useState } from "react";
+import { TranscriptionPopup } from "../transcribe-popup";
 
 interface FillInTheBlankProps {
   questionData: Question;
@@ -24,7 +25,7 @@ interface FillInTheBlankProps {
   getExpectedAnswerCount: (question: Question) => number;
 }
 
-export default function FillInTheTable({
+export default function FillInTheBlank({
   questionData,
   partId,
   questionId,
@@ -130,6 +131,56 @@ export default function FillInTheTable({
     return "N/A";
   };
 
+  // Popup
+  const [popupTranscribedText, setPopupTranscribedText] = useState("");
+  const [activeInputIndex, setActiveInputIndex] = useState<number | null>(null);
+
+  const handleDirectInput = useCallback(
+    (newValue: string, index: number) => {
+      onChange(partId, questionId, newValue, index);
+      if (activeInputIndex === index) {
+        setPopupTranscribedText(transcribeToHiragana(newValue));
+      }
+    },
+    [onChange, partId, questionId, activeInputIndex]
+  );
+
+  // Handle clicking the input
+  const handleInputClick = useCallback(
+    (index: number) => {
+      if (isPartSubmitted && resultsArray[index] === true) {
+        setActiveInputIndex(null);
+        return;
+      }
+      if (activeInputIndex === index) {
+        setActiveInputIndex(null);
+        setPopupTranscribedText("");
+      } else {
+        setActiveInputIndex(index);
+        setPopupTranscribedText(transcribeToHiragana(valuesArray[index] ?? ""));
+      }
+    },
+    [isPartSubmitted, resultsArray, activeInputIndex, valuesArray]
+  );
+
+  const handlePopupApply = useCallback(() => {
+    if (activeInputIndex !== null && popupTranscribedText) {
+      onChange(partId, questionId, popupTranscribedText, activeInputIndex);
+      setActiveInputIndex(null);
+      setPopupTranscribedText("");
+    }
+  }, [activeInputIndex, popupTranscribedText, onChange, partId, questionId]);
+
+  const handlePopupOpenChange = useCallback(
+    (open: boolean, index: number) => {
+      if (!open && activeInputIndex === index) {
+        setActiveInputIndex(null);
+        setPopupTranscribedText("");
+      }
+    },
+    [activeInputIndex]
+  );
+
   return (
     <div className="p-4 border rounded transition-colors duration-300">
       {/* （＿＿） as input bar */}
@@ -142,22 +193,34 @@ export default function FillInTheTable({
           <Fragment key={index}>
             <span className="whitespace-pre-wrap font-sans">{part}</span>
             {index < expectedInputs && (
-              <Input
-                type="text"
-                placeholder="Your answer"
-                value={valuesArray[index]}
-                onChange={(e) =>
-                  onChange(partId, questionId, e.target.value, index)
+              <TranscriptionPopup
+                isOpen={activeInputIndex === index}
+                onOpenChange={(open) => handlePopupOpenChange(open, index)}
+                transcribedText={
+                  activeInputIndex === index ? popupTranscribedText : ""
                 }
-                aria-label={`Answer blank ${
-                  index + 1
-                } for question ${questionId}`}
-                className={`
+                onApply={handlePopupApply}
+                trigger={
+                  <Input
+                    type="text"
+                    placeholder="Your answer"
+                    value={valuesArray[index]}
+                    onChange={(e) => handleDirectInput(e.target.value, index)}
+                    onClick={() => handleInputClick(index)}
+                    aria-label={`Answer blank ${
+                      index + 1
+                    } for question ${questionId}`}
+                    className={`
                   inline-block w-32 sm:w-40 h-7 px-2 mx-1 align-baseline border rounded
                   text-sm transition-colors duration-200 ease-in-out
                   focus:outline-none focus:ring-2 focus:ring-offset-1
                   ${getInputClasses(index)}`}
-                disabled={isPartSubmitted && resultsArray[index] === true}
+                    disabled={isPartSubmitted && resultsArray[index] === true}
+                    autoComplete="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                }
               />
             )}
           </Fragment>
