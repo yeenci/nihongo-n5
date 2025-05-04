@@ -4,7 +4,7 @@
 
 import { Question } from "@/app/constants/exercise";
 import { Input } from "@/components/ui/input";
-import { transcribeToHiragana } from "@/lib/transcription";
+import { transcribeToHiragana, transcribeToKatakana } from "@/lib/transcription";
 import { Fragment, useCallback, useMemo, useState } from "react";
 import { TranscriptionPopup } from "../transcribe-popup";
 
@@ -133,6 +133,7 @@ export default function FillInTheBlank({
 
   // Popup
   const [popupHiraganaText, setPopupHiraganaText] = useState("");
+  const [popupKatakanaText, setPopupKatakanaText] = useState("");
   const [activeInputIndex, setActiveInputIndex] = useState<number | null>(null);
 
   const handleDirectInput = useCallback(
@@ -140,6 +141,7 @@ export default function FillInTheBlank({
       onChange(partId, questionId, newValue, index);
       if (activeInputIndex === index) {
         setPopupHiraganaText(transcribeToHiragana(newValue));
+        setPopupKatakanaText(transcribeToKatakana(newValue))
       }
     },
     [onChange, partId, questionId, activeInputIndex]
@@ -158,18 +160,27 @@ export default function FillInTheBlank({
       } else {
         setActiveInputIndex(index);
         setPopupHiraganaText(transcribeToHiragana(valuesArray[index] ?? ""));
+        setPopupKatakanaText(transcribeToKatakana(valuesArray[index] ?? ""));
       }
     },
     [isPartSubmitted, resultsArray, activeInputIndex, valuesArray]
   );
 
-  const handlePopupApply = useCallback(() => {
+  const handleHiraganaApply = useCallback(() => {
     if (activeInputIndex !== null && popupHiraganaText) {
       onChange(partId, questionId, popupHiraganaText, activeInputIndex);
       setActiveInputIndex(null);
       setPopupHiraganaText("");
     }
   }, [activeInputIndex, popupHiraganaText, onChange, partId, questionId]);
+
+  const handleKatakanaApply = useCallback(() => {
+    if (activeInputIndex !== null && popupKatakanaText) {
+      onChange(partId, questionId, popupKatakanaText, activeInputIndex);
+      setActiveInputIndex(null);
+      setPopupKatakanaText("");
+    }
+  }, [activeInputIndex, popupKatakanaText, onChange, partId, questionId]);
 
   const handlePopupOpenChange = useCallback(
     (open: boolean, index: number) => {
@@ -199,7 +210,11 @@ export default function FillInTheBlank({
                 HiraganaText={
                   activeInputIndex === index ? popupHiraganaText : ""
                 }
-                onApply={handlePopupApply}
+                KatakanaText={
+                  activeInputIndex === index ? popupKatakanaText : ""
+                }
+                onHiraganaApply={handleHiraganaApply}
+                onKatakanaApply={handleKatakanaApply}
                 trigger={
                   <Input
                     type="text"
