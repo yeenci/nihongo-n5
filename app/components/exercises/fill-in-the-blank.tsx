@@ -132,14 +132,14 @@ export default function FillInTheBlank({
   };
 
   // Popup
-  const [popupTranscribedText, setPopupTranscribedText] = useState("");
+  const [popupHiraganaText, setPopupHiraganaText] = useState("");
   const [activeInputIndex, setActiveInputIndex] = useState<number | null>(null);
 
   const handleDirectInput = useCallback(
     (newValue: string, index: number) => {
       onChange(partId, questionId, newValue, index);
       if (activeInputIndex === index) {
-        setPopupTranscribedText(transcribeToHiragana(newValue));
+        setPopupHiraganaText(transcribeToHiragana(newValue));
       }
     },
     [onChange, partId, questionId, activeInputIndex]
@@ -154,28 +154,28 @@ export default function FillInTheBlank({
       }
       if (activeInputIndex === index) {
         setActiveInputIndex(null);
-        setPopupTranscribedText("");
+        setPopupHiraganaText("");
       } else {
         setActiveInputIndex(index);
-        setPopupTranscribedText(transcribeToHiragana(valuesArray[index] ?? ""));
+        setPopupHiraganaText(transcribeToHiragana(valuesArray[index] ?? ""));
       }
     },
     [isPartSubmitted, resultsArray, activeInputIndex, valuesArray]
   );
 
   const handlePopupApply = useCallback(() => {
-    if (activeInputIndex !== null && popupTranscribedText) {
-      onChange(partId, questionId, popupTranscribedText, activeInputIndex);
+    if (activeInputIndex !== null && popupHiraganaText) {
+      onChange(partId, questionId, popupHiraganaText, activeInputIndex);
       setActiveInputIndex(null);
-      setPopupTranscribedText("");
+      setPopupHiraganaText("");
     }
-  }, [activeInputIndex, popupTranscribedText, onChange, partId, questionId]);
+  }, [activeInputIndex, popupHiraganaText, onChange, partId, questionId]);
 
   const handlePopupOpenChange = useCallback(
     (open: boolean, index: number) => {
       if (!open && activeInputIndex === index) {
         setActiveInputIndex(null);
-        setPopupTranscribedText("");
+        setPopupHiraganaText("");
       }
     },
     [activeInputIndex]
@@ -196,8 +196,8 @@ export default function FillInTheBlank({
               <TranscriptionPopup
                 isOpen={activeInputIndex === index}
                 onOpenChange={(open) => handlePopupOpenChange(open, index)}
-                transcribedText={
-                  activeInputIndex === index ? popupTranscribedText : ""
+                HiraganaText={
+                  activeInputIndex === index ? popupHiraganaText : ""
                 }
                 onApply={handlePopupApply}
                 trigger={

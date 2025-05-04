@@ -10,7 +10,7 @@ interface TranscribePopupProps {
   trigger: ReactNode;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  transcribedText: string;
+  HiraganaText: string;
   onApply: () => void;
   contentClassname?: string;
 }
@@ -19,7 +19,7 @@ export function TranscriptionPopup({
   trigger,
   isOpen,
   onOpenChange,
-  transcribedText,
+  HiraganaText,
   onApply,
   contentClassname = "w-auto p-3 z-50",
 }: TranscribePopupProps) {
@@ -35,7 +35,7 @@ export function TranscriptionPopup({
       >
         <div className="flex items-center gap-2">
           <p className="text-base flex-grow p-2 border rounded-md bg-background min-h-[30px] w-50">
-            {transcribedText || (
+            {HiraganaText || (
               <span className="text-muted-foreground text-sm font-normal">
                 Hiragana
               </span>
@@ -45,7 +45,7 @@ export function TranscriptionPopup({
             size="sm"
             variant="outline"
             onClick={onApply}
-            disabled={!transcribedText}
+            disabled={!HiraganaText}
           >
             Apply
           </Button>

@@ -151,111 +151,57 @@ export function useExerciseLogic(
   );
 
   // Handles input changes for single/multiple answers
-  // const handleChange = (
-  //   partId: string,
-  //   questionId: string,
-  //   value: string,
-  //   blankIndex?: number
-  // ) => {
-  //   if (!data) return;
-  //   const uniqueId = `${partId}-${questionId}`;
-  //   const part = data.find((p) => p.id === partId);
-  //   const question = part?.questions.find((q) => q.id === questionId);
-  //   if (!question) return;
-
-  //   const expectedCount = getExpectedAnswerCount(question);
-
-  //   setUsersAnswers((prev) => {
-  //     const newAnswers = { ...prev };
-  //     const currentAnswer = prev[uniqueId];
-
-  //     if (expectedCount > 1) {
-  //       let currentArray: string[] = [];
-
-  //       if (Array.isArray(currentAnswer)) {
-  //         currentArray = [...currentAnswer];
-  //       }
-
-  //       while (currentAnswer.length < expectedCount) {
-  //         currentArray.push("");
-  //       }
-
-  //       if (currentArray.length > expectedCount) {
-  //         currentArray = currentArray.slice(0, expectedCount);
-  //       }
-
-  //       // Update the specific index
-  //       if (blankIndex !== undefined && blankIndex < expectedCount) {
-  //         currentArray[blankIndex] = value;
-  //       }
-
-  //       newAnswers[uniqueId] = currentArray;
-  //     } else {
-  //       newAnswers[uniqueId] = value;
-  //     }
-
-  //     return newAnswers;
-  //   });
-
-  //   // Reset results for the question if the part was already submitted
-  //   if (partSubmittedStatus[partId]) {
-  //     setResults((prev) => {
-  //       const partResults = { ...(prev[partId] || {}) };
-
-  //       // Reset by removing the result for this question entirely
-  //       delete partResults[questionId];
-  //       return { ...prev, [partId]: partResults };
-  //     });
-  //   }
-  // };
-  const handleChange = useCallback((partId: string, questionId: string, value: string, blankIndex?: number) => {
+  const handleChange = useCallback((
+    partId: string,
+    questionId: string,
+    value: string,
+    blankIndex?: number
+  ) => {
     if (!data) return;
     const uniqueId = `${partId}-${questionId}`;
-    const part = data.find(p => p.id === partId);
-    const question = part?.questions.find(q => q.id === questionId);
+    const part = data.find((p) => p.id === partId);
+    const question = part?.questions.find((q) => q.id === questionId);
     if (!question) return;
+
     const expectedCount = getExpectedAnswerCount(question);
 
     setUsersAnswers((prev) => {
-        const newAnswers = { ...prev };
-        const currentAnswer = prev[uniqueId]; // Get previous value (might be undefined, string, or string[])
+      const newAnswers = { ...prev };
+      const currentAnswer = prev[uniqueId];
 
-        if (expectedCount > 1) {
-            // Initialize currentArray based on previous state, ensuring it's an array
-            let currentArray: string[] = Array.isArray(currentAnswer) ? [...currentAnswer] : [];
+      if (expectedCount > 1) {
+        let currentArray: string[] = Array.isArray(currentAnswer) ? [...currentAnswer] : [];
 
-            // --- FIX APPLIED HERE ---
-            // Ensure array has the correct length *using currentArray.length*
-            while (currentArray.length < expectedCount) {
-                currentArray.push(''); // Add empty strings until correct length
-            }
-            // Optionally truncate if it somehow became too long (less likely now)
-            if (currentArray.length > expectedCount) {
-                currentArray = currentArray.slice(0, expectedCount);
-            }
-            // --- End of Fix ---
-
-            // Update the specific index
-            if (blankIndex !== undefined && blankIndex < expectedCount) {
-                currentArray[blankIndex] = value;
-            }
-            newAnswers[uniqueId] = currentArray;
-        } else {
-            // Single input case (no change needed here)
-            newAnswers[uniqueId] = value;
+        while (currentAnswer.length < expectedCount) {
+          currentArray.push("");
         }
-        return newAnswers;
+
+        if (currentArray.length > expectedCount) {
+          currentArray = currentArray.slice(0, expectedCount);
+        }
+
+        // Update the specific index
+        if (blankIndex !== undefined && blankIndex < expectedCount) {
+          currentArray[blankIndex] = value;
+        }
+
+        newAnswers[uniqueId] = currentArray;
+      } else {
+        newAnswers[uniqueId] = value;
+      }
+
+      return newAnswers;
     });
 
-    // Reset results if part was submitted (logic remains the same)
-     if (partSubmittedStatus[partId]) {
-         setResults(prev => {
-             const partResults = { ...(prev[partId] || {}) };
-             delete partResults[questionId]; // Simple reset for the whole question
-             return { ...prev, [partId]: partResults };
-         });
-     }
-}, [data, getExpectedAnswerCount, partSubmittedStatus]);
+    // Reset results for the question if the part was already submitted
+    if (partSubmittedStatus[partId]) {
+      setResults((prev) => {
+        const partResults = { ...(prev[partId] || {}) };
+        delete partResults[questionId];
+        return { ...prev, [partId]: partResults };
+      });
+    }
+  }, [data, getExpectedAnswerCount, partSubmittedStatus]);
 
   const handleSubmit = (partId: string) => {
     if (!data) return;

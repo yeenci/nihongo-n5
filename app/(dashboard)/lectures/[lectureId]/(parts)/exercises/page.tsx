@@ -81,8 +81,8 @@ export default function ExercisePage() {
                         >
                           {renderExamples(
                             showKana && ex.question_kana
-                              ? "れい:" + ex.question_kana
-                              : "例:" + ex.question
+                              ? "れい: " + ex.question_kana
+                              : "例: " + ex.question
                           )}
                         </pre>
                       ))}
@@ -150,110 +150,3 @@ export default function ExercisePage() {
     </div>
   );
 }
-
-const exerciseParts: ExercisePart[] = [
-  {
-    id: "part1",
-    partId: "Part 1",
-    type: "fill-in-the-blank",
-    title: "Part 1", // Use a suitable title for the button
-    questions: [
-      {
-        id: "1",
-        question: "わたし （＿＿） がくせいです。",
-        question_kana: "わたし （＿＿） がくせい です。",
-        answer: ["は"],
-        answer_kana: ["は"],
-      },
-      {
-        id: "2",
-        question: "これは でんしゃ （＿＿） きっぷです。",
-        question_kana: "これ は でんしゃ （＿＿） きっぷ です。",
-        answer: ["の"],
-        answer_kana: ["の"],
-      },
-    ],
-  },
-  {
-    id: "part2",
-    partId: "Part 2",
-    type: "fill-in-the-blank",
-    title: "Part 2",
-    images: [],
-    examples: [
-      {
-        id: "ex1",
-        question:
-          "A：あした 暇ですか。\nB：あしたは 会社へ 行かなければ なりません。\n→ Bさんは あしたは （　会社へ 行かなければ ならない　）と 言いました。",
-        question_kana:
-          "A：あした ひまですか。\nB：あしたは かいしゃへ いかなければ なりません。\n→ Bさんは あしたは （　かいしゃへ いかなければ ならない　）と いいました。",
-        question_en:
-          "A: Are you free tomorrow?\nB: Tomorrow I must go to the company.\n→ B said that he must go to the company tomorrow.",
-        answer: ["会社へ 行かなければ ならない"],
-        answer_kana: ["かいしゃへ いかなければ ならない"],
-      },
-    ],
-    questions: [
-      {
-        id: "1",
-        question:
-          "A：桜の 季節ですね。どこか お花見に 行きませんか。\nB：ええ、日曜日 家族と 吉野山へ 行きます。\n→ Bさんは （＿＿）と 言いました。",
-        question_kana:
-          "A：さくらの きせつですね。どこか おはなみに いきませんか。\nB：ええ、にちようび かぞくと よしのやまへ いきます。\n→ Bさんは （＿＿）と いいました。",
-        question_en:
-          "A: It's cherry blossom season, isn't it? Won't you go somewhere for cherry blossom viewing?\nB: Yes, on Sunday I will go to Mt. Yoshino with my family.\n→ B said that he will go to Mt. Yoshino with his family on Sunday.",
-        answer: ["日曜日 家族と 吉野山へ 行く"],
-        answer_kana: ["にちようび かぞくと よしのやまへ いく"],
-      },
-      {
-        id: "2",
-        question:
-          "A：この 本、おもしろいですよ。\nB：そうですか。じゃ、貸して ください。\n→ Aさんは この 本は （＿＿）と 言いました。",
-        question_kana:
-          "A：この ほん、おもしろいですよ。\nB：そうですか。じゃ、かして ください。\n→ Aさんは この ほんは （＿＿）と いいました。",
-        question_en:
-          "A: This book is interesting, you know.\nB: Is that so? Then, please lend it to me.\n→ A said that this book is interesting.",
-        answer: ["おもしろい"],
-        answer_kana: ["おもしろい"],
-      },
-    ],
-  },
-  {
-    id: "part3",
-    partId: "Part 3",
-    type: "fill-in-the-blank",
-    title: "Part 3: Multi-Input", // Example title
-    questions: [
-      {
-        id: "1", // Example with one input
-        question: "Aさんは （＿＿）と 言いました。",
-        question_kana: "Aさんは （＿＿）と いいました。",
-        answer: ["おもしろい"],
-        answer_kana: ["おもしろい"],
-      },
-      {
-        id: "2", // Example with two inputs
-        question:
-          "太郎ちゃんは　うちの　仕事を　手伝いますか。\n... ええ、（＿＿）り、（＿＿）り　しますよ。",
-        question_kana:
-          "たろうちゃんは　うちの　しごとを　てつだいますか。\n... ええ、（＿＿）り、（＿＿）り　しますよ。",
-        question_en:
-          "Does Taro help with the housework?\n... Yes, he does things like cleaning and going shopping.",
-        answer: ["掃除した", "買い物に 行った"],
-        answer_kana: ["そうじした", "かいものに いった"],
-      },
-      {
-        id: "3", // Example with two inputs
-        question:
-          "趣味は　何ですか。\n... 絵を（＿＿）り、音楽を（＿＿）り　する　ことです。",
-        question_kana:
-          "しゅみは　なんですか。\n... えを（＿＿）り、おんがくを（＿＿）り　する　ことです。",
-        question_en:
-          "What is your hobby?\n... It's doing things like drawing pictures and listening to music.",
-        answer: ["かいた", "聞いた"],
-        answer_kana: ["かいた", "きいた"],
-      },
-    ],
-  },
-  // Add other parts...
-];
