@@ -94,15 +94,16 @@ export function useExerciseLogic(
       isKanaMode: boolean
     ): (boolean | null) | (boolean | null)[] => {
       const expectedCount = getExpectedAnswerCount(question);
+      const regex = /\s|\u3000/g;
 
       if (expectedCount > 1) {
         const userInputsArray = Array.isArray(userInput) ? userInput : [];
         const resultsArray: (boolean | null)[] = [];
 
         for (let i = 0; i < expectedCount; i++) {
-          const userInputTrimmed = (userInputsArray[i] ?? "").trim();
-          const correctKanji = (question.answer?.[i] ?? null)?.trim();
-          const correctKana = (question.answer_kana?.[i] ?? null)?.trim();
+          const userInputTrimmed = (userInputsArray[i] ?? "").trim().replaceAll(regex, "");
+          const correctKanji = (question.answer?.[i] ?? null)?.trim().replaceAll(regex, "");
+          const correctKana = (question.answer_kana?.[i] ?? null)?.trim().replaceAll(regex, "");
 
           let areCorrectAnswers = false;
 
@@ -126,13 +127,13 @@ export function useExerciseLogic(
           typeof userInput === "string"
             ? userInput
             : (Array.isArray(userInput) ? userInput[0] : "") ?? ""
-        ).trim();
+        ).trim().replaceAll(regex, "");
         const correctKanji = (
           question.answer?.[0] ??
           question.correctAnswer ??
           null
-        )?.trim();
-        const correctKana = (question.answer_kana?.[0] ?? null)?.trim();
+        )?.trim().replaceAll(regex, "");
+        const correctKana = (question.answer_kana?.[0] ?? null)?.trim().replaceAll(regex, "");
 
         let isCorrectAnswer = false;
 
