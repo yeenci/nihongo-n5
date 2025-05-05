@@ -101,9 +101,15 @@ export function useExerciseLogic(
         const resultsArray: (boolean | null)[] = [];
 
         for (let i = 0; i < expectedCount; i++) {
-          const userInputTrimmed = (userInputsArray[i] ?? "").trim().replaceAll(regex, "");
-          const correctKanji = (question.answer?.[i] ?? null)?.trim().replaceAll(regex, "");
-          const correctKana = (question.answer_kana?.[i] ?? null)?.trim().replaceAll(regex, "");
+          const userInputTrimmed = (userInputsArray[i] ?? "")
+            .trim()
+            .replaceAll(regex, "");
+          const correctKanji = (question.answer?.[i] ?? null)
+            ?.trim()
+            .replaceAll(regex, "");
+          const correctKana = (question.answer_kana?.[i] ?? null)
+            ?.trim()
+            .replaceAll(regex, "");
 
           let areCorrectAnswers = false;
 
@@ -127,13 +133,19 @@ export function useExerciseLogic(
           typeof userInput === "string"
             ? userInput
             : (Array.isArray(userInput) ? userInput[0] : "") ?? ""
-        ).trim().replaceAll(regex, "");
+        )
+          .trim()
+          .replaceAll(regex, "");
         const correctKanji = (
           question.answer?.[0] ??
           question.correctAnswer ??
           null
-        )?.trim().replaceAll(regex, "");
-        const correctKana = (question.answer_kana?.[0] ?? null)?.trim().replaceAll(regex, "");
+        )
+          ?.trim()
+          .replaceAll(regex, "");
+        const correctKana = (question.answer_kana?.[0] ?? null)
+          ?.trim()
+          .replaceAll(regex, "");
 
         let isCorrectAnswer = false;
 
@@ -152,57 +164,63 @@ export function useExerciseLogic(
   );
 
   // Handles input changes for single/multiple answers
-  const handleChange = useCallback((
-    partId: string,
-    questionId: string,
-    value: string,
-    blankIndex?: number
-  ) => {
-    if (!data) return;
-    const uniqueId = `${partId}-${questionId}`;
-    const part = data.find((p) => p.id === partId);
-    const question = part?.questions.find((q) => q.id === questionId);
-    if (!question) return;
+  const handleChange = useCallback(
+    (
+      partId: string,
+      questionId: string,
+      value: string,
+      blankIndex?: number
+    ) => {
+      if (!data) return;
 
-    const expectedCount = getExpectedAnswerCount(question);
+      const uniqueId = `${partId}-${questionId}`;
+      const part = data.find((p) => p.id === partId);
+      const question = part?.questions.find((q) => q.id === questionId);
+      if (!question) return;
 
-    setUsersAnswers((prev) => {
-      const newAnswers = { ...prev };
-      const currentAnswer = prev[uniqueId];
+      const expectedCount = getExpectedAnswerCount(question);
 
-      if (expectedCount > 1) {
-        let currentArray: string[] = Array.isArray(currentAnswer) ? [...currentAnswer] : [];
+      setUsersAnswers((prev) => {
+        const newAnswers = { ...prev };
+        const currentAnswer = prev[uniqueId];
 
-        while (currentAnswer.length < expectedCount) {
-          currentArray.push("");
+        if (expectedCount > 1) {
+          let currentArray: string[] = Array.isArray(currentAnswer)
+            ? [...currentAnswer]
+            : [];
+
+          while (currentArray.length < expectedCount) {
+            currentArray.push("");
+          }
+
+          if (currentArray.length > expectedCount) {
+            currentArray = currentArray.slice(0, expectedCount);
+          }
+
+          // Update the specific index
+          if (blankIndex !== undefined && blankIndex < expectedCount) {
+            currentArray[blankIndex] = value;
+          }
+
+          newAnswers[uniqueId] = currentArray;
+        } else {
+          newAnswers[uniqueId] = value;
         }
 
-        if (currentArray.length > expectedCount) {
-          currentArray = currentArray.slice(0, expectedCount);
-        }
-
-        // Update the specific index
-        if (blankIndex !== undefined && blankIndex < expectedCount) {
-          currentArray[blankIndex] = value;
-        }
-
-        newAnswers[uniqueId] = currentArray;
-      } else {
-        newAnswers[uniqueId] = value;
-      }
-
-      return newAnswers;
-    });
-
-    // Reset results for the question if the part was already submitted
-    if (partSubmittedStatus[partId]) {
-      setResults((prev) => {
-        const partResults = { ...(prev[partId] || {}) };
-        delete partResults[questionId];
-        return { ...prev, [partId]: partResults };
+        return newAnswers;
       });
-    }
-  }, [data, getExpectedAnswerCount, partSubmittedStatus]);
+
+      // Reset results for the question if the part was already submitted
+      if (partSubmittedStatus[partId]) {
+        setResults((prev) => {
+          const partResults = { ...(prev[partId] || {}) };
+          delete partResults[questionId];
+          return { ...prev, [partId]: partResults };
+        });
+      }
+    },
+    [data, getExpectedAnswerCount, partSubmittedStatus]
+  );
 
   const handleSubmit = (partId: string) => {
     if (!data) return;
@@ -283,7 +301,9 @@ export function useExerciseLogic(
     });
   };
 
-  const activePart = data ? data.find((part) => part.id === activePartId) : undefined;
+  const activePart = data
+    ? data.find((part) => part.id === activePartId)
+    : undefined;
   const isPartSubmitted = activePartId
     ? partSubmittedStatus[activePartId] ?? false
     : false;
