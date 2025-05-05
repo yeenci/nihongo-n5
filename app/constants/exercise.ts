@@ -26,4 +26,6 @@ export interface ExercisePart {
   questions: Question[];
   examples?: Question[];
   images?: string[];
+  options?: string[];
+  options_kana?: string[];
 }

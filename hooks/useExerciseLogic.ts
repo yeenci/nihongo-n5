@@ -5,6 +5,7 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -57,10 +58,6 @@ export function useExerciseLogic(
   useEffect(() => {
     if (data && data.length > 0 && activePartId === null) {
       setActivePartId(data[0].id);
-    }
-
-    if (!data && activePartId !== null) {
-      setActivePartId(null);
     }
   }, [data, activePartId]);
 
@@ -301,12 +298,14 @@ export function useExerciseLogic(
     });
   };
 
-  const activePart = data
-    ? data.find((part) => part.id === activePartId)
-    : undefined;
-  const isPartSubmitted = activePartId
-    ? partSubmittedStatus[activePartId] ?? false
-    : false;
+  const activePart = useMemo(
+    () => data?.find((part) => part.id === activePartId),
+    [data, activePartId]
+  );
+  const isPartSubmitted = useMemo(
+    () => (activePartId ? partSubmittedStatus[activePartId] ?? false : false),
+    [activePartId, partSubmittedStatus]
+  );
 
   return {
     activePartId,

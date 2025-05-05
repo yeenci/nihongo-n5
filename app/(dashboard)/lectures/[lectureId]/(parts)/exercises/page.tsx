@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { renderExamples } from "@/app/components/exercises/helper";
 import RenderQuestionByType from "@/app/components/exercises/render-question";
 import Spinner from "@/app/components/spinner";
-import { ExercisePart, Question } from "@/app/constants/exercise";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useExerciseLogic } from "@/hooks/useExerciseLogic";
 import { useLecturePartData } from "@/hooks/useLecturePartData";
+import { useMemo } from "react";
 
 export default function ExercisePage() {
   const { data, loading } = useLecturePartData();
@@ -27,6 +27,34 @@ export default function ExercisePage() {
     handleReset,
     getExpectedAnswerCount,
   } = useExerciseLogic(data);
+
+  const exampleAnswersTrimmed = useMemo(() => {
+    const answers = new Set<string>();
+    if (
+      !activePart ||
+      !activePart.examples ||
+      activePart.examples.length === 0 ||
+      activePart.type !== "word-box"
+    ) {
+      return answers;
+    }
+
+    activePart.examples.forEach((ex) => {
+      (ex.answer || []).forEach((ans) => ans && answers.add(ans.trim()));
+      (ex.answer_kana || []).forEach(
+        (ansKana) => ansKana && answers.add(ansKana.trim())
+      );
+      if (typeof ex.correctAnswer === "string" && ex.correctAnswer) {
+        answers.add(ex.correctAnswer.trim());
+      }
+    });
+    return answers;
+  }, [activePart]);
+
+  const currentPartOptions = useMemo(() => {
+    if (!activePart) return undefined;
+    return showKana ? activePart.options_kana : activePart.options;
+  }, [activePart, showKana]);
 
   return (
     <div className="flex flex-row h-full justify-center w-full">
@@ -54,7 +82,7 @@ export default function ExercisePage() {
                   className="rounded-full px-4 py-1 h-auto text-sm sm:text-base"
                   size="sm"
                 >
-                  Part {index+1}
+                  Part {index + 1}
                 </Button>
               ))}
             </div>
@@ -69,6 +97,45 @@ export default function ExercisePage() {
                   <h2 className="text-xl font-semibold mb-4 text-card-foreground">
                     {activePart.title}
                   </h2>
+
+                  {activePart.options && activePart.options.length > 0 && (
+                    <div className="p-4 border mb-4 rounded text-muted-foreground flex flex-wrap gap-2">
+                      {activePart.options.map((option, index) => (
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="text-base text-foreground opacity-70"
+                        >
+                          {option}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+
+                  {currentPartOptions && currentPartOptions.length > 0 && (
+                    <div className="p-3 border rounded bg-background shadow-sm">
+                      <div className="flex flex-wrap gap-2">
+                        {currentPartOptions.map((option, index) => {
+                          const isUsedInExample = exampleAnswersTrimmed.has(
+                            option.trim()
+                          );
+                          return (
+                            <Badge
+                              key={index}
+                              variant={"outline"}
+                              className={`text-base ${
+                                isUsedInExample
+                                  ? "line-through text-foreground opacity-50"
+                                  : "text-foreground"
+                              }`}
+                            >
+                              {option}
+                            </Badge>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
 
                   {/* --- Example (if any) --- */}
                   {activePart.examples && activePart.examples.length > 0 && (
@@ -111,6 +178,7 @@ export default function ExercisePage() {
                         getExpectedAnswerCount={(q) =>
                           getExpectedAnswerCount(q)
                         }
+                        activePart={activePart}
                       />
                     );
                   })}
@@ -132,9 +200,7 @@ export default function ExercisePage() {
                       disabled={isPartSubmitted}
                       size="lg"
                     >
-                      {isPartSubmitted
-                        ? "Part Submitted"
-                        : `Submit Answers`}
+                      {isPartSubmitted ? "Part Submitted" : `Submit Answers`}
                     </Button>
                   </div>
                 </div>

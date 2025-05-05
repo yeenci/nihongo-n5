@@ -3,7 +3,7 @@
 "use client";
 
 import { Question } from "@/app/constants/exercise";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { AnswerInput } from "../answer-input";
 
 interface FillInTheBlankProps {
@@ -34,7 +34,10 @@ export default function FillInTheBlank({
   showKana,
   getExpectedAnswerCount,
 }: FillInTheBlankProps) {
-  const expectedInputs = getExpectedAnswerCount(questionData);
+  const expectedInputs = useMemo(
+    () => getExpectedAnswerCount(questionData),
+    [getExpectedAnswerCount, questionData]
+  );
 
   const resultsArray = useMemo(() => {
     const baseArray = Array.isArray(result)
@@ -50,18 +53,26 @@ export default function FillInTheBlank({
     return filledArray;
   }, [result, expectedInputs]);
 
-  const isOverallCorrect =
-    isPartSubmitted &&
-    resultsArray.length === expectedInputs &&
-    resultsArray.every((r) => r === true);
+  const isOverallCorrect = useMemo(
+    () =>
+      isPartSubmitted &&
+      resultsArray.length === expectedInputs &&
+      resultsArray.every((r) => r === true),
+    [isPartSubmitted, resultsArray, expectedInputs]
+  );
 
-  const isAnyIncorrect =
-    isPartSubmitted && resultsArray.some((r) => r === false);
+  const isAnyIncorrect = useMemo(
+    () => isPartSubmitted && resultsArray.some((r) => r === false),
+    [isPartSubmitted, resultsArray]
+  );
 
-  const isReset = isPartSubmitted && resultsArray.some((r) => r === null);
+  const isReset = useMemo(
+    () => isPartSubmitted && resultsArray.some((r) => r === null),
+    [isPartSubmitted, resultsArray]
+  );
 
   // get correct answer
-  const displayCorrectAnswers = () => {
+  const displayCorrectAnswers = useCallback(() => {
     const answersToDisplay = showKana
       ? questionData.answer_kana
       : questionData.answer;
@@ -76,7 +87,7 @@ export default function FillInTheBlank({
     }
 
     return "N/A";
-  };
+  }, [showKana, questionData]);
 
   return (
     <div className="p-4 border rounded transition-colors duration-300">
