@@ -98,20 +98,6 @@ export default function ExercisePage() {
                     {activePart.title}
                   </h2>
 
-                  {activePart.options && activePart.options.length > 0 && (
-                    <div className="p-4 border mb-4 rounded text-muted-foreground flex flex-wrap gap-2">
-                      {activePart.options.map((option, index) => (
-                        <Badge
-                          key={index}
-                          variant="outline"
-                          className="text-base text-foreground opacity-70"
-                        >
-                          {option}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-
                   {currentPartOptions && currentPartOptions.length > 0 && (
                     <div className="p-3 border rounded bg-background shadow-sm">
                       <div className="flex flex-wrap gap-2">
@@ -200,7 +186,7 @@ export default function ExercisePage() {
                       disabled={isPartSubmitted}
                       size="lg"
                     >
-                      {isPartSubmitted ? "Part Submitted" : `Submit Answers`}
+                      {isPartSubmitted ? "Answers Submitted" : `Submit Answers`}
                     </Button>
                   </div>
                 </div>

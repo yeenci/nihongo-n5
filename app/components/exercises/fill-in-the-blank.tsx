@@ -79,7 +79,7 @@ export default function FillInTheBlank({
     const fallback = questionData.correctAnswer;
 
     if (Array.isArray(answersToDisplay) && answersToDisplay.length > 0) {
-      return answersToDisplay.map((a) => a ?? "?").join(",  ");
+      return "　[　" + answersToDisplay.map((a) => a ?? "?").join("　|　 ") + "　]　";
     }
 
     if (fallback) {
