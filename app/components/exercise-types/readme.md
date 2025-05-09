@@ -5,17 +5,17 @@
 - Remember the sentence that might contain both kanji and hiragana/katakana (I hate this)
 - Count enough type number with example number
 
-### Choose the appropriate answer in the parentheses:
-- choose-in-parentheses
-- choose in parentheses, as dropdown: （だれ|なん|ほん）
-- no need the input bar
-- contains id, type, title, examples (id, question, question_kana, question_en, answer, answer_kana), questions (id, question, question_kana, question_en, answer, answer_kana)
-
 ### Fill in the blank with the correct word/particle:
 - fill-in-the-blank
 - replace （＿＿） with input bar
 - enter a word/particle
 - contains id, type, title, images, examples (id, question, question_kana, question_en, answer, answer_kana), questions (id, question, question_kana, question_en, answer, answer_kana)
+
+### Choose the appropriate answer in the parentheses:
+- choose-in-parentheses
+- choose in parentheses, as dropdown: （だれ|なん|ほん）
+- no need the input bar
+- contains id, type, title, examples (id, question, question_kana, question_en, answer, answer_kana), questions (id, question, question_kana, question_en, answer, answer_kana)
 
 ### Rearrange the words to form correct sentences
 - rearrange
