@@ -12,12 +12,12 @@ interface FillInTheBlankProps {
     partId: string,
     questionId: string,
     value: string,
-    blankIndex?: number
+    idx?: number
   ) => void;
   isPartSubmitted: boolean;
   result: (boolean | null) | (boolean | null)[] | undefined;
   showKana: boolean;
-  getRequiredAnswers: (question: Question) => number;
+  getNumOfAnswers: (question: Question) => number;
 }
 
 export default function FillInTheBlank({
@@ -29,5 +29,5 @@ export default function FillInTheBlank({
   isPartSubmitted,
   result,
   showKana,
-  getRequiredAnswers,
+  getNumOfAnswers,
 }: FillInTheBlankProps) {}

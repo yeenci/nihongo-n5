@@ -1,29 +1,29 @@
-// --- Interfaces (keep as before) ---
 export interface Question {
   id: string;
   // uniqueId?: string;
-  question: string[] | string;
-  question_kana?: string[] | string;
-  question_en?: string[] | string;
-  answer?: string[] | string;
-  answer_kana?: string[] | string;
-  paragraph?: string[] | string;
-  paragraph_kana?: string[] | string;
-  images?: string[] | string;
-  options?: string[] | string;
-  options_kana?: string[] | string;
-  sentence?: string[] | string;
-  num_of_answer?: string[] | string;
-  // words?: string[] | string;
+  question: string[];
+  question_kana?: string[];
+  question_en?: string[];
+  answer?: string[];
+  answer_kana?: string[];
+  paragraph?: string;
+  paragraph_kana?: string;
+  paragraph_en?: string;
+  images?: string[];
+  options?: string[];
+  options_kana?: string[];
+  sentence?: string[];
+  num_of_answer?: string[];
+  // words?: string[];
 }
 
 export interface Example {
   id: string;
-  question: string[] | string;
-  question_kana?: string[] | string;
-  question_en?: string[] | string;
-  answer?: string[] | string;
-  answer_kana?: string[] | string;
+  question: string[];
+  question_kana?: string[];
+  question_en?: string[];
+  answer?: string[];
+  answer_kana?: string[];
 }
 
 export interface Paragraph {
@@ -35,8 +35,8 @@ export interface Paragraph {
 }
 
 export interface Option {
-  options?: string[] | string;
-  options_kana?: string[] | string;
+  options?: string[];
+  options_kana?: string[];
 }
 
 export interface ExercisePart {
@@ -44,7 +44,7 @@ export interface ExercisePart {
   partId: string;
   type: string;
   title: string;
-  images?: string[] | string;
+  images?: string[];
   paragraph?: Paragraph;
   examples?: Example[];
   questions: Question[];
