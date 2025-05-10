@@ -1,3 +1,6 @@
+// 1. Fill in the blank
+"use client";
+
 import { Question } from "@/app/constants/exercise";
 
 interface FillInTheBlankProps {
@@ -11,7 +14,10 @@ interface FillInTheBlankProps {
     value: string,
     blankIndex?: number
   ) => void;
-
+  isPartSubmitted: boolean;
+  result: (boolean | null) | (boolean | null)[] | undefined;
+  showKana: boolean;
+  getRequiredAnswers: (question: Question) => number;
 }
 
 export default function FillInTheBlank({
@@ -19,5 +25,9 @@ export default function FillInTheBlank({
   partId,
   questionId,
   value,
-  onChange
+  onChange,
+  isPartSubmitted,
+  result,
+  showKana,
+  getRequiredAnswers,
 }: FillInTheBlankProps) {}
