@@ -1,5 +1,7 @@
 "use client";
 
+import FillInTheBlank from "@/app/components/exercise-types/fill-in-the-blank";
+import RenderQuestionByType from "@/app/components/exercise-types/render-question";
 import Spinner from "@/app/components/spinner";
 import { Button } from "@/components/ui/button";
 import { useExerciseLogic } from "@/hooks/useExerciseLogic";

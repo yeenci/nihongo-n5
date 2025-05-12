@@ -1,6 +1,6 @@
 export interface Question {
   id: string;
-  // uniqueId?: string;
+  uniqueId?: string;
   question: string[];
   question_kana?: string[];
   question_en?: string[];

@@ -30,4 +30,6 @@ export default function FillInTheBlank({
   result,
   showKana,
   getNumOfAnswers,
-}: FillInTheBlankProps) {}
+}: FillInTheBlankProps) {
+  return (<div>Examples? Fill In The Blank</div>)
+}
