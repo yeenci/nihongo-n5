@@ -59,14 +59,26 @@ export default function ExercisePage() {
             {/* --- Current Part Content --- */}
             <div className="mt-4">
               {activePart && (
-                <div
-                  key={activePart.id}
-                  className="space-y-6 bg-card p-4 sm:p-6 rounded-lg shadow"
-                >
-                  <h2 className="text-xl font-semibold mb-4 text-card-foreground">
-                    {activePart.title}
-                  </h2>
-                </div>
+                // <div
+                //   key={activePart.id}
+                //   className="space-y-6 bg-card p-4 sm:p-6 rounded-lg shadow"
+                // >
+                //   <h2 className="text-xl font-semibold mb-4 text-card-foreground">
+                //     {activePart.title}
+                //   </h2>
+                  <RenderQuestionByType
+                    type={activePart.type}
+                    questionData={data}
+                    partId={activePart.id}
+                        onChange={handleChange}
+                        isPartSubmitted={isPartSubmitted}
+                        showKana={showKana}
+                        getNumOfAnswers={(q) =>
+                          getNumOfAnswers(q)
+                        }
+                        activePart={activePart}
+                  />
+                // </div>
               )}
             </div>
           </div>

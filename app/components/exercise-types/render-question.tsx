@@ -5,10 +5,10 @@ import FillInTheBlank from "./fill-in-the-blank";
 
 interface RenderQuestionProps {
   type: string;
-  questionData: Question;
+  questionData: Question[];
   partId: string;
-  questionId: string;
-  value: string | string[] | undefined;
+  // questionId: string[];
+  // value: string | string[] | undefined;
   onChange: (
     partId: string,
     questionId: string,
@@ -16,7 +16,7 @@ interface RenderQuestionProps {
     blankIndex?: number
   ) => void;
   isPartSubmitted: boolean;
-  result: (boolean | null) | (boolean | null)[] | undefined;
+  // result: (boolean | null) | (boolean | null)[] | undefined;
   showKana: boolean;
   getNumOfAnswers: (question: Question) => number;
   activePart: ExercisePart | undefined;
@@ -26,24 +26,26 @@ export default function RenderQuestionByType({
   type,
   questionData,
   partId,
-  questionId,
-  value,
+  // questionId,
+  // value,
   onChange,
   isPartSubmitted,
-  result,
+  // result,
   showKana,
   getNumOfAnswers,
+  activePart
 }: RenderQuestionProps) {
   const commonProps = {
     questionData,
     partId,
-    questionId,
-    value,
+    // questionId,
+    // value,
     onChange,
     isPartSubmitted,
-    result,
+    // result,
     showKana,
     getNumOfAnswers,
+    activePart
   };
 
   switch (type) {
