@@ -1,6 +1,7 @@
 // app/components/exercise-types/render-question.tsx
 import { ExercisePart, Question } from "@/app/constants/exercise";
 import FillInTheBlank from "./fill-in-the-blank"; // Assuming this is your renamed AnswerInput
+import ChooseInParentheses from './choose-in-parentheses';
 
 interface RenderQuestionByTypeProps {
   type: string; // Type of the exercise part (e.g., "fill-in-the-blank")
@@ -63,6 +64,35 @@ export default function RenderQuestionByType({
                   Question {index + 1}.
                 </p>
                 <FillInTheBlank
+                  question={question}
+                  showKana={showKana}
+                  value={questionValue}
+                  result={questionResult}
+                  isPartSubmitted={isPartSubmitted}
+                  partId={partId}
+                  questionId={question.id}
+                  getNumOfAnswers={getNumOfAnswers}
+                  onChange={onChange}
+                />
+              </div>
+            );
+          })}
+        </div>
+      );
+    case "choose-in-parentheses":
+      return (
+        <div className="space-y-8">
+          {activePart.questions.map((question, index) => {
+            const questionUid = `${partId}-${question.id}`;
+            const questionValue = userAnswers[questionUid];
+            const questionResult = results[partId]?.[question.id];
+
+            return (
+              <div key={question.id} className="border-b border-border pb-6 last:border-b-0 last:pb-0">
+                <p className="mb-3 text-sm font-medium text-muted-foreground">
+                  Question {index + 1}.
+                </p>
+                <ChooseInParentheses
                   question={question}
                   showKana={showKana}
                   value={questionValue}

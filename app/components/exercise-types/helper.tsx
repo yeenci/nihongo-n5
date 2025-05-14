@@ -1,3 +1,5 @@
+import React from "react";
+
 export const renderExamples = (text: string | undefined | null): React.ReactNode[] => {
   if (!text) return [];
 
@@ -34,36 +36,5 @@ export const renderExamples = (text: string | undefined | null): React.ReactNode
   }
 
   return parts;
-};
-
-export const renderExamplesTable = (
-  items: string[]
-): React.ReactNode[] => {
-
-  if (!items) return [];
-
-  const regex = /（　(.*?)　）/; // No 'g' flag, we test each item individually
-
-  return items.map((item, index) => {
-    const match = item.match(regex);
-    if (match && match[1]) { // Check match[1] to ensure content was captured
-      return (
-        <td
-          key={`underline-${index}-${item}`} // More robust key
-          className="p-2 border font-medium text-primary text-center" // Added padding, border, and centering
-        >
-          {"　"} {/* Original spacing, keep if desired */}
-          <span className="underline">{match[1]}</span>
-          {"　"} {/* Original spacing */}
-        </td>
-      );
-    } else {
-      return (
-        <td key={`text-${index}-${item}`} className="p-2 border text-center"> {/* Added padding, border, and centering */}
-          {item}
-        </td>
-      );
-    }
-  });
 };
 

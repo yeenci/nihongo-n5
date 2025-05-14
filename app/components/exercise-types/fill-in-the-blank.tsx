@@ -215,11 +215,9 @@ export default function FillInTheBlank({
   }, [showKana, question]);
 
   return (
-    <div className="p-4 border rounded-md transition-colors duration-300 bg-card shadow"> 
+    <div className="p-4 border rounded-md transition-colors duration-300 bg-card shadow">
       <div className="mb-3">
-        <span className="font-semibold mr-2 text-foreground/90">
-        </span>
-        <div className="leading-relaxed text-foreground/80">
+        <div className="leading-relaxed text-foreground/80 pt-2">
           {questionParts.map((part, index) => (
             <Fragment key={index}>
               <span className="whitespace-pre-wrap font-sans">{part}</span>
@@ -259,7 +257,7 @@ export default function FillInTheBlank({
 
       {/* Display overall status */}
       {isPartSubmitted && (
-        <div className="mt-2 text-sm min-h-[1.25rem]"> {/* min-h to prevent layout shift */}
+        <div className="mt-2 text-sm min-h-[1.25rem]">
           {isOverallCorrect && (
             <p className="text-green-600 dark:text-green-400 font-semibold">Correct!</p>
           )}
