@@ -2,7 +2,7 @@
 "use client";
 
 import RenderQuestionByType from "@/app/components/exercise-types/render-question";
-import Spinner from "@/app/components/spinner"; // Assuming path
+import Spinner from "@/app/components/spinner";
 import { Button } from "@/components/ui/button";
 import { useExerciseLogic } from "@/hooks/useExerciseLogic"; // Assuming path
 import { useLecturePartData } from "@/hooks/useLecturePartData"; // Assuming path, fetches ExercisePart[]

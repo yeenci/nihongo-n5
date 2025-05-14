@@ -1,3 +1,4 @@
+// 1. Fill in the blank
 "use client";
 
 import { Fragment, useCallback, useMemo, useState } from "react";
@@ -5,14 +6,14 @@ import { Question } from "@/app/constants/exercise"; // Assuming this path is co
 import {
   transcribeToHiragana,
   transcribeToKatakana,
-} from "@/lib/transcription"; // Assuming this path is correct
-import { TranscriptionPopup } from "../transcribe-popup"; // Adjust path if necessary, was "./transcribe-popup" in original AnswerInput
-import { Input } from "@/components/ui/input"; // Assuming this path is correct
+} from "@/lib/transcription";
+import { TranscriptionPopup } from "../transcribe-popup";
+import { Input } from "@/components/ui/input";
 
 interface FillInTheBlankProps {
-  question: Question; // Renamed from questionData for internal consistency
+  question: Question;
   partId: string;
-  questionId: string; // This is question.id
+  questionId: string;
   value: string | string[] | undefined;
   onChange: (
     partId: string,
@@ -23,11 +24,11 @@ interface FillInTheBlankProps {
   isPartSubmitted: boolean;
   result: (boolean | null) | (boolean | null)[] | undefined;
   showKana: boolean;
-  getNumOfAnswers: (question: Question) => number; // Renamed from getExpectedAnswerCount
+  getNumOfAnswers: (question: Question) => number;
 }
 
 export default function FillInTheBlank({
-  question, // Use 'question' prop directly
+  question,
   partId,
   questionId,
   value,
@@ -35,7 +36,7 @@ export default function FillInTheBlank({
   isPartSubmitted,
   result,
   showKana,
-  getNumOfAnswers, // Use 'getNumOfAnswers' prop directly
+  getNumOfAnswers,
 }: FillInTheBlankProps) {
   // --- Logic from AnswerInput ---
   const [popupHiraganaText, setPopupHiraganaText] = useState("");
@@ -43,15 +44,13 @@ export default function FillInTheBlank({
   const [activeInputIndex, setActiveInputIndex] = useState<number | null>(null);
 
   const displayQuestionString = useMemo(() => {
-    // Question interface has question and question_kana as string[]
-    // We assume the first element is the relevant string for fill-in-the-blank
     const baseQ = question.question[0] ?? "";
     const kanaQ = question.question_kana?.[0] ?? "";
     return showKana && kanaQ ? kanaQ : baseQ;
   }, [showKana, question]);
 
   const expectedInputs = useMemo(
-    () => getNumOfAnswers(question), // Use prop getNumOfAnswers
+    () => getNumOfAnswers(question),
     [getNumOfAnswers, question]
   );
 
@@ -145,7 +144,6 @@ export default function FillInTheBlank({
       }
       if (activeInputIndex === index) {
         setActiveInputIndex(null);
-        // Text clearing handled by handlePopupOpenChange
       } else {
         setActiveInputIndex(index);
         setPopupHiraganaText(transcribeToHiragana(valuesArray[index] ?? ""));
@@ -181,14 +179,11 @@ export default function FillInTheBlank({
     },
     [activeInputIndex]
   );
-  // --- End of Logic from AnswerInput ---
 
-  // --- Logic originally from FillInTheBlank (for displaying overall status) ---
-  // Note: `resultsArrayFromInput` is the same as `resultsArray` previously in FillInTheBlank
   const isOverallCorrect = useMemo(
     () =>
       isPartSubmitted &&
-      resultsArrayFromInput.length > 0 && // Ensure there are results to check
+      resultsArrayFromInput.length > 0 &&
       resultsArrayFromInput.length === expectedInputs &&
       resultsArrayFromInput.every((r) => r === true),
     [isPartSubmitted, resultsArrayFromInput, expectedInputs]
@@ -199,7 +194,7 @@ export default function FillInTheBlank({
     [isPartSubmitted, resultsArrayFromInput]
   );
 
-  const isResetOrPending = useMemo( // Renamed for clarity
+  const isResetOrPending = useMemo(
     () => isPartSubmitted && resultsArrayFromInput.some((r) => r === null) && !isOverallCorrect && !isAnyIncorrect,
     [isPartSubmitted, resultsArrayFromInput, isOverallCorrect, isAnyIncorrect]
   );
@@ -209,30 +204,21 @@ export default function FillInTheBlank({
     const answersToDisplay = showKana
       ? question.answer_kana
       : question.answer;
-    // The Question interface does not have 'correctAnswer'. We rely on answer/answer_kana.
-    // const fallback = question.correctAnswer; // This field is not in the Question interface
 
     if (Array.isArray(answersToDisplay) && answersToDisplay.length > 0) {
-      // Filter out undefined/null before joining, or provide a placeholder
       const cleanedAnswers = answersToDisplay.map(a => a ?? "N/A").filter(a => a.trim() !== "");
       if (cleanedAnswers.length > 0) {
         return "　[　" + cleanedAnswers.join("　|　") + "　]　";
       }
     }
-    return " (No answer provided)"; // Fallback if no valid answers are found
+    return " (No answer provided)";
   }, [showKana, question]);
-  // --- End of Logic for displaying overall status ---
 
   return (
-    <div className="p-4 border rounded-md transition-colors duration-300 bg-card shadow"> {/* Added bg-card and shadow for consistency */}
-      <div className="mb-3"> {/* Group question number and input area */}
+    <div className="p-4 border rounded-md transition-colors duration-300 bg-card shadow"> 
+      <div className="mb-3">
         <span className="font-semibold mr-2 text-foreground/90">
-          {/* Use question.id which is passed as questionId from parent, or map an index if needed */}
-          {/* For this component, question.id is the unique ID of the question object itself */}
-          {/* If a sequential number is needed, it should be passed or derived from an index in a list */}
-          {/* Question {question.id} - this might be a long UUID. Consider passing an index if a simple number is preferred. */}
         </span>
-        {/* JSX from AnswerInput's return, now part of FillInTheBlank */}
         <div className="leading-relaxed text-foreground/80">
           {questionParts.map((part, index) => (
             <Fragment key={index}>
@@ -288,7 +274,6 @@ export default function FillInTheBlank({
               Answer changed. Please submit the part again to check.
             </p>
           )}
-           {/* Case: Submitted, no incorrect, not overall correct, not pending/reset (e.g. empty required field) */}
            {!isOverallCorrect && !isAnyIncorrect && !isResetOrPending && (
              <p className="text-muted-foreground">Review your answer(s).</p>
            )}

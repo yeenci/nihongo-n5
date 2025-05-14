@@ -10,6 +10,7 @@ const Spinner = () => {
         src="https://lottie.host/3c7002b8-b6ee-4ac6-9711-4c14a3e122d4/9DBayMX23g.lottie"
         loop
         autoplay
+        style={{ width: "100px", height: "100px", margin: "auto" }}
       />
     </div>
   );

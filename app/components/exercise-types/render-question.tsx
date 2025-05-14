@@ -51,7 +51,7 @@ export default function RenderQuestionByType({
   switch (type) {
     case "fill-in-the-blank":
       return (
-        <div className="space-y-8"> {/* Vertical spacing between multiple questions */}
+        <div className="space-y-8">
           {activePart.questions.map((question, index) => {
             const questionUid = `${partId}-${question.id}`;
             const questionValue = userAnswers[questionUid];
@@ -60,10 +60,10 @@ export default function RenderQuestionByType({
             return (
               <div key={question.id} className="border-b border-border pb-6 last:border-b-0 last:pb-0">
                 <p className="mb-3 text-sm font-medium text-muted-foreground">
-                  Question {index + 1}
+                  Question {index + 1}.
                 </p>
                 <FillInTheBlank
-                  question={question} // Pass the individual Question object
+                  question={question}
                   showKana={showKana}
                   value={questionValue}
                   result={questionResult}
@@ -78,9 +78,6 @@ export default function RenderQuestionByType({
           })}
         </div>
       );
-    // Example for another type:
-    // case "multiple-choice":
-    //   return <MultipleChoiceComponent questions={activePart.questions} ... />;
     default:
       return (
         <div className="p-4 border rounded bg-destructive/10 text-destructive">
