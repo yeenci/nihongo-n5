@@ -83,7 +83,7 @@ export default function ExercisePage() {
                 {activePart.examples && activePart.examples.length > 0 && (
                   <div className="mb-6 p-4 border border-dashed border-border rounded-md bg-background/30 dark:bg-muted/20">
                     <h3 className="text-base font-semibold mb-3 text-foreground/90">
-                      Examples (例):
+                      Examples:
                     </h3>
                     <ul className="space-y-4">
                       {activePart.examples.map((example, index) => {
@@ -100,12 +100,11 @@ export default function ExercisePage() {
                           >
                             <div className="leading-relaxed text-foreground/80 flex items-center">
                               <span className="mr-2 text-muted-foreground">
-                                {index + 1}.
                               </span>
-                              <span>{renderExamples(exampleTextToShow)}</span>
+                              <div>{renderExamples(exampleTextToShow)}</div>
                             </div>
                             {example.question_en?.[0] && (
-                              <div className="text-xs text-muted-foreground mt-1 pl-5">
+                              <div className="text-xs text-muted-foreground mt-1">
                                 {example.question_en[0]}
                               </div>
                             )}

@@ -1,7 +1,8 @@
 "use client";
 
 import { Question } from "@/app/constants/exercise";
-import { useCallback, useMemo } from "react"; // Removed useState as 'selected' is not needed
+import { Button } from "@/components/ui/button";
+import { useCallback, useEffect, useMemo, useState } from "react"; // Removed useState as 'selected' is not needed
 
 interface ChooseInParenthesesProps {
   question: Question;
@@ -31,6 +32,8 @@ export default function ChooseInParentheses({
   showKana,
   getNumOfAnswers,
 }: ChooseInParenthesesProps) {
+  const [showEnglishMeaning, setShowEnglishMeaning] = useState(false);
+
   const displayQuestionString = useMemo(() => {
     const baseQ = question.question[0] ?? "";
     const kanaQ = question.question_kana?.[0] ?? "";
@@ -97,13 +100,14 @@ export default function ChooseInParentheses({
         focusRingColor = "focus:ring-orange-500";
       }
 
-
       if (!isPartSubmitted) {
         cursor = "cursor-pointer";
-      } else if (blankIndex !== undefined && resultsArrayFromInput[blankIndex] !== true) {
+      } else if (
+        blankIndex !== undefined &&
+        resultsArrayFromInput[blankIndex] !== true
+      ) {
         cursor = "cursor-pointer";
       }
-
 
       return `${borderColor} ${focusRingColor} ${textColor} ${cursor}`;
     },
@@ -133,6 +137,14 @@ export default function ChooseInParentheses({
     [isPartSubmitted, resultsArrayFromInput, isOverallCorrect, isAnyIncorrect]
   );
 
+  useEffect(() => {
+    if (isResetOrPending) {
+      setShowEnglishMeaning(true);
+    } else if (!isPartSubmitted) {
+      setShowEnglishMeaning(false);
+    }
+  }, [isResetOrPending, isPartSubmitted]);
+
   const displayCorrectAnswers = useCallback(() => {
     const answersToDisplay = showKana ? question.answer_kana : question.answer;
 
@@ -147,6 +159,14 @@ export default function ChooseInParentheses({
     return " (No answer provided)";
   }, [showKana, question]);
 
+  const questionEnglish = useMemo(() => {
+    return question.question_en?.[0] || null;
+  }, [question]);
+
+  const toggleShowEnglish = () => {
+    setShowEnglishMeaning((prev) => !prev);
+  };
+
   return (
     <div className="p-4 border rounded-md transition-colors duration-300 bg-card shadow">
       <div className="mb-3">
@@ -154,7 +174,10 @@ export default function ChooseInParentheses({
           {questionParts.map((part, partIndex) => {
             if (partIndex % 2 === 0) {
               return (
-                <span key={`text-${partIndex}`} className="whitespace-pre-wrap font-sans">
+                <span
+                  key={`text-${partIndex}`}
+                  className="whitespace-pre-wrap font-sans"
+                >
                   {part}
                 </span>
               );
@@ -162,7 +185,9 @@ export default function ChooseInParentheses({
               const blankIndex = (partIndex - 1) / 2;
 
               if (blankIndex >= expectedInputs) {
-                console.warn("Mismatch between question structure and expected inputs count.");
+                console.warn(
+                  "Mismatch between question structure and expected inputs count."
+                );
                 return null;
               }
 
@@ -181,18 +206,22 @@ export default function ChooseInParentheses({
                   onChange={(e) =>
                     onChange(partId, questionId, e.target.value, blankIndex)
                   }
-                  disabled={isPartSubmitted && resultsArrayFromInput[blankIndex] === true}
-                  aria-label={`Answer blank ${blankIndex + 1} for question ${questionId}`}
+                  disabled={
+                    isPartSubmitted &&
+                    resultsArrayFromInput[blankIndex] === true
+                  }
+                  aria-label={`Answer blank ${
+                    blankIndex + 1
+                  } for question ${questionId}`}
                 >
                   <option value="">--Choose--</option>
-                  {currentOptionsForThisBlank.map((opt: string, optIdx: number) => (
-                    <option
-                      key={optIdx}
-                      value={opt}
-                    >
-                      {opt}
-                    </option>
-                  ))}
+                  {currentOptionsForThisBlank.map(
+                    (opt: string, optIdx: number) => (
+                      <option key={optIdx} value={opt}>
+                        {opt}
+                      </option>
+                    )
+                  )}
                 </select>
               );
             }
@@ -218,11 +247,37 @@ export default function ChooseInParentheses({
               Answer changed. Please submit the part again to check.
             </p>
           )}
-          {!isOverallCorrect && !isAnyIncorrect && !isResetOrPending && !resultsArrayFromInput.some(r => r !== null) && ( // Added check for initial state before any answer
-            <p className="text-muted-foreground">Select your answer(s).</p>
-          )}
-          {!isOverallCorrect && !isAnyIncorrect && !isResetOrPending && resultsArrayFromInput.some(r => r !== null) && ( // If submitted but not all correct/incorrect (e.g. partially answered)
-             <p className="text-muted-foreground">Review your answer(s).</p>
+          {!isOverallCorrect &&
+            !isAnyIncorrect &&
+            !isResetOrPending &&
+            !resultsArrayFromInput.some((r) => r !== null) && (
+              <p className="text-muted-foreground">Select your answer(s).</p>
+            )}
+          {!isOverallCorrect &&
+            !isAnyIncorrect &&
+            !isResetOrPending &&
+            resultsArrayFromInput.some((r) => r !== null) && (
+              <p className="text-muted-foreground">Review your answer(s).</p>
+            )}
+          {questionEnglish && (
+            <div className="mt-2">
+              <Button
+                variant="link"
+                size="sm"
+                onClick={toggleShowEnglish}
+                className="text-xs h-7 px-1 underline"
+              >
+                {showEnglishMeaning ? "Hide Meaning" : "Show Meaning"}
+              </Button>
+              {showEnglishMeaning && (
+                <p
+                  className="text-muted-foreground mt-1.5 px-1 rounded-md"
+                  style={{ whiteSpace: "pre-line" }}
+                >
+                  {questionEnglish}
+                </p>
+              )}
+            </div>
           )}
         </div>
       )}

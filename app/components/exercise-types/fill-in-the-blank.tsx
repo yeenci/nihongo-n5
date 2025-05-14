@@ -1,7 +1,7 @@
 // 1. Fill in the blank
 "use client";
 
-import { Fragment, useCallback, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { Question } from "@/app/constants/exercise"; // Assuming this path is correct
 import {
   transcribeToHiragana,
@@ -9,6 +9,7 @@ import {
 } from "@/lib/transcription";
 import { TranscriptionPopup } from "../transcribe-popup";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface FillInTheBlankProps {
   question: Question;
@@ -42,6 +43,7 @@ export default function FillInTheBlank({
   const [popupHiraganaText, setPopupHiraganaText] = useState("");
   const [popupKatakanaText, setPopupKatakanaText] = useState("");
   const [activeInputIndex, setActiveInputIndex] = useState<number | null>(null);
+  const [showEnglishMeaning, setShowEnglishMeaning] = useState(false);
 
   const displayQuestionString = useMemo(() => {
     const baseQ = question.question[0] ?? "";
@@ -116,9 +118,8 @@ export default function FillInTheBlank({
       if (!isPartSubmitted) {
         cursor = "cursor-pointer";
       } else if (index !== undefined && resultsArrayFromInput[index] !== true) {
-         cursor = "cursor-pointer";
+        cursor = "cursor-pointer";
       }
-
 
       return `${borderColor} ${focusRingColor} ${bgColor} ${textColor} ${cursor}`;
     },
@@ -195,24 +196,43 @@ export default function FillInTheBlank({
   );
 
   const isResetOrPending = useMemo(
-    () => isPartSubmitted && resultsArrayFromInput.some((r) => r === null) && !isOverallCorrect && !isAnyIncorrect,
+    () =>
+      isPartSubmitted &&
+      resultsArrayFromInput.some((r) => r === null) &&
+      !isOverallCorrect &&
+      !isAnyIncorrect,
     [isPartSubmitted, resultsArrayFromInput, isOverallCorrect, isAnyIncorrect]
   );
 
+  useEffect(() => {
+    if (isResetOrPending) {
+      setShowEnglishMeaning(true);
+    } else if (!isPartSubmitted) {
+      setShowEnglishMeaning(false);
+    }
+  }, [isResetOrPending, isPartSubmitted]);
 
   const displayCorrectAnswers = useCallback(() => {
-    const answersToDisplay = showKana
-      ? question.answer_kana
-      : question.answer;
+    const answersToDisplay = showKana ? question.answer_kana : question.answer;
 
     if (Array.isArray(answersToDisplay) && answersToDisplay.length > 0) {
-      const cleanedAnswers = answersToDisplay.map(a => a ?? "N/A").filter(a => a.trim() !== "");
+      const cleanedAnswers = answersToDisplay
+        .map((a) => a ?? "N/A")
+        .filter((a) => a.trim() !== "");
       if (cleanedAnswers.length > 0) {
         return "　[　" + cleanedAnswers.join("　|　") + "　]　";
       }
     }
     return " (No answer provided)";
   }, [showKana, question]);
+
+  const questionEnglish = useMemo(() => {
+    return question.question_en?.[0] || null;
+  }, [question]);
+
+  const toggleShowEnglish = () => {
+    setShowEnglishMeaning((prev) => !prev);
+  };
 
   return (
     <div className="p-4 border rounded-md transition-colors duration-300 bg-card shadow">
@@ -225,8 +245,12 @@ export default function FillInTheBlank({
                 <TranscriptionPopup
                   isOpen={activeInputIndex === index}
                   onOpenChange={(open) => handlePopupOpenChange(open, index)}
-                  HiraganaText={activeInputIndex === index ? popupHiraganaText : ""}
-                  KatakanaText={activeInputIndex === index ? popupKatakanaText : ""}
+                  HiraganaText={
+                    activeInputIndex === index ? popupHiraganaText : ""
+                  }
+                  KatakanaText={
+                    activeInputIndex === index ? popupKatakanaText : ""
+                  }
                   onHiraganaApply={handleHiraganaApply}
                   onKatakanaApply={handleKatakanaApply}
                   trigger={
@@ -236,13 +260,17 @@ export default function FillInTheBlank({
                       value={valuesArray[index]}
                       onChange={(e) => handleDirectInput(e.target.value, index)}
                       onClick={() => handleInputClick(index)}
-                      aria-label={`Answer blank ${index + 1} for question ${questionId}`}
+                      aria-label={`Answer blank ${
+                        index + 1
+                      } for question ${questionId}`}
                       className={`
                         inline-block w-32 sm:w-40 h-7 px-2 mx-1 align-baseline border rounded
                         text-sm transition-colors duration-200 ease-in-out
                         focus:outline-none focus:ring-2 focus:ring-offset-1
                         ${getInputClasses(index)}`}
-                      disabled={isPartSubmitted && resultsArrayFromInput[index] === true}
+                      disabled={
+                        isPartSubmitted && resultsArrayFromInput[index] === true
+                      }
                       autoComplete="off"
                       autoCorrect="off"
                       spellCheck="false"
@@ -259,22 +287,44 @@ export default function FillInTheBlank({
       {isPartSubmitted && (
         <div className="mt-2 text-sm min-h-[1.25rem]">
           {isOverallCorrect && (
-            <p className="text-green-600 dark:text-green-400 font-semibold">Correct!</p>
+            <p className="text-green-600 dark:text-green-400 font-semibold pl-1">
+              Correct!
+            </p>
           )}
           {isAnyIncorrect && (
-            <p className="text-red-600 dark:text-red-400 font-semibold">
+            <p className="text-red-600 dark:text-red-400 font-semibold pl-1">
               Incorrect. Correct answer(s):
               <span className="font-mono pl-1">{displayCorrectAnswers()}</span>
             </p>
           )}
           {isResetOrPending && (
-            <p className="text-orange-600 dark:text-orange-400 font-semibold">
+            <p className="text-orange-600 dark:text-orange-400 font-semibold pl-1">
               Answer changed. Please submit the part again to check.
             </p>
           )}
-           {!isOverallCorrect && !isAnyIncorrect && !isResetOrPending && (
-             <p className="text-muted-foreground">Review your answer(s).</p>
-           )}
+          {!isOverallCorrect && !isAnyIncorrect && !isResetOrPending && (
+            <p className="text-muted-foreground">Review your answer(s).</p>
+          )}
+          {questionEnglish && (
+            <div className="mt-2">
+              <Button
+                variant="link"
+                size="sm"
+                onClick={toggleShowEnglish}
+                className="text-xs h-7 px-1 underline"
+              >
+                {showEnglishMeaning ? "Hide Meaning" : "Show Meaning"}
+              </Button>
+              {showEnglishMeaning && (
+                <p
+                  className="text-muted-foreground mt-1.5 px-1 rounded-md"
+                  style={{ whiteSpace: "pre-line" }}
+                >
+                  {questionEnglish}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
