@@ -1,8 +1,8 @@
 // app/exercise/page.tsx (or your specific route)
 "use client";
 
-import { renderExamples } from "@/app/components/exercise-types/helper";
 import RenderQuestionByType from "@/app/components/exercise-types/render-question";
+import ExamplePart from "@/app/components/exercises/examples";
 import Spinner from "@/app/components/spinner";
 import { Button } from "@/components/ui/button";
 import { useExerciseLogic } from "@/hooks/useExerciseLogic"; // Assuming path
@@ -80,40 +80,7 @@ export default function ExercisePage() {
                 </h2>
 
                 {/* --- EXAMPLES SECTION --- */}
-                {activePart.examples && activePart.examples.length > 0 && (
-                  <div className="mb-6 p-4 border border-dashed border-border rounded-md bg-background/30 dark:bg-muted/20">
-                    <h3 className="text-base font-semibold mb-3 text-foreground/90">
-                      Examples:
-                    </h3>
-                    <ul className="space-y-4">
-                      {activePart.examples.map((example, index) => {
-                        // Determine which version of the question to show based on showKana
-                        const exampleTextToShow =
-                          showKana && example.question_kana?.[0]
-                            ? example.question_kana[0]
-                            : example.question[0];
-
-                        return (
-                          <li
-                            key={example.id || `ex-${index}`}
-                            className="text-sm"
-                          >
-                            <div className="leading-relaxed text-foreground/80 flex items-center">
-                              <span className="mr-2 text-muted-foreground">
-                              </span>
-                              <div>{renderExamples(exampleTextToShow)}</div>
-                            </div>
-                            {example.question_en?.[0] && (
-                              <div className="text-xs text-muted-foreground mt-1">
-                                {example.question_en[0]}
-                              </div>
-                            )}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                )}
+                <ExamplePart activePart={activePart} showKana={showKana} />
 
                 <RenderQuestionByType
                   type={activePart.type}
