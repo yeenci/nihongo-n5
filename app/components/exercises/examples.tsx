@@ -17,31 +17,29 @@ export default function ExamplePart({ activePart, showKana }: ExampleProps) {
             <h3 className="text-base font-semibold mb-3 text-foreground/90">
               Examples:
             </h3>
-            {activePart.type !== "rearrange" && (
-              <ul className="space-y-4">
-                {activePart.examples.map((example, index) => {
-                  // Determine which version of the question to show based on showKana
-                  const exampleTextToShow =
-                    showKana && example.question_kana?.[0]
-                      ? example.question_kana[0]
-                      : example.question[0];
+            <ul className="space-y-4">
+              {activePart.examples.map((example, index) => {
+                // Determine which version of the question to show based on showKana
+                const exampleTextToShow =
+                  showKana && example.question_kana?.[0]
+                    ? example.question_kana[0]
+                    : example.question[0];
 
-                  return (
-                    <li key={example.id || `ex-${index}`} className="text-sm">
-                      <div className="leading-relaxed text-foreground/80 flex items-center">
-                        <span className="mr-2 text-muted-foreground"></span>
-                        <div>{renderExamples(exampleTextToShow)}</div>
+                return (
+                  <li key={example.id || `ex-${index}`} className="text-sm">
+                    <div className="leading-relaxed text-foreground/80 flex items-center">
+                      <span className="mr-2 text-muted-foreground"></span>
+                      <div>{renderExamples(exampleTextToShow)}</div>
+                    </div>
+                    {example.question_en?.[0] && (
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {example.question_en[0]}
                       </div>
-                      {example.question_en?.[0] && (
-                        <div className="text-xs text-muted-foreground mt-1">
-                          {example.question_en[0]}
-                        </div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         )}
     </>

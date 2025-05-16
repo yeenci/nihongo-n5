@@ -1,6 +1,7 @@
 // 3. Rearrange sentence
 
 import { Question } from "@/app/constants/exercise";
+import { useCallback, useMemo, useState } from "react";
 
 interface RearrangeProps {
   question: Question;
@@ -30,7 +31,84 @@ export default function Rearrange({
   showKana,
   getNumOfAnswers,
 }: RearrangeProps) {
-  return (<div>Hi</div>)
+  const [showEnglishMeaning, setShowEnglishMeaning] = useState(false);
+
+  const displayQuestionString = useMemo(() => {
+    const baseQ = question.question[0] ?? "";
+    const kanaQ = question.question_kana?.[0] ?? "";
+    return showKana && kanaQ ? kanaQ : baseQ;
+  }, [showKana, question]);
+
+  const expectedInputs = useMemo(
+    () => getNumOfAnswers(question),
+    [getNumOfAnswers, question]
+  );
+
+  const valuesArray = useMemo(() => {
+    const baseArray = Array.isArray(value)
+      ? value
+      : value !== undefined
+      ? [value]
+      : [];
+    return Array(expectedInputs)
+      .fill("")
+      .map((_, i) => baseArray[i] ?? "");
+  }, [value, expectedInputs]);
+
+  const resultsArrayFromInput = useMemo(() => {
+    const baseArray = Array.isArray(result)
+      ? result
+      : result !== undefined
+      ? [result]
+      : [];
+    return Array(expectedInputs)
+      .fill(null)
+      .map((_, i) => baseArray[i] ?? null);
+  }, [result, expectedInputs]);
+
+  const getSelectedClasses = useCallback(
+    (blankIndex?: number): string => {
+      let borderColor = "border-input";
+      let focusRingColor = "focus:ring-primary";
+      let textColor = "text-foreground";
+      let cursor = "cursor-pointer";
+
+      if (
+        isPartSubmitted &&
+        blankIndex !== undefined &&
+        blankIndex < resultsArrayFromInput.length
+      ) {
+        const specificResult = resultsArrayFromInput[blankIndex];
+        if (specificResult === true) {
+          borderColor = "border-green-500";
+          focusRingColor = "focus:ring-green-500";
+          textColor = "text-green-800 dark:text-green-300";
+          cursor = "cursor-not-allowed";
+        } else if (specificResult === false) {
+          borderColor = "border-red-500";
+          focusRingColor = "focus:ring-red-500";
+          textColor = "text-red-800 dark:text-red-300";
+        }
+      } else if (!isPartSubmitted) {
+        borderColor = "border-orange-200";
+        focusRingColor = "focus:ring-orange-500";
+      }
+
+      if (!isPartSubmitted) {
+        cursor = "cursor-pointer";
+      } else if (
+        blankIndex !== undefined &&
+        resultsArrayFromInput[blankIndex] !== true
+      ) {
+        cursor = "cursor-pointer";
+      }
+
+      return `${borderColor} ${focusRingColor} ${textColor} ${cursor}`;
+    },
+    [isPartSubmitted, resultsArrayFromInput]
+  );
+
+  return <div>Hi</div>;
 }
 
 // import { Button } from "@/components/ui/button";

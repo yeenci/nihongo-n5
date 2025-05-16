@@ -40,7 +40,7 @@ export default function ChooseInParentheses({
     return showKana && kanaQ ? kanaQ : baseQ;
   }, [showKana, question]);
 
-  const expectedInputs = useMemo(
+  const expectedChoices = useMemo(
     () => getNumOfAnswers(question),
     [getNumOfAnswers, question]
   );
@@ -56,10 +56,10 @@ export default function ChooseInParentheses({
       : value !== undefined
       ? [value]
       : [];
-    return Array(expectedInputs)
+    return Array(expectedChoices)
       .fill("")
       .map((_, i) => baseArray[i] ?? "");
-  }, [value, expectedInputs]);
+  }, [value, expectedChoices]);
 
   const resultsArrayFromInput = useMemo(() => {
     const baseArray = Array.isArray(result)
@@ -67,10 +67,10 @@ export default function ChooseInParentheses({
       : result !== undefined
       ? [result]
       : [];
-    return Array(expectedInputs)
+    return Array(expectedChoices)
       .fill(null)
       .map((_, i) => baseArray[i] ?? null);
-  }, [result, expectedInputs]);
+  }, [result, expectedChoices]);
 
   const getSelectedClasses = useCallback(
     (blankIndex?: number): string => {
@@ -118,9 +118,9 @@ export default function ChooseInParentheses({
     () =>
       isPartSubmitted &&
       resultsArrayFromInput.length > 0 &&
-      resultsArrayFromInput.length === expectedInputs &&
+      resultsArrayFromInput.length === expectedChoices &&
       resultsArrayFromInput.every((r) => r === true),
-    [isPartSubmitted, resultsArrayFromInput, expectedInputs]
+    [isPartSubmitted, resultsArrayFromInput, expectedChoices]
   );
 
   const isAnyIncorrect = useMemo(
@@ -184,7 +184,7 @@ export default function ChooseInParentheses({
             } else {
               const blankIndex = (partIndex - 1) / 2;
 
-              if (blankIndex >= expectedInputs) {
+              if (blankIndex >= expectedChoices) {
                 console.warn(
                   "Mismatch between question structure and expected inputs count."
                 );
