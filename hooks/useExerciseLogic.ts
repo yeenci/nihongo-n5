@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // hooks/useExerciseLogic.ts
 import { ExercisePart, Question, regex } from "@/app/constants/exercise";
 import {
@@ -57,14 +58,26 @@ export function useExerciseLogic(
   }, [exerciseData, partId]);
 
   const getNumOfAnswers = useCallback((question: Question): number => {
-    if (question.num_of_answer && question.num_of_answer.length > 0 && question.num_of_answer[0]) {
+    if (
+      question.num_of_answer &&
+      question.num_of_answer.length > 0 &&
+      question.num_of_answer[0]
+    ) {
       const num = parseInt(question.num_of_answer[0], 10);
       if (!isNaN(num) && num > 0) return num;
     }
-    if (question.answer && Array.isArray(question.answer) && question.answer.length > 0) {
+    if (
+      question.answer &&
+      Array.isArray(question.answer) &&
+      question.answer.length > 0
+    ) {
       return question.answer.length;
     }
-    if (question.answer_kana && Array.isArray(question.answer_kana) && question.answer_kana.length > 0) {
+    if (
+      question.answer_kana &&
+      Array.isArray(question.answer_kana) &&
+      question.answer_kana.length > 0
+    ) {
       return question.answer_kana.length;
     }
     return 1;
@@ -74,14 +87,8 @@ export function useExerciseLogic(
     (
       userAnswer: string | string[] | undefined,
       question: Question,
-      isKanaMode: boolean // Represents the current 'showKana' state
+      isKanaMode: boolean
     ): (boolean | null) | (boolean | null)[] => {
-      // Note: isKanaMode (showKana) primarily affects UI display of questions and correct answers.
-      // For correctness evaluation, user's input is checked against both
-      // question.answer (Kanji/mixed) and question.answer_kana (Kana)
-      // as per the rule "user answer can be both answer and answer_kana".
-      // Thus, isKanaMode does not change the boolean outcome of this function.
-
       const numOfExpectedAnswers = getNumOfAnswers(question);
 
       if (numOfExpectedAnswers > 1) {
@@ -89,9 +96,15 @@ export function useExerciseLogic(
         const resultsArray: (boolean | null)[] = [];
 
         for (let i = 0; i < numOfExpectedAnswers; i++) {
-          const userAnswerTrimmed = (userAnswersArray[i] ?? "").trim().replaceAll(regex, "");
-          const correctKanji = (question.answer?.[i] ?? null)?.trim().replaceAll(regex, "");
-          const correctKana = (question.answer_kana?.[i] ?? null)?.trim().replaceAll(regex, "");
+          const userAnswerTrimmed = (userAnswersArray[i] ?? "")
+            .trim()
+            .replaceAll(regex, "");
+          const correctKanji = (question.answer?.[i] ?? null)
+            ?.trim()
+            .replaceAll(regex, "");
+          const correctKana = (question.answer_kana?.[i] ?? null)
+            ?.trim()
+            .replaceAll(regex, "");
 
           let isCorrect = false;
           if (userAnswerTrimmed !== "") {
@@ -99,8 +112,13 @@ export function useExerciseLogic(
               (correctKana !== null && userAnswerTrimmed === correctKana) ||
               (correctKanji !== null && userAnswerTrimmed === correctKanji);
           }
-          
-          if (correctKanji === null && correctKana === null && question.answer?.[i] === undefined && question.answer_kana?.[i] === undefined) {
+
+          if (
+            correctKanji === null &&
+            correctKana === null &&
+            question.answer?.[i] === undefined &&
+            question.answer_kana?.[i] === undefined
+          ) {
             resultsArray.push(null);
           } else {
             resultsArray.push(isCorrect);
@@ -109,10 +127,18 @@ export function useExerciseLogic(
         return resultsArray;
       } else {
         const userInputTrimmed = (
-          typeof userAnswer === "string" ? userAnswer : (Array.isArray(userAnswer) ? userAnswer[0] : "") ?? ""
-        ).trim().replaceAll(regex, "");
-        const correctKanji = (question.answer?.[0] ?? null)?.trim().replaceAll(regex, "");
-        const correctKana = (question.answer_kana?.[0] ?? null)?.trim().replaceAll(regex, "");
+          typeof userAnswer === "string"
+            ? userAnswer
+            : (Array.isArray(userAnswer) ? userAnswer[0] : "") ?? ""
+        )
+          .trim()
+          .replaceAll(regex, "");
+        const correctKanji = (question.answer?.[0] ?? null)
+          ?.trim()
+          .replaceAll(regex, "");
+        const correctKana = (question.answer_kana?.[0] ?? null)
+          ?.trim()
+          .replaceAll(regex, "");
 
         let isCorrect = false;
         if (userInputTrimmed !== "") {
@@ -121,7 +147,12 @@ export function useExerciseLogic(
             (correctKana !== null && userInputTrimmed === correctKana);
         }
 
-        if (correctKanji === null && correctKana === null && question.answer?.[0] === undefined && question.answer_kana?.[0] === undefined) {
+        if (
+          correctKanji === null &&
+          correctKana === null &&
+          question.answer?.[0] === undefined &&
+          question.answer_kana?.[0] === undefined
+        ) {
           return null;
         } else {
           return isCorrect;
@@ -132,7 +163,12 @@ export function useExerciseLogic(
   );
 
   const handleChange = useCallback(
-    (currentPartId: string, questionId: string, value: string, idx?: number) => {
+    (
+      currentPartId: string,
+      questionId: string,
+      value: string,
+      idx?: number
+    ) => {
       if (!exerciseData) return;
       const uniqueQuestionKey = `${currentPartId}-${questionId}`;
       const part = exerciseData.find((p) => p.id === currentPartId);
@@ -151,9 +187,11 @@ export function useExerciseLogic(
             : Array(numOfExpectedAnswers).fill("");
 
           if (answerArray.length !== numOfExpectedAnswers) {
-             answerArray = Array(numOfExpectedAnswers).fill("").map((_, i) => answerArray[i] || "");
+            answerArray = Array(numOfExpectedAnswers)
+              .fill("")
+              .map((_, i) => answerArray[i] || "");
           }
-          
+
           if (idx !== undefined && idx >= 0 && idx < numOfExpectedAnswers) {
             answerArray[idx] = value;
           }
@@ -175,39 +213,53 @@ export function useExerciseLogic(
     [exerciseData, getNumOfAnswers, partSubmissionStatus]
   );
 
-  const handleSubmit = useCallback((currentPartId: string) => {
-    if (!exerciseData) return;
-    const part = exerciseData.find((p) => p.id === currentPartId);
-    if (!part) return;
+  const handleSubmit = useCallback(
+    (currentPartId: string) => {
+      if (!exerciseData) return;
+      const part = exerciseData.find((p) => p.id === currentPartId);
+      if (!part) return;
 
-    const newPartResults: { [questionId: string]: (boolean | null) | (boolean | null)[] } = {};
-    part.questions.forEach((question) => {
-      const uniqueQuestionKey = `${currentPartId}-${question.id}`;
-      const userAnswer = userAnswers[uniqueQuestionKey];
-      newPartResults[question.id] = checkAnswers(userAnswer, question, showKana); // Pass current showKana state
-    });
+      const newPartResults: {
+        [questionId: string]: (boolean | null) | (boolean | null)[];
+      } = {};
+      part.questions.forEach((question) => {
+        const uniqueQuestionKey = `${currentPartId}-${question.id}`;
+        const userAnswer = userAnswers[uniqueQuestionKey];
+        newPartResults[question.id] = checkAnswers(
+          userAnswer,
+          question,
+          showKana
+        ); // Pass current showKana state
+      });
 
-    setResults((prev) => ({ ...prev, [currentPartId]: newPartResults }));
-    setPartSubmissionStatus((prev) => ({ ...prev, [currentPartId]: true }));
-  }, [exerciseData, userAnswers, checkAnswers, showKana, partSubmissionStatus]); // Added showKana and partSubmissionStatus for completeness if they were implicitly used or for strict exhaustive-deps
+      setResults((prev) => ({ ...prev, [currentPartId]: newPartResults }));
+      setPartSubmissionStatus((prev) => ({ ...prev, [currentPartId]: true }));
+    },
+    [exerciseData, userAnswers, checkAnswers, showKana]
+  );
 
-  const handleReset = useCallback((currentPartId: string) => {
-    if (!exerciseData) return;
-    const part = exerciseData.find((p) => p.id === currentPartId);
-    if (!part) return;
+  const handleReset = useCallback(
+    (currentPartId: string) => {
+      if (!exerciseData) return;
+      const part = exerciseData.find((p) => p.id === currentPartId);
+      if (!part) return;
 
-    setUserAnswers((prev) => {
-      const updatedAnswers = { ...prev };
-      part.questions.forEach((q) => delete updatedAnswers[`${currentPartId}-${q.id}`]);
-      return updatedAnswers;
-    });
-    setResults((prev) => {
-      const updatedResults = { ...prev };
-      delete updatedResults[currentPartId];
-      return updatedResults;
-    });
-    setPartSubmissionStatus((prev) => ({ ...prev, [currentPartId]: false }));
-  }, [exerciseData]);
+      setUserAnswers((prev) => {
+        const updatedAnswers = { ...prev };
+        part.questions.forEach(
+          (q) => delete updatedAnswers[`${currentPartId}-${q.id}`]
+        );
+        return updatedAnswers;
+      });
+      setResults((prev) => {
+        const updatedResults = { ...prev };
+        delete updatedResults[currentPartId];
+        return updatedResults;
+      });
+      setPartSubmissionStatus((prev) => ({ ...prev, [currentPartId]: false }));
+    },
+    [exerciseData]
+  );
 
   const toggleKana = useCallback(() => {
     const newKanaMode = !showKana;
@@ -215,21 +267,25 @@ export function useExerciseLogic(
 
     if (!exerciseData) return;
     const updatedResultsBatch: typeof results = {};
-    Object.keys(partSubmissionStatus).forEach(submittedPartId => {
+    Object.keys(partSubmissionStatus).forEach((submittedPartId) => {
       if (partSubmissionStatus[submittedPartId]) {
-        const part = exerciseData.find(p => p.id === submittedPartId);
+        const part = exerciseData.find((p) => p.id === submittedPartId);
         if (part) {
           const currentPartResults: (typeof results)[string] = {};
-          part.questions.forEach(question => {
+          part.questions.forEach((question) => {
             const uniqueQuestionKey = `${submittedPartId}-${question.id}`;
-            currentPartResults[question.id] = checkAnswers(userAnswers[uniqueQuestionKey], question, newKanaMode);
+            currentPartResults[question.id] = checkAnswers(
+              userAnswers[uniqueQuestionKey],
+              question,
+              newKanaMode
+            );
           });
           updatedResultsBatch[submittedPartId] = currentPartResults;
         }
       }
     });
     if (Object.keys(updatedResultsBatch).length > 0) {
-        setResults(prev => ({ ...prev, ...updatedResultsBatch }));
+      setResults((prev) => ({ ...prev, ...updatedResultsBatch }));
     }
   }, [showKana, exerciseData, userAnswers, checkAnswers, partSubmissionStatus]);
 

@@ -48,7 +48,8 @@ export interface ExercisePart {
   paragraph?: Paragraph;
   examples?: Example[];
   questions: Question[];
-  options?: Option[];
+  options?: string[];
+  options_kana?: string[];
 }
 
 export const regex = /\s|\u3000/g;

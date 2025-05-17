@@ -33,7 +33,7 @@ export default function ExamplePart({ activePart, showKana }: ExampleProps) {
                         style={{ minWidth: "50px" }}
                       >
                         Answer:
-                      </span>{" "}
+                      </span>
                       <div>{renderExamples(exampleTextToShow)}</div>
                     </div>
                     {example.question_en?.[0] && (
