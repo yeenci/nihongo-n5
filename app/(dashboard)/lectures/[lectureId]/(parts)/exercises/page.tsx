@@ -39,15 +39,13 @@ export default function ExercisePage() {
   return (
     <div className="flex flex-col items-center w-full min-h-screen py-8 px-4">
       <div className="w-full max-w-3xl">
-        {" "}
-        {/* Constrain width for better readability */}
         <div className="flex items-center justify-between mb-6 px-1">
           <h1 className="text-2xl sm:text-3xl font-bold text-primary">
             Exercises
           </h1>
           {!loading && exercisePartsData && exercisePartsData.length > 0 && (
             <Button onClick={toggleKana} variant="outline" size="sm">
-              {showKana ? "表示：漢字" : "Display: Kana"}
+              {showKana ? "Display: Kanji" : "Display: Kana"}
             </Button>
           )}
         </div>

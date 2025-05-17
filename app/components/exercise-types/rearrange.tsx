@@ -298,7 +298,7 @@ export default function Rearrange({
           )}
           {isResetOrPending && (
             <p className="text-orange-600 dark:text-orange-400 font-semibold">
-              Answer changed. Please submit the part again to check.
+              Answer changed. Please reset to submit the part again.
             </p>
           )}
           {!isOverallCorrect &&
@@ -312,7 +312,7 @@ export default function Rearrange({
             !isResetOrPending &&
             currentAnswerString && (
               <p className="text-orange-600 dark:text-orange-400 font-semibold">
-                Answer changed. Please submit the part again to check.
+                Answer changed. Please reset to submit the part again.
               </p>
             )}
           {questionEnglish && (

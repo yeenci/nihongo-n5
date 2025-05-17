@@ -299,7 +299,7 @@ export default function FillInTheBlank({
           )}
           {isResetOrPending && (
             <p className="text-orange-600 dark:text-orange-400 font-semibold pl-1">
-              Answer changed. Please submit the part again to check.
+              Answer changed. Please reset to submit the part again.
             </p>
           )}
           {!isOverallCorrect && !isAnyIncorrect && !isResetOrPending && (
