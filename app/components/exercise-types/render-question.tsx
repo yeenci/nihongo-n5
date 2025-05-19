@@ -1,9 +1,10 @@
-import { ExercisePart, Question } from "@/app/constants/exercise";
+import { Example, ExercisePart, Question } from "@/app/constants/exercise";
 import FillInTheBlank from "./fill-in-the-blank";
 import ChooseInParentheses from "./choose-in-parentheses";
 import Rearrange from "./rearrange";
 import WordBox from "./word-box";
-import { ComponentType } from "react";
+import { ComponentType, useMemo } from "react";
+import { Badge } from "@/components/ui/badge";
 
 interface RenderQuestionByTypeProps {
   type: string;
@@ -110,6 +111,22 @@ export default function RenderQuestionByType({
     </div>
   );
 
+  const usedWords = useMemo(() => {
+    if (!activePart || !activePart.examples || activePart.examples.length === 0) {
+      return new Set<string>();
+    }
+    const usedWords = new Set<string>();
+    activePart.examples.forEach((example: Example) => {
+      if (example.answer) {
+        example.answer.forEach(ans => ans && usedWords.add(ans.trim()));
+      }
+      if (example.answer_kana) {
+        example.answer_kana.forEach(ansKana => ansKana && usedWords.add(ansKana.trim()));
+      }
+    });
+    return usedWords;
+  }, [activePart]);
+
   switch (type) {
     case "fill-in-the-blank":
       return renderQuestions(
@@ -128,9 +145,57 @@ export default function RenderQuestionByType({
         ? activePart.options_kana
         : activePart.options;
 
-        return (
+      return (
         <div className="space-y-8">
-          {wordOptions && wordOptions.length > 0 && (<div className="mb-6 p-3 border rounded-lg bg-muted/50 sticky top-4 z-10 shadow-sm"></div>)
+          {wordOptions && wordOptions.length > 0 && (
+            <div className="mb-6 p-3 border border-dashed border-border rounded-lg sticky top-4 z-10">
+              <h4 className="text-sm font-medium mb-2 text-muted-foreground">
+                Available Word:
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {wordOptions.map((option, idx) => {
+                  const isUsedInExample = usedWords.has(option.trim());
+                  return (
+                    <Badge
+                      key={`${option}-${idx}`}
+                      variant="outline"
+                      className={`text-base px-3 py-1 cursor-default ${
+                        isUsedInExample ? "line-through text-muted-foreground/70" : ""
+                      }`}
+                      title={isUsedInExample ? "Used in example" : undefined}
+                    >
+                      {option}
+                    </Badge>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {activePart.questions.map((question, index) => {
+            const questionUid = `${partId}-${question.id}`;
+            const questionValue = userAnswers[questionUid];
+            const questionResult = results[partId]?.[question.id];
+            return (
+              <div key={question.id} className="border-b border-border pb-6 last:border-b-0 last:pb-0">
+                <p className="mb-3 text-sm font-medium text-muted-foreground">Question {index + 1}.</p>
+                <WordBox
+                  activePart={activePart}
+                  question={question}
+                  showKana={showKana}
+                  value={questionValue}
+                  result={questionResult}
+                  isPartSubmitted={isPartSubmitted}
+                  partId={partId}
+                  questionId={question.id}
+                  getNumOfAnswers={getNumOfAnswers}
+                  onChange={onChange}
+                />
+              </div>
+            );
+          })}
+        </div>
+      );
     default:
       return (
         <div className="p-4 border rounded bg-destructive/10 text-destructive">

@@ -19,7 +19,6 @@ export default function ExamplePart({ activePart, showKana }: ExampleProps) {
             </h3>
             <ul className="space-y-4">
               {activePart.examples.map((example, index) => {
-                // Determine which version of the question to show based on showKana
                 const exampleTextToShow =
                   showKana && example.question_kana?.[0]
                     ? example.question_kana[0]

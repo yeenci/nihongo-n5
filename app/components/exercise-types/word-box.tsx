@@ -221,15 +221,6 @@ export default function WordBox({
             Word Box:
           </h4>
           <div className="flex flex-wrap gap-2">
-            {wordOptions.map((option, idx) => (
-              <Badge
-                key={idx}
-                variant="secondary"
-                className="text-base px-3 py-1 cursor-default"
-              >
-                {option}
-              </Badge>
-            ))}
 
             <div className="mb-1">
               <div className="leading-relaxed text-foreground/80">

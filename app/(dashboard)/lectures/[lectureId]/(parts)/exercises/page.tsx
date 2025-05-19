@@ -26,7 +26,6 @@ export default function ExercisePage() {
     getNumOfAnswers,
   } = useExerciseLogic(exercisePartsData);
 
-  // Helper to check if any answers have been entered for the current part
   const hasAnswersForCurrentPart = () => {
     if (!activePart || !userAnswers) return false;
     return activePart.questions.some((q) => {
