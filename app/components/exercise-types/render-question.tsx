@@ -148,7 +148,7 @@ export default function RenderQuestionByType({
       return (
         <div className="space-y-8">
           {wordOptions && wordOptions.length > 0 && (
-            <div className="mb-6 p-3 border border-dashed border-border rounded-lg sticky top-4 z-10">
+            <div className="mb-6 p-3 border border-dashed border-border rounded-lg sticky top-16 z-10 bg-white">
               <h4 className="text-sm font-medium mb-2 text-muted-foreground">
                 Available Word:
               </h4>
