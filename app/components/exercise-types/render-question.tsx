@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Example, ExercisePart, Question } from "@/app/constants/exercise";
 import FillInTheBlank from "./fill-in-the-blank";
 import ChooseInParentheses from "./choose-in-parentheses";

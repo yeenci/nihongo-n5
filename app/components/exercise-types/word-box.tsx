@@ -9,6 +9,7 @@ import {
 } from "@/lib/transcription";
 import { Fragment, useCallback, useMemo, useState } from "react";
 import { TranscriptionPopup } from "../transcribe-popup"; // Adjust path if necessary
+import { Button } from "@/components/ui/button";
 
 interface WordBoxProps {
   activePart: ExercisePart; // Pass activePart if it's needed for anything other than displaying options
@@ -40,14 +41,12 @@ export default function WordBox({
   result,
   showKana,
   getNumOfAnswers,
-  // hideOptionsDisplay,
 }: WordBoxProps) {
+  const [showEnglishMeaning, setShowEnglishMeaning] = useState(false);
+
   const [popupHiraganaText, setPopupHiraganaText] = useState("");
   const [popupKatakanaText, setPopupKatakanaText] = useState("");
   const [activeInputIndex, setActiveInputIndex] = useState<number | null>(null);
-
-  // Word options are no longer derived here; parent (RenderQuestionByType) displays them.
-  // const wordOptions = useMemo(() => { ... }); // REMOVE
 
   const displayQuestionString = useMemo(() => {
     const baseQ = question.question[0] ?? "";
@@ -142,7 +141,8 @@ export default function WordBox({
   const handleInputClick = useCallback(
     (index: number) => {
       if (isPartSubmitted && resultsArrayFromInput[index] === true) {
-        setActiveInputIndex(null); return;
+        setActiveInputIndex(null);
+        return;
       }
       if (activeInputIndex === index) {
         setActiveInputIndex(null);
@@ -158,28 +158,36 @@ export default function WordBox({
   const handleHiraganaApply = useCallback(() => {
     if (activeInputIndex !== null && popupHiraganaText) {
       onChange(partId, questionId, popupHiraganaText, activeInputIndex);
-      setActiveInputIndex(null); setPopupHiraganaText("");
+      setActiveInputIndex(null);
+      setPopupHiraganaText("");
     }
   }, [activeInputIndex, popupHiraganaText, onChange, partId, questionId]);
 
   const handleKatakanaApply = useCallback(() => {
     if (activeInputIndex !== null && popupKatakanaText) {
       onChange(partId, questionId, popupKatakanaText, activeInputIndex);
-      setActiveInputIndex(null); setPopupKatakanaText("");
+      setActiveInputIndex(null);
+      setPopupKatakanaText("");
     }
   }, [activeInputIndex, popupKatakanaText, onChange, partId, questionId]);
 
   const handlePopupOpenChange = useCallback(
     (open: boolean, index: number) => {
       if (!open && activeInputIndex === index) {
-        setActiveInputIndex(null); setPopupHiraganaText(""); setPopupKatakanaText("");
+        setActiveInputIndex(null);
+        setPopupHiraganaText("");
+        setPopupKatakanaText("");
       }
     },
     [activeInputIndex]
   );
 
   const isOverallCorrect = useMemo(
-    () => isPartSubmitted && resultsArrayFromInput.length > 0 && resultsArrayFromInput.length === expectedInputs && resultsArrayFromInput.every((r) => r === true),
+    () =>
+      isPartSubmitted &&
+      resultsArrayFromInput.length > 0 &&
+      resultsArrayFromInput.length === expectedInputs &&
+      resultsArrayFromInput.every((r) => r === true),
     [isPartSubmitted, resultsArrayFromInput, expectedInputs]
   );
   const isAnyIncorrect = useMemo(
@@ -187,22 +195,35 @@ export default function WordBox({
     [isPartSubmitted, resultsArrayFromInput]
   );
   const isResetOrPending = useMemo(
-    () => isPartSubmitted && resultsArrayFromInput.some((r) => r === null) && !isOverallCorrect && !isAnyIncorrect,
+    () =>
+      isPartSubmitted &&
+      resultsArrayFromInput.some((r) => r === null) &&
+      !isOverallCorrect &&
+      !isAnyIncorrect,
     [isPartSubmitted, resultsArrayFromInput, isOverallCorrect, isAnyIncorrect]
   );
   const displayCorrectAnswers = useCallback(() => {
     const answersToDisplay = showKana ? question.answer_kana : question.answer;
     if (Array.isArray(answersToDisplay) && answersToDisplay.length > 0) {
-      const cleanedAnswers = answersToDisplay.map(a => a ?? "N/A").filter(a => a.trim() !== "");
-      if (cleanedAnswers.length > 0) return "　[　" + cleanedAnswers.join("　|　") + "　]　";
+      const cleanedAnswers = answersToDisplay
+        .map((a) => a ?? "N/A")
+        .filter((a) => a.trim() !== "");
+      if (cleanedAnswers.length > 0)
+        return "　[　" + cleanedAnswers.join("　|　") + "　]　";
     }
     return " (No answer provided)";
   }, [showKana, question.answer, question.answer_kana]);
 
+  const questionEnglish = useMemo(() => {
+    return question.question_en?.[0] || null;
+  }, [question]);
+
+  const toggleShowEnglish = () => {
+    setShowEnglishMeaning((prev) => !prev);
+  };
+
   return (
     <div className="p-4 border rounded-md transition-colors duration-300 bg-card shadow">
-      {/* Word Box Display is REMOVED from here. RenderQuestionByType will handle it. */}
-
       {/* Question Input Area */}
       <div className="mb-1">
         <div className="leading-relaxed text-foreground/80">
@@ -213,8 +234,12 @@ export default function WordBox({
                 <TranscriptionPopup
                   isOpen={activeInputIndex === index}
                   onOpenChange={(open) => handlePopupOpenChange(open, index)}
-                  HiraganaText={activeInputIndex === index ? popupHiraganaText : ""}
-                  KatakanaText={activeInputIndex === index ? popupKatakanaText : ""}
+                  HiraganaText={
+                    activeInputIndex === index ? popupHiraganaText : ""
+                  }
+                  KatakanaText={
+                    activeInputIndex === index ? popupKatakanaText : ""
+                  }
                   onHiraganaApply={handleHiraganaApply}
                   onKatakanaApply={handleKatakanaApply}
                   trigger={
@@ -224,14 +249,20 @@ export default function WordBox({
                       value={valuesArray[index]}
                       onChange={(e) => handleDirectInput(e.target.value, index)}
                       onClick={() => handleInputClick(index)}
-                      aria-label={`Answer blank ${index + 1} for question ${questionId}`}
+                      aria-label={`Answer blank ${
+                        index + 1
+                      } for question ${questionId}`}
                       className={`
                         inline-block w-32 sm:w-40 h-7 px-2 mx-1 align-baseline border rounded
                         text-sm transition-colors duration-200 ease-in-out
                         focus:outline-none focus:ring-2 focus:ring-offset-1
                         ${getInputClasses(index)}`}
-                      disabled={isPartSubmitted && resultsArrayFromInput[index] === true}
-                      autoComplete="off" autoCorrect="off" spellCheck="false"
+                      disabled={
+                        isPartSubmitted && resultsArrayFromInput[index] === true
+                      }
+                      autoComplete="off"
+                      autoCorrect="off"
+                      spellCheck="false"
                     />
                   }
                 />
@@ -244,15 +275,45 @@ export default function WordBox({
       {/* Feedback Display */}
       {isPartSubmitted && (
         <div className="mt-2 text-sm min-h-[1.25rem]">
-          {isOverallCorrect && <p className="text-green-600 dark:text-green-400 font-semibold">Correct!</p>}
+          {isOverallCorrect && (
+            <p className="text-green-600 dark:text-green-400 font-semibold pl-1">
+              Correct!
+            </p>
+          )}
           {isAnyIncorrect && (
-            <p className="text-red-600 dark:text-red-400 font-semibold">
+            <p className="text-red-600 dark:text-red-400 font-semibold pl-1">
               Incorrect. Correct answer(s):
               <span className="font-mono pl-1">{displayCorrectAnswers()}</span>
             </p>
           )}
-          {isResetOrPending && <p className="text-orange-600 dark:text-orange-400 font-semibold">Answer changed. Please submit the part again to check.</p>}
-          {!isOverallCorrect && !isAnyIncorrect && !isResetOrPending && <p className="text-muted-foreground">Review your answer(s).</p>}
+          {isResetOrPending && (
+            <p className="text-orange-600 dark:text-orange-400 font-semibold pl-1">
+              Answer changed. Please reset to submit the part again.
+            </p>
+          )}
+          {!isOverallCorrect && !isAnyIncorrect && !isResetOrPending && (
+            <p className="text-muted-foreground">Review your answer(s).</p>
+          )}
+          {questionEnglish && (
+            <div className="mt-2">
+              <Button
+                variant="link"
+                size="sm"
+                onClick={toggleShowEnglish}
+                className="text-xs h-7 px-1 underline"
+              >
+                {showEnglishMeaning ? "Hide Meaning" : "Show Meaning"}
+              </Button>
+              {showEnglishMeaning && (
+                <p
+                  className="text-muted-foreground mt-1.5 px-1 rounded-md"
+                  style={{ whiteSpace: "pre-line" }}
+                >
+                  {questionEnglish}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

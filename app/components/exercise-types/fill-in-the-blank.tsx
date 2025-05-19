@@ -39,11 +39,12 @@ export default function FillInTheBlank({
   showKana,
   getNumOfAnswers,
 }: FillInTheBlankProps) {
+  const [showEnglishMeaning, setShowEnglishMeaning] = useState(false);
+  
   // --- Logic from AnswerInput ---
   const [popupHiraganaText, setPopupHiraganaText] = useState("");
   const [popupKatakanaText, setPopupKatakanaText] = useState("");
   const [activeInputIndex, setActiveInputIndex] = useState<number | null>(null);
-  const [showEnglishMeaning, setShowEnglishMeaning] = useState(false);
 
   const displayQuestionString = useMemo(() => {
     const baseQ = question.question[0] ?? "";
