@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Question } from "@/app/constants/exercise";
 import {
   transcribeToHiragana,
@@ -6,8 +7,6 @@ import {
 import { useCallback, useMemo, useState } from "react";
 import { TranscriptionPopup } from "../transcribe-popup";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import clsx from "clsx";
 
 interface FillInTheTableProps {
   question: Question;
@@ -117,7 +116,7 @@ export default function FillInTheTable({
   const handleDirectInput = useCallback(
     (newValue: string, index: number) => {
       onChange(partId, questionId, newValue, index);
-      if (expectedInputs === index) {
+      if (activeInputIndex === index) {
         setPopupHiraganaText((prev) => ({
           ...prev,
           [index]: transcribeToHiragana(newValue),
@@ -128,7 +127,7 @@ export default function FillInTheTable({
         }));
       }
     },
-    [onChange, partId, questionId, expectedInputs]
+    [onChange, partId, questionId, activeInputIndex]
   );
 
   const handleInputClick = useCallback(
@@ -162,6 +161,7 @@ export default function FillInTheTable({
         activeInputIndex
       );
       setActiveInputIndex(null);
+      setPopupHiraganaText("");
     }
   }, [activeInputIndex, popupHiraganaText, onChange, partId, questionId]);
 
@@ -174,12 +174,17 @@ export default function FillInTheTable({
         activeInputIndex
       );
       setActiveInputIndex(null);
+      setPopupKatakanaText("");
     }
   }, [activeInputIndex, popupKatakanaText, onChange, partId, questionId]);
 
   const handlePopupOpenChange = useCallback(
-    (open: boolean, currentidx: number) => {
-      if (!open && activeInputIndex === currentidx) setActiveInputIndex(null);
+    (open: boolean, currentIdx: number) => {
+      if (!open && activeInputIndex === currentIdx) {
+        setActiveInputIndex(null);
+        setPopupHiraganaText("");
+        setPopupKatakanaText("");
+      }
     },
     [activeInputIndex]
   );
@@ -225,48 +230,44 @@ export default function FillInTheTable({
 
   return (
     <>
-      <tr>
+      <tr className="border-t-2 border-l-2 border-r-2 border-muted">
         <td className="p-2.5 border border-border text-center align-middle text-sm font-medium text-muted-foreground w-12">
           {rowIndex + 1}.
         </td>
         {displayCells.map((cellContent, cellIndex) => {
           if (cellContent.trim() === "（＿＿）") {
-            const idx = current++;
+            const index = current++;
             return (
               <td
-                key={`${questionId}-cell-${cellIndex}-blank-${idx}`}
-                className={clsx(
-                  "p-2",
-                  "border",
-                  "border-border",
-                  "text-center",
-                  "align-middle",
-                  {
-                    "bg-red-50 dark:bg-red-900/10":
-                      isPartSubmitted && isAnyIncorrect,
-                    "bg-green-50 dark:bg-green-900/10":
-                      isPartSubmitted && isOverallCorrect && !isAnyIncorrect,
-                  }
-                )}
+                key={`${questionId}-cell-${cellIndex}-blank-${index}`}
+                className="p-2 border border-border text-center align-middle"
               >
                 <TranscriptionPopup
-                  isOpen={activeInputIndex === idx}
-                  onOpenChange={(open) => handlePopupOpenChange(open, idx)}
-                  HiraganaText={popupHiraganaText[idx] || ""}
-                  KatakanaText={popupKatakanaText[idx] || ""}
+                  isOpen={activeInputIndex === index}
+                  onOpenChange={(open) => handlePopupOpenChange(open, index)}
+                  HiraganaText={
+                    activeInputIndex === index ? popupHiraganaText[index] : ""
+                  }
+                  KatakanaText={
+                    activeInputIndex === index ? popupKatakanaText[index] : ""
+                  }
                   onHiraganaApply={handleHiraganaApply}
                   onKatakanaApply={handleKatakanaApply}
                   trigger={
                     <Input
                       type="text"
                       placeholder="Answer"
-                      value={valuesArray[idx]}
-                      onChange={(e) => handleDirectInput(e.target.value, idx)}
-                      onClick={() => handleInputClick(idx)}
-                      aria-label={`Row ${rowIndex + 1} Answer blank ${idx + 1}`}
-                      className={`h-9 px-2 mx-auto border rounded text-sm transition-colors duration-200 ease-in-out text-center focus:outline-none focus:ring-2 focus:ring-offset-1 `}
+                      value={valuesArray[index]}
+                      onChange={(e) => handleDirectInput(e.target.value, index)}
+                      onClick={() => handleInputClick(index)}
+                      aria-label={`Row ${rowIndex + 1} Answer blank ${
+                        index + 1
+                      }`}
+                      className={`h-9 px-2 mx-auto border rounded text-sm transition-colors duration-200 ease-in-out text-center focus:outline-none focus:ring-2 focus:ring-offset-1 ${getInputClasses(
+                        index
+                      )}`}
                       disabled={
-                        isPartSubmitted && resultsArrayFromInput[idx] === true
+                        isPartSubmitted && resultsArrayFromInput[index] === true
                       }
                       autoComplete="off"
                       autoCorrect="off"
@@ -280,7 +281,7 @@ export default function FillInTheTable({
             return (
               <td
                 key={`${questionId}-cell-${cellIndex}-text`}
-                className="p-2.5 border border-border text-center align-middle text-sm sm:text-base text-foreground/90"
+                className="p-2.5 border border-border text-center align-middle text-sm sm:text-sm text-foreground/90"
               >
                 <span className="whitespace-pre-wrap font-sans">
                   {cellContent}
@@ -291,7 +292,7 @@ export default function FillInTheTable({
         })}
       </tr>
       {isPartSubmitted && (
-        <tr className="bg-muted/10">
+        <tr className="border-x border-b-2 border-l-2 border-r-2 border-muted">
           <td
             colSpan={2}
             className="p-2 text-xs text-muted-foreground border-x border-b border-border"
@@ -307,6 +308,18 @@ export default function FillInTheTable({
           >
             <span className="font-semibold">Correct Answer(s): </span>
             {displayCorrectAnswers()}
+          </td>
+        </tr>
+      )}
+      {isResetOrPending && (
+        <tr>
+          <td
+            colSpan={displayCells.length + 1}
+            className="p-2 text-xs text-muted-foreground border-x border-b border-border"
+          >
+            <span className="text-orange-600 dark:text-orange-400 font-medium">
+              Answer changed. Please reset to submit the part again.
+            </span>
           </td>
         </tr>
       )}
