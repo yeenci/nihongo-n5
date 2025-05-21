@@ -40,8 +40,7 @@ export default function FillInTheBlank({
   getNumOfAnswers,
 }: FillInTheBlankProps) {
   const [showEnglishMeaning, setShowEnglishMeaning] = useState(false);
-  
-  // --- Logic from AnswerInput ---
+
   const [popupHiraganaText, setPopupHiraganaText] = useState("");
   const [popupKatakanaText, setPopupKatakanaText] = useState("");
   const [activeInputIndex, setActiveInputIndex] = useState<number | null>(null);

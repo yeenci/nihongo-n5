@@ -6,6 +6,7 @@ import Rearrange from "./rearrange";
 import WordBox from "./word-box";
 import { ComponentType, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
+import FillInTheTable from "./fill-in-the-table";
 
 interface RenderQuestionByTypeProps {
   type: string;
@@ -44,6 +45,7 @@ interface CommonQuestionProps {
     blankIndex?: number
   ) => void;
   activePart: ExercisePart;
+  rowIndex?: number;
 }
 
 export default function RenderQuestionByType({
@@ -105,6 +107,7 @@ export default function RenderQuestionByType({
               questionId={question.id}
               getNumOfAnswers={getNumOfAnswers}
               onChange={onChange}
+              rowIndex={type === "fill-in-the-table" ? index : undefined}
             />
           </div>
         );
@@ -113,16 +116,22 @@ export default function RenderQuestionByType({
   );
 
   const usedWords = useMemo(() => {
-    if (!activePart || !activePart.examples || activePart.examples.length === 0) {
+    if (
+      !activePart ||
+      !activePart.examples ||
+      activePart.examples.length === 0
+    ) {
       return new Set<string>();
     }
     const usedWords = new Set<string>();
     activePart.examples.forEach((example: Example) => {
       if (example.answer) {
-        example.answer.forEach(ans => ans && usedWords.add(ans.trim()));
+        example.answer.forEach((ans) => ans && usedWords.add(ans.trim()));
       }
       if (example.answer_kana) {
-        example.answer_kana.forEach(ansKana => ansKana && usedWords.add(ansKana.trim()));
+        example.answer_kana.forEach(
+          (ansKana) => ansKana && usedWords.add(ansKana.trim())
+        );
       }
     });
     return usedWords;
@@ -161,7 +170,9 @@ export default function RenderQuestionByType({
                       key={`${option}-${idx}`}
                       variant="outline"
                       className={`text-base px-3 py-1 cursor-default ${
-                        isUsedInExample ? "line-through text-muted-foreground/70" : ""
+                        isUsedInExample
+                          ? "line-through text-muted-foreground/70"
+                          : ""
                       }`}
                       title={isUsedInExample ? "Used in example" : undefined}
                     >
@@ -178,8 +189,13 @@ export default function RenderQuestionByType({
             const questionValue = userAnswers[questionUid];
             const questionResult = results[partId]?.[question.id];
             return (
-              <div key={question.id} className="border-b border-border pb-6 last:border-b-0 last:pb-0">
-                <p className="mb-3 text-sm font-medium text-muted-foreground">Question {index + 1}.</p>
+              <div
+                key={question.id}
+                className="border-b border-border pb-6 last:border-b-0 last:pb-0"
+              >
+                <p className="mb-3 text-sm font-medium text-muted-foreground">
+                  Question {index + 1}.
+                </p>
                 <WordBox
                   activePart={activePart}
                   question={question}
@@ -195,6 +211,42 @@ export default function RenderQuestionByType({
               </div>
             );
           })}
+        </div>
+      );
+    case "fill-in-the-table":
+      if (!activePart.questions || activePart.questions.length === 0) {
+        return (
+          <div className="text-muted-foreground">
+            No table data for this part.
+          </div>
+        );
+      }
+      return (
+        <div className="overflow-x-auto">
+          <table className="min-w-full w-full border-collapse border border-border bg-card shadow-md rounded-lg">
+            <tbody>
+              {activePart.questions.map((question, index) => {
+                const questionUid = `${partId}-${question.id}`;
+                const questionValue = userAnswers[questionUid];
+                const questionResult = results[partId]?.[question.id];
+                return (
+                  <FillInTheTable
+                    key={question.id}
+                    question={question}
+                    partId={partId}
+                    questionId={question.id}
+                    value={questionValue}
+                    onChange={onChange}
+                    isPartSubmitted={isPartSubmitted}
+                    result={questionResult}
+                    showKana={showKana}
+                    getNumOfAnswers={getNumOfAnswers}
+                    rowIndex={index}
+                  />
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       );
     default:
