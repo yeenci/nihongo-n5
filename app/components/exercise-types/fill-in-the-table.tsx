@@ -6,6 +6,8 @@ import {
 import { useCallback, useMemo, useState } from "react";
 import { TranscriptionPopup } from "../transcribe-popup";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import clsx from "clsx";
 
 interface FillInTheTableProps {
   question: Question;
@@ -205,19 +207,25 @@ export default function FillInTheTable({
     [isPartSubmitted, resultsArrayFromInput, isOverallCorrect, isAnyIncorrect]
   );
 
+  const displayCorrectAnswers = useCallback(() => {
+    const answersToDisplay = showKana ? question.answer_kana : question.answer;
+    if (Array.isArray(answersToDisplay) && answersToDisplay.length > 0) {
+      return (
+        "　[　" + answersToDisplay.map((a) => a ?? "?").join("　|　") + "　]　"
+      );
+    }
+    return "N/A";
+  }, [showKana, question.answer, question.answer_kana]);
+
+  const questionEnglish = useMemo(() => {
+    return question.question_en?.[0] || null;
+  }, [question.question_en]);
+
   let current = 0;
 
   return (
     <>
-      <tr
-        className={
-          isPartSubmitted && isAnyIncorrect
-            ? "bg-red-50 dark:bg-red-900/10"
-            : isPartSubmitted && isOverallCorrect
-            ? "bg-green-50 dark:bg-green-900/10"
-            : ""
-        }
-      >
+      <tr>
         <td className="p-2.5 border border-border text-center align-middle text-sm font-medium text-muted-foreground w-12">
           {rowIndex + 1}.
         </td>
@@ -227,7 +235,19 @@ export default function FillInTheTable({
             return (
               <td
                 key={`${questionId}-cell-${cellIndex}-blank-${idx}`}
-                className="p-2 border border-border text-center align-middle"
+                className={clsx(
+                  "p-2",
+                  "border",
+                  "border-border",
+                  "text-center",
+                  "align-middle",
+                  {
+                    "bg-red-50 dark:bg-red-900/10":
+                      isPartSubmitted && isAnyIncorrect,
+                    "bg-green-50 dark:bg-green-900/10":
+                      isPartSubmitted && isOverallCorrect && !isAnyIncorrect,
+                  }
+                )}
               >
                 <TranscriptionPopup
                   isOpen={activeInputIndex === idx}
@@ -244,9 +264,7 @@ export default function FillInTheTable({
                       onChange={(e) => handleDirectInput(e.target.value, idx)}
                       onClick={() => handleInputClick(idx)}
                       aria-label={`Row ${rowIndex + 1} Answer blank ${idx + 1}`}
-                      className={`h-9 px-2 mx-auto border rounded text-sm transition-colors duration-200 ease-in-out text-center focus:outline-none focus:ring-2 focus:ring-offset-1 ${getInputClasses(
-                        idx
-                      )}`}
+                      className={`h-9 px-2 mx-auto border rounded text-sm transition-colors duration-200 ease-in-out text-center focus:outline-none focus:ring-2 focus:ring-offset-1 `}
                       disabled={
                         isPartSubmitted && resultsArrayFromInput[idx] === true
                       }
@@ -272,6 +290,26 @@ export default function FillInTheTable({
           }
         })}
       </tr>
+      {isPartSubmitted && (
+        <tr className="bg-muted/10">
+          <td
+            colSpan={2}
+            className="p-2 text-xs text-muted-foreground border-x border-b border-border"
+          >
+            <span className="font-medium">Meaning: </span>
+            {questionEnglish}
+          </td>
+          <td
+            colSpan={
+              displayCells.length + (isPartSubmitted || questionEnglish ? 1 : 0)
+            }
+            className="p-2 text-xs text-muted-foreground border-x border-b border-border"
+          >
+            <span className="font-semibold">Correct Answer(s): </span>
+            {displayCorrectAnswers()}
+          </td>
+        </tr>
+      )}
     </>
   );
 }
