@@ -1,5 +1,5 @@
 import { ExercisePart } from "@/app/constants/exercise";
-import { renderExamples } from "../exercise-types/helper";
+import { renderExampleEN, renderExamples } from "../exercise-types/helper";
 import { ArrowRight } from "lucide-react";
 
 interface ExampleProps {
@@ -37,7 +37,7 @@ export default function ExamplePart({ activePart, showKana }: ExampleProps) {
                     {example.question_en?.[0] && (
                       <div className="text-xs text-muted-foreground mt-1 pl-[10px]">
                         (
-                        <span className="italic">{example.question_en[0]}</span>
+                        <span className="italic">{renderExampleEN(example.question_en[0])}</span>
                         )
                       </div>
                     )}
@@ -87,7 +87,7 @@ export default function ExamplePart({ activePart, showKana }: ExampleProps) {
                     {example.question_en?.[0] && (
                       <div className="text-xs text-muted-foreground mt-1 pl-[10px]">
                         (
-                        <span className="italic">{example.question_en[0]}</span>
+                        <span className="italic">{renderExampleEN(example.question_en[0])}</span>
                         )
                       </div>
                     )}

@@ -2,9 +2,8 @@
 import React, { Fragment } from "react"; // Import Fragment
 
 export const renderExamples = (text: string | undefined | null): React.ReactNode => {
-  if (!text) return null; // Return null or an empty Fragment if text is empty
+  if (!text) return null;
 
-  // Split the input text by newline characters first
   const lines = text.split('\n');
 
   return (
@@ -19,10 +18,26 @@ export const renderExamples = (text: string | undefined | null): React.ReactNode
   );
 };
 
-// Helper function to process a single line for example highlighting
+export const renderExampleEN = (text: string | undefined | null): React.ReactNode => {
+  if (!text) return null;
+
+  const lines = text.split('\n');
+
+  return (
+    <>
+      {lines.map((line, lineIndex) => (
+        <Fragment key={`line-${lineIndex}`}>
+          {lineIndex > 0 && <br />}
+          {line}
+        </Fragment>
+      ))}
+    </>
+  );
+};
+
 const processLineForExamples = (lineText: string, baseKey: string): React.ReactNode[] => {
   const parts: React.ReactNode[] = [];
-  const regex = /（　(.*?)　）/g; // Regex for full-width parentheses and spaces
+  const regex = /（　(.*?)　）/g; 
   let lastIndex = 0;
   let match;
   let partIndex = 0;

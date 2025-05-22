@@ -1,18 +1,18 @@
 // app/components/exercise-types/word-box.tsx
 "use client";
 
-import { Question, ExercisePart } from "@/app/constants/exercise"; // ExercisePart might be needed if other part details are used
+import { Question, ExercisePart } from "@/app/constants/exercise";
 import { Input } from "@/components/ui/input";
 import {
   transcribeToHiragana,
   transcribeToKatakana,
 } from "@/lib/transcription";
 import { Fragment, useCallback, useMemo, useState } from "react";
-import { TranscriptionPopup } from "../transcribe-popup"; // Adjust path if necessary
+import { TranscriptionPopup } from "../transcribe-popup";
 import { Button } from "@/components/ui/button";
 
 interface WordBoxProps {
-  activePart: ExercisePart; // Pass activePart if it's needed for anything other than displaying options
+  activePart: ExercisePart;
   question: Question;
   partId: string;
   questionId: string;
@@ -27,11 +27,9 @@ interface WordBoxProps {
   result: (boolean | null) | (boolean | null)[] | undefined;
   showKana: boolean;
   getNumOfAnswers: (question: Question) => number;
-  // hideOptionsDisplay?: boolean; // This prop would be true if parent renders options
 }
 
 export default function WordBox({
-  // activePart, // Only include if WordBox uses other activePart props
   question,
   partId,
   questionId,

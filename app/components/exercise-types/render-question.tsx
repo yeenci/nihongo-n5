@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Example, ExercisePart, Question } from "@/app/constants/exercise";
 import FillInTheBlank from "./fill-in-the-blank";
@@ -7,6 +8,7 @@ import WordBox from "./word-box";
 import { ComponentType, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import FillInTheTable from "./fill-in-the-table";
+import TrueFalse from "./true-false";
 
 interface RenderQuestionByTypeProps {
   type: string;
@@ -116,26 +118,44 @@ export default function RenderQuestionByType({
   );
 
   const usedWords = useMemo(() => {
-    if (
-      !activePart ||
-      !activePart.examples ||
-      activePart.examples.length === 0
-    ) {
-      return new Set<string>();
+  if (type !== "word-box") {
+    return new Set<string>();
+  }
+  if (!activePart || !activePart.examples || activePart.examples.length === 0) {
+    return new Set<string>();
+  }
+
+  const wordsCollection = new Set<string>();
+
+  const processSingleWord = (word: any) => {
+    if (typeof word === 'string') {
+      const trimmedWord = word.trim();
+      if (trimmedWord.length > 0) {
+        wordsCollection.add(trimmedWord);
+      }
     }
-    const usedWords = new Set<string>();
-    activePart.examples.forEach((example: Example) => {
-      if (example.answer) {
-        example.answer.forEach((ans) => ans && usedWords.add(ans.trim()));
-      }
-      if (example.answer_kana) {
-        example.answer_kana.forEach(
-          (ansKana) => ansKana && usedWords.add(ansKana.trim())
-        );
-      }
-    });
-    return usedWords;
-  }, [activePart]);
+  };
+
+  const addWordsFromAnswerField = (answerField: string | string[] | undefined | null) => {
+    if (!answerField) {
+      return;
+    }
+
+    if (Array.isArray(answerField)) {
+      answerField.forEach(item => {
+        processSingleWord(item);
+      });
+    } else if (typeof answerField === 'string') {
+      processSingleWord(answerField);
+    }
+  };
+  activePart.examples.forEach((example: Example) => {
+    addWordsFromAnswerField(example.answer);
+    addWordsFromAnswerField(example.answer_kana);
+  });
+
+  return wordsCollection;
+}, [activePart, type]);
 
   switch (type) {
     case "fill-in-the-blank":
@@ -149,6 +169,10 @@ export default function RenderQuestionByType({
     case "rearrange":
       return renderQuestions(
         Rearrange as React.ComponentType<CommonQuestionProps>
+      );
+    case "true-false":
+      return renderQuestions(
+        TrueFalse as React.ComponentType<CommonQuestionProps>
       );
     case "word-box":
       const wordOptions = showKana
