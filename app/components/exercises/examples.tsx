@@ -1,5 +1,6 @@
 import { ExercisePart } from "@/app/constants/exercise";
 import { renderExamples } from "../exercise-types/helper";
+import { ArrowRight } from "lucide-react";
 
 interface ExampleProps {
   activePart: ExercisePart | undefined;
@@ -25,19 +26,19 @@ export default function ExamplePart({ activePart, showKana }: ExampleProps) {
                     : example.question[0];
 
                 return (
-                  <li key={example.id || `ex-${index}`} className="text-sm">
+                  <li
+                    key={example.id || `ex-${index}`}
+                    className="text-sm"
+                  >
                     <div className="leading-relaxed text-foreground/80 flex items-center">
-                      <span
-                        className="mr-2 text-muted-foreground font-medium shrink-0"
-                        style={{ minWidth: "50px" }}
-                      >
-                        Answer:
-                      </span>
-                      <div>{renderExamples(exampleTextToShow)}</div>
+                    {index + 1}.
+                      <div className="pl-2">{renderExamples(exampleTextToShow)}</div>
                     </div>
                     {example.question_en?.[0] && (
-                      <div className="text-xs text-muted-foreground mt-1.5 pl-[58px]">
-                        (<span className="italic">{example.question_en[0]}</span>)
+                      <div className="text-xs text-muted-foreground mt-1 pl-[10px]">
+                        (
+                        <span className="italic">{example.question_en[0]}</span>
+                        )
                       </div>
                     )}
                   </li>
@@ -68,32 +69,26 @@ export default function ExamplePart({ activePart, showKana }: ExampleProps) {
                     : example.answer?.[0]) || "N/A";
 
                 return (
-                  <li key={example.id || `ex-${index}`} className="text-sm">
-                    <div className="leading-relaxed text-foreground/80">
+                  <li
+                    key={example.id || `ex-${index}`}
+                    className="text-sm"
+                  >
+                    <div className="pl-2 leading-relaxed text-foreground/80">
                       <div className="flex items-start">
-                        <span
-                          className="mr-2 text-muted-foreground font-medium shrink-0"
-                          style={{ minWidth: "50px" }}
-                        >
-                          Words:
-                        </span>
-                        <div className="font-mono">{wordsToDisplay}</div>
+                    {index + 1}.
+                        <div className="pl-2 font-mono">{wordsToDisplay}</div>
                       </div>
 
-                      <div className="flex items-start mt-1">
-                        <span
-                          className="mr-2 text-muted-foreground font-medium shrink-0"
-                          style={{ minWidth: "50px" }}
-                        >
-                          Answer:
-                        </span>
+                      <div className="flex items-start ">
+                        <ArrowRight className="pr-2" />
                         <div>{renderExamples(correctAnswerSentence)}</div>
                       </div>
                     </div>
-
                     {example.question_en?.[0] && (
-                      <div className="text-xs text-muted-foreground mt-1.5 pl-[58px]">
-                        (<span className="italic">{example.question_en[0]}</span>)
+                      <div className="text-xs text-muted-foreground mt-1 pl-[10px]">
+                        (
+                        <span className="italic">{example.question_en[0]}</span>
+                        )
                       </div>
                     )}
                   </li>
