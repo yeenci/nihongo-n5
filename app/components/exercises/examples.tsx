@@ -36,9 +36,7 @@ export default function ExamplePart({ activePart, showKana }: ExampleProps) {
                     </div>
                     {example.question_en?.[0] && (
                       <div className="text-xs text-muted-foreground mt-1 pl-[10px]">
-                        (
                         <span className="italic">{renderExampleEN(example.question_en[0])}</span>
-                        )
                       </div>
                     )}
                   </li>
@@ -86,9 +84,7 @@ export default function ExamplePart({ activePart, showKana }: ExampleProps) {
                     </div>
                     {example.question_en?.[0] && (
                       <div className="text-xs text-muted-foreground mt-1 pl-[10px]">
-                        (
                         <span className="italic">{renderExampleEN(example.question_en[0])}</span>
-                        )
                       </div>
                     )}
                   </li>
