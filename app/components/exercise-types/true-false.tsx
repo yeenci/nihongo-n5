@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-const */
 // app/components/exercise-types/word-box.tsx
 "use client";
@@ -155,8 +156,6 @@ export default function TrueFalse({
   const toggleShowEnglish = () => {
     setShowEnglishMeaning((prev) => !prev);
   };
-
-  const interactionDisabled = isPartSubmitted && result === true;
 
   return (
     <div className="p-4 border rounded-md transition-colors duration-300 bg-card shadow">
