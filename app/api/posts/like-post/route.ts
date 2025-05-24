@@ -21,10 +21,12 @@ export async function POST(req: Request) {
   const indexKey = `posts/index.json`;
 
   try {
-    const res = await s3.send(new GetObjectCommand({
-      Bucket: "nihongo-n5",
-      Key: indexKey,
-    }));
+    const res = await s3.send(
+      new GetObjectCommand({
+        Bucket: "nihongo-n5",
+        Key: indexKey,
+      })
+    );
     const body = await res.Body?.transformToString();
     const indexData = JSON.parse(body || "[]");
 
@@ -35,15 +37,18 @@ export async function POST(req: Request) {
       post.likes.push(email);
     }
 
-    await s3.send(new PutObjectCommand({
-      Bucket: "nihongo-n5",
-      Key: indexKey,
-      Body: JSON.stringify(indexData, null, 2),
-      ContentType: "application/json",
-    }));
+    await s3.send(
+      new PutObjectCommand({
+        Bucket: "nihongo-n5",
+        Key: indexKey,
+        Body: JSON.stringify(indexData, null, 2),
+        ContentType: "application/json",
+      })
+    );
 
     return new Response("Liked!", { status: 200 });
   } catch (error) {
     console.error(error);
-    return new Response("Error liking post", { status: 500 });}
+    return new Response("Error liking post", { status: 500 });
+  }
 }
