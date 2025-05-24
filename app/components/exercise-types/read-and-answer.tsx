@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // 5. Read and choose True/False
 
 import { Question } from "@/app/constants/exercise";
