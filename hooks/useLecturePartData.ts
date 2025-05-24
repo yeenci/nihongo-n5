@@ -19,7 +19,7 @@ export function useLecturePartData() {
   useEffect(() => {
     if (!data) {
       setLoading(true);
-      fetch(`/api/fetch/vocabulary?partId=${partId}&lectureId=${lectureId}`)
+      fetch(`/api/fetch/lecture?partId=${partId}&lectureId=${lectureId}`)
         .then((res) => res.json())
         .then((json) =>
           dispatch(

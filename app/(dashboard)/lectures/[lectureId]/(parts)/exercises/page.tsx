@@ -5,8 +5,8 @@ import RenderQuestionByType from "@/app/components/exercise-types/render-questio
 import ExamplePart from "@/app/components/exercises/examples";
 import Spinner from "@/app/components/spinner";
 import { Button } from "@/components/ui/button";
-import { useExerciseLogic } from "@/hooks/useExerciseLogic"; // Assuming path
-import { useLecturePartData } from "@/hooks/useLecturePartData"; // Assuming path, fetches ExercisePart[]
+import { useExerciseLogic } from "@/hooks/useExerciseLogic";
+import { useLecturePartData } from "@/hooks/useLecturePartData";
 
 export default function ExercisePage() {
   const { data: exercisePartsData, loading } = useLecturePartData();
