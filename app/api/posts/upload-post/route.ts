@@ -86,7 +86,8 @@ export async function POST(req: Request) {
     );
     const body = await res.Body?.transformToString();
     if (body) indexData = JSON.parse(body);
-  } catch (e) {
+  } catch (error) {
+    console.error(error);
     console.log("index.json not found, will create a new one.");
   }
 

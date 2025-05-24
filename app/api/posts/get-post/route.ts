@@ -16,10 +16,12 @@ export async function GET(req: NextRequest) {
   if (!name) return new Response("Missing name", { status: 400 });
 
   try {
-    const res = await s3.send(new GetObjectCommand({
-      Bucket: "nihongo-n5",
-      Key: `posts/${name}/content.json`,
-    }));
+    const res = await s3.send(
+      new GetObjectCommand({
+        Bucket: "nihongo-n5",
+        Key: `posts/${name}/content.json`,
+      })
+    );
 
     const body = await res.Body?.transformToString();
     const json = body ? JSON.parse(body) : null;

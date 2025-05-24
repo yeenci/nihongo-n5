@@ -12,10 +12,12 @@ const s3 = new S3Client({
 
 export async function GET() {
   try {
-    const res = await s3.send(new GetObjectCommand({
-      Bucket: "nihongo-n5",
-      Key: "posts/index.json",
-    }));
+    const res = await s3.send(
+      new GetObjectCommand({
+        Bucket: "nihongo-n5",
+        Key: "posts/index.json",
+      })
+    );
 
     const body = await res.Body?.transformToString();
     const json = body ? JSON.parse(body) : [];
