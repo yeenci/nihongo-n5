@@ -9,7 +9,7 @@ import { useExerciseLogic } from "@/hooks/useExerciseLogic";
 import { useLecturePartData } from "@/hooks/useLecturePartData";
 
 export default function ExercisePage() {
-  const { data: exercisePartsData, loading } = useLecturePartData();
+  const { data, loading } = useLecturePartData();
 
   const {
     partId,
@@ -24,7 +24,7 @@ export default function ExercisePage() {
     activePart,
     isPartSubmitted,
     getNumOfAnswers,
-  } = useExerciseLogic(exercisePartsData);
+  } = useExerciseLogic(data);
 
   const hasAnswersForCurrentPart = () => {
     if (!activePart || !userAnswers) return false;
@@ -42,7 +42,7 @@ export default function ExercisePage() {
           <h1 className="text-2xl sm:text-3xl font-bold text-primary">
             Exercises
           </h1>
-          {!loading && exercisePartsData && exercisePartsData.length > 0 && (
+          {!loading && data && data.length > 0 && (
             <Button onClick={toggleKana} variant="outline" size="sm">
               {showKana ? "Display: Kanji" : "Display: Kana"}
             </Button>
@@ -52,11 +52,11 @@ export default function ExercisePage() {
           <div className="flex justify-center items-center h-60">
             <Spinner />
           </div>
-        ) : Array.isArray(exercisePartsData) && exercisePartsData.length > 0 ? (
+        ) : Array.isArray(data) && data.length > 0 ? (
           <>
             {/* Part Navigation */}
             <div className="flex flex-wrap justify-center gap-2 mb-8 pb-4 border-b">
-              {exercisePartsData.map((part, index) => (
+              {data.map((part, index) => (
                 <Button
                   key={part.id}
                   variant={part.id === partId ? "default" : "outline"}

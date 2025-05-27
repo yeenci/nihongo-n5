@@ -1,27 +1,37 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export interface Post {
+  id: number;
+  name: string;
+  email: string;
+  likes: string[];
+  status: string;
+  reports: string[];
+  createdAt: string;
+}
+
 type PostState = {
-  data: { [key: string]: string };
+  data: Post[];
 };
 
 const initialState: PostState = {
-  data: {},
+  data: [],
 };
 
 const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    savePost: (state, action: PayloadAction<{ id: string; url: string }>) => {
-      state.data[action.payload.id] = action.payload.url;
+    savePost: (state, action:  PayloadAction<Post>) => {
+      const existingIndex = state.data.findIndex(p => p.id === action.payload.id);
+      if (existingIndex !== -1) {
+        state.data[existingIndex] = action.payload;
+      } else {
+        state.data.push(action.payload);
+      }
     },
-    saveMultiplePosts: (
-      state,
-      action: PayloadAction<{ [id: string]: string }>
-    ) => {
-      Object.entries(action.payload).forEach(([id, url]) => {
-        state.data[id] = url;
-      });
+    saveMultiplePosts: (state, action: PayloadAction<Post[]>) => {
+      state.data = action.payload;
     },
   },
 });
