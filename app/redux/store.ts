@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import lectureReducer from "./lectureSlice";
 import imageReducer from "./imageSlice";
+import postReducer from "./postSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: {
     lecture: lectureReducer,
     image: imageReducer,
+    post: postReducer,
   },
 });
 
