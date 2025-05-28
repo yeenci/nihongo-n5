@@ -3,11 +3,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface Post {
   id: number;
   name: string;
+  title: string;
+  description: string;
   email: string;
   likes: string[];
   status: string;
   reports: string[];
   createdAt: string;
+  tags: string[];
 }
 
 type PostState = {
