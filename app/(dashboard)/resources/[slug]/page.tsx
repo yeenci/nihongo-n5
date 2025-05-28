@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useFetchAllPosts } from "@/hooks/useFetchPosts";
 import { Post } from "@/app/redux/postSlice";
-import { User } from "lucide-react";
 import Crumbs from "@/app/components/breadcrumbs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function PostDetailPage() {
   const params = useParams();
@@ -91,20 +92,30 @@ export default function PostDetailPage() {
           </div>
           {currentPost.description}
           <div className="flex flex-col lg:flex-row lg:items-center justify-between mt-auto text-xs text-gray-500 group-hover:text-gray-600">
-          {currentPost.tags && currentPost.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {currentPost.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full text-xs font-medium
+            {currentPost.tags && currentPost.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {currentPost.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full text-xs font-medium
                            group-hover:bg-primary/5 group-hover:text-primary transition-colors duration-150"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+          image
+          <div className="flex gap-2">{currentPost.likes.length} likes - comments</div>
+          <div className="flex gap-2">
+            <Button variant="outline">Like</Button>
+            <Input
+              placeholder="Enter your comment..."
+              className="outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border border-gray-300 focus:border-gray-300
+    focus-visible:border-gray-300"
+            />
+          </div>
         </div>
       </div>
     </div>
