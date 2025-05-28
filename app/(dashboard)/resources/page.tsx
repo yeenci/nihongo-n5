@@ -1,7 +1,7 @@
 // app/resources/page.tsx
 "use client";
 
-import PostItem from "@/app/components/posts/PostLists";
+import PostItem from "@/app/components/posts/post-list";
 import { useFetchAllPosts } from "@/hooks/useFetchPosts";
 import Link from "next/link";
 // import { useRouter } from "next/navigation";

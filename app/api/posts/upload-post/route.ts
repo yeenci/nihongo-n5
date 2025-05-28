@@ -72,8 +72,8 @@ export async function POST(req: Request) {
     );
   }
 
-  // Update index.json
-  const indexKey = `posts/index.json`;
+  // Update all-posts
+  const indexKey = `posts/all-posts`;
   let indexData: any[] = [];
 
   try {
@@ -87,7 +87,7 @@ export async function POST(req: Request) {
     if (body) indexData = JSON.parse(body);
   } catch (error) {
     console.error(error);
-    console.log("index.json not found, will create a new one.");
+    console.log("all-posts not found, will create a new one.");
   }
 
   const newId = indexData.length ? indexData[indexData.length - 1].id + 1 : 1;

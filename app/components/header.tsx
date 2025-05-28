@@ -19,8 +19,6 @@ export function Header() {
       <h1 className="text-xl font-semibold text-cyan-900 flex gap-3 ml-6 md:ml-0">
         Nihongo N5 <PawPrint/>
       </h1>
-      {/* You can add user info, logout button, dark mode toggle here */}
-      {/* <ModeToggle /> */}
       <Popover>
         <PopoverTrigger asChild>
           <Button
