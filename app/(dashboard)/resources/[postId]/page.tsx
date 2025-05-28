@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 
 export default function PostDetailPage() {
   const params = useParams();
-  const slug = params.slug as string;
+  const postId = params.postId as string;
 
   const { posts: allPosts, loading: allPostsLoading } = useFetchAllPosts();
 
@@ -26,14 +26,14 @@ export default function PostDetailPage() {
 
   useEffect(() => {
     if (!allPostsLoading) {
-      if (allPosts.length > 0 && slug) {
-        const foundPost = allPosts.find((p) => p.name === slug);
+      if (allPosts.length > 0 && postId) {
+        const foundPost = allPosts.find((p) => p.name === postId);
         setCurrentPost(foundPost || null);
-      } else if (slug) {
+      } else if (postId) {
         setCurrentPost(null);
       }
     }
-  }, [slug, allPosts, allPostsLoading]);
+  }, [postId, allPosts, allPostsLoading]);
 
   if (allPostsLoading) {
     return <div>Loading post data...</div>;
@@ -47,7 +47,7 @@ export default function PostDetailPage() {
     return (
       <div>
         <h1>Post Not Found</h1>
-        <p>The post with the name &quot;{slug}&quot; could not be found.</p>
+        <p>The post with the name &quot;{postId}&quot; could not be found.</p>
         <Link href="/resources">Go back to all posts</Link>
       </div>
     );
@@ -90,7 +90,11 @@ export default function PostDetailPage() {
             </strong>
             •<span className="block">{formatDate(currentPost.createdAt)}</span>
           </div>
+          <div className="flex items-center justify-between mb-1 px-1">
+            <p className="text-md mt-2 sm:text-base">
           {currentPost.description}
+            </p>
+          </div>
           <div className="flex flex-col lg:flex-row lg:items-center justify-between mt-auto text-xs text-gray-500 group-hover:text-gray-600">
             {currentPost.tags && currentPost.tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
