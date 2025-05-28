@@ -1,9 +1,9 @@
-// app/shared-resources/PostItem.tsx (or components/PostItem.tsx)
-import { useRouter } from "next/navigation"; // Use next/navigation for App Router
-import { Post } from "@/app/redux/postSlice"; // Make sure this path is correct
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useRouter } from "next/navigation";
+import { Post } from "@/app/redux/postSlice";
 
 interface PostItemProps {
-  post: Post; // Assuming 'name' is the title or slug, and you have 'tags', 'description', etc.
+  post: Post;
 }
 
 function formatDate(dateString: string) {
@@ -55,7 +55,7 @@ export default function PostItem({ post }: PostItemProps) {
           </p>
         )}
 
-        <div className="flex justify-between mt-auto text-xs text-gray-500 group-hover:text-gray-600">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between mt-auto text-xs text-gray-500 group-hover:text-gray-600">
           {post.tags && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag) => (
@@ -69,8 +69,6 @@ export default function PostItem({ post }: PostItemProps) {
               ))}
             </div>
           )}
-          {/* <span className="block">Shared by {post.email || "Anonymous"}</span> */}
-          <span className="block text-muted-foreground/40">on {formatDate(post.createdAt)}</span>
         </div>
       </div>
     </div>

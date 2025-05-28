@@ -87,7 +87,7 @@ export default function ResourcesPage() {
         </Link>
       </div>
 
-      <div className="flex justify-between items-center mb-6 p-4 border border-gray-200 rounded-lg">
+      <div className="flex justify-between items-center mb-6 gap-4 p-4 border border-gray-200 rounded-lg">
         <div className="w-3/4">
           <input
             type="text"
