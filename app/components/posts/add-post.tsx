@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import { FilePlus } from "lucide-react";
 import { ChangeEvent, FormEvent, ReactNode, useRef, useState } from "react";
 
 interface AddPostPopoverProps {
@@ -139,4 +142,30 @@ export default function AddPostPopover({
       setLoading(false);
     }
   };
+
+  return (
+    <>
+      <Popover
+        open={isOpen}
+        onOpenChange={(openState) => {
+          if (!openState) {
+            handleCloseAttempt();
+          } else {
+            setIsOpen(true);
+          }
+        }}
+      >
+        <PopoverTrigger asChild>
+          {triggerBtn ? (
+            triggerBtn
+          ) : (
+            <Button variant="default" size="sm">
+              <FilePlus className="mr-1 h-4 w-4" />
+              Upload Post
+            </Button>
+          )}
+        </PopoverTrigger>
+      </Popover>
+    </>
+  );
 }

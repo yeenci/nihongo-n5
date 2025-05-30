@@ -1,32 +1,47 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { saveMultiplePosts, Post } from "@/app/redux/postSlice";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useFetchAllPosts() {
   const dispatch = useAppDispatch();
-  const posts = useAppSelector((state) => state.post.data);
+  const postsFromRedux = useAppSelector((state) => state.post.data);
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (posts.length === 0) {
-      setLoading(true);
-      fetch("/api/posts/get-all-posts")
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-          }
-          return res.json();
-        })
-        .then((fetchedPosts: Post[]) => {
-          dispatch(saveMultiplePosts(fetchedPosts));
-        })
-        .catch(error => {
-          console.error("Failed to fetch posts:", error);
-        })
-        .finally(() => setLoading(false));
+  const fetchPosts = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/posts/get-all-posts");
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(
+          `HTTP error! status: ${res.status}, message: ${errorText}`
+        );
+      }
+      const fetchedPostsData: Post[] = await res.json();
+      dispatch(saveMultiplePosts(fetchedPostsData));
+    } catch (error: any) {
+      setError(
+        error.message || "An unknown error occurred while fetching posts"
+      );
+    } finally {
+      setLoading(false);
     }
-  }, [dispatch, posts]);
+  }, [dispatch]);
 
-  return { posts, loading };
+  // Call fetchPosts initially if posts are not loaded
+  useEffect(() => {
+    if (postsFromRedux.length === 0) {
+      fetchPosts();
+    }
+  }, [postsFromRedux.length, fetchPosts]);
+
+  const refetchPosts = useCallback(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
+  return { posts: postsFromRedux, loading, error, refetchPosts };
 }

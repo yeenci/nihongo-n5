@@ -1,7 +1,9 @@
 // app/resources/page.tsx
 "use client";
 
+import AddPostPopover from "@/app/components/posts/add-post";
 import PostItem from "@/app/components/posts/post-list";
+import { useAuth } from "@/app/context/AuthContext";
 import { useFetchAllPosts } from "@/hooks/useFetchPosts";
 import Link from "next/link";
 // import { useRouter } from "next/navigation";
@@ -11,7 +13,14 @@ type SortOrder = "Newest" | "Oldest";
 const POSTS_PER_PAGE = 5;
 
 export default function ResourcesPage() {
-  const { posts: allPosts, loading } = useFetchAllPosts();
+  const { user } = useAuth();
+  console.log(user?.email);
+  const {
+    posts: allPosts,
+    loading,
+    error: fetchError,
+    refetchPosts,
+  } = useFetchAllPosts();
   const [sortOrder, setSortOrder] = useState<SortOrder>("Newest");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,6 +74,14 @@ export default function ResourcesPage() {
     }
   };
 
+  const handlePostAdded = () => {
+    if (refetchPosts) {
+      refetchPosts();
+    } else {
+      console.warn("refetchPosts function not available.");
+    }
+  };
+
   const tabCommonClasses =
     "py-2 px-4 rounded-md text-sm cursor-pointer border transition-colors duration-150";
   const activeTabClasses =
@@ -80,11 +97,7 @@ export default function ResourcesPage() {
     <div className="max-w-4xl mx-auto p-4 md:p-6 font-sans">
       <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-6 gap-4">
         <h1 className="text-3xl font-bold text-primary">Shared Hub</h1>
-        <Link href="/resources/add" legacyBehavior>
-          <a className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md text-sm no-underline transition-colors self-start sm:self-auto">
-            Add Post
-          </a>
-        </Link>
+        <AddPostPopover onPostAdded={handlePostAdded} userEmail={user?.email} />
       </div>
 
       <div className="flex justify-between items-center mb-6 gap-4 p-4 border border-gray-200 rounded-lg">
