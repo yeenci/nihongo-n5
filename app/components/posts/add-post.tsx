@@ -233,6 +233,7 @@ export default function AddPostPopover({
                     id="popover-description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
+                    required
                     rows={3}
                     placeholder="Describe your resource"
                     className="mt-1"
@@ -255,6 +256,7 @@ export default function AddPostPopover({
                           addTag();
                         }
                       }}
+                      required={tags.length === 0}
                       placeholder="Add a tag and press Enter"
                       className="flex-grow"
                     />

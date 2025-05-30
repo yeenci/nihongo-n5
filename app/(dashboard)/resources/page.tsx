@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // app/resources/page.tsx
 "use client";
 
@@ -95,7 +96,7 @@ export default function ResourcesPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-6 font-sans">
-      <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-6 gap-4">
+      <div className="flex flex-row justify-between sm:items-center mb-6 gap-4">
         <h1 className="text-3xl font-bold text-primary">Shared Hub</h1>
         <AddPostPopover onPostAdded={handlePostAdded} userEmail={user?.email} />
       </div>
