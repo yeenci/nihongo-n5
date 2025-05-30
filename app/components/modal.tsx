@@ -5,6 +5,7 @@ interface ModalProps {
   title: string;
   onCancel: () => void;
   onConfirm: () => void;
+  confirmText: string
 }
 
 export default function ConfirmationModal({
@@ -12,6 +13,7 @@ export default function ConfirmationModal({
   title,
   onCancel,
   onConfirm,
+  confirmText,
 }: ModalProps) {
   return (
     <AlertDialog open={open} onOpenChange={onCancel}>
@@ -21,7 +23,7 @@ export default function ConfirmationModal({
         </AlertDialogHeader>
         <AlertDialogFooter>
             <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={onConfirm}>Submit</AlertDialogAction>
+            <AlertDialogAction onClick={onConfirm}>{confirmText}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

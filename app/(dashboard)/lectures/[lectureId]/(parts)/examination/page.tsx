@@ -224,6 +224,7 @@ export default function ExaminationPage() {
           title="Are you sure you want to submit?"
           onCancel={() => setShowConfirm(false)}
           onConfirm={handleFinalSubmit}
+          confirmText="Submit"
         />
       </div>
     </div>
