@@ -92,7 +92,7 @@ export default function PostDetailPage() {
           </div>
           <div className="flex items-center justify-between mb-1 px-1">
             <p className="text-md mt-2 sm:text-base">
-          {currentPost.description}
+              {currentPost.description}
             </p>
           </div>
           <div className="flex flex-col lg:flex-row lg:items-center justify-between mt-auto text-xs text-gray-500 group-hover:text-gray-600">
@@ -111,13 +111,14 @@ export default function PostDetailPage() {
             )}
           </div>
           image
-          <div className="flex gap-2">{currentPost.likes.length} likes - comments</div>
+          <div className="flex gap-2">
+            {currentPost.likes.length} likes - comments
+          </div>
           <div className="flex gap-2">
             <Button variant="outline">Like</Button>
             <Input
               placeholder="Enter your comment..."
-              className="outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border border-gray-300 focus:border-gray-300
-    focus-visible:border-gray-300"
+              className="outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border border-gray-300 focus:border-gray-300 focus-visible:border-gray-300"
             />
           </div>
         </div>

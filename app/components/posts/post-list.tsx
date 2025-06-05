@@ -50,12 +50,12 @@ export default function PostItem({ post }: PostItemProps) {
         </h3>
 
         {post.description && (
-          <p className="text-sm text-muted-foreground/80 mb-3 line-clamp-3 group-hover:text-muted-foreground/90">
+          <p className="text-sm text-muted-foreground/90 mb-3 line-clamp-1 group-hover:text-muted-foreground">
             {post.description}
           </p>
         )}
 
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between mt-auto text-xs text-gray-500 group-hover:text-gray-600">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between mt-auto mb-3 text-xs text-gray-500 group-hover:text-gray-600">
           {post.tags && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag) => (
@@ -64,11 +64,16 @@ export default function PostItem({ post }: PostItemProps) {
                   className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full text-xs font-medium
                            group-hover:bg-primary/5 group-hover:text-primary transition-colors duration-150"
                 >
-                  {tag}
+                  #{tag}
                 </span>
               ))}
             </div>
           )}
+        </div>
+        <div className="flex gap-2">
+          <p className="text-xs text-muted-foreground/80 line-clamp-3 ml-1">
+            {post.likes.length} likes
+          </p>
         </div>
       </div>
     </div>

@@ -1,5 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export interface Comment { 
+  userEmail: string;
+  text: string;
+  commentedAt: string;
+}
+
 export interface Post {
   id: number;
   name: string;
@@ -11,6 +17,8 @@ export interface Post {
   reports: string[];
   createdAt: string;
   tags: string[];
+  comments: Comment[];
+  resourceFileNames?: string[];
 }
 
 type PostState = {
