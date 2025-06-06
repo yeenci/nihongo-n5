@@ -45,25 +45,37 @@ export async function POST(req: Request) {
         tags = [];
       }
     }
-    const files = formData.getAll("resources") as File[];
+    const filesToUpload = formData.getAll("resources") as File[];
 
     if (!title) {
-      return NextResponse.json({ error: "Title is required." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Title is required." },
+        { status: 400 }
+      );
     }
     if (!description) {
-      return NextResponse.json({ error: "Description is required." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Description is required." },
+        { status: 400 }
+      );
     }
     if (!tagsString || tags.length === 0) {
-      return NextResponse.json({ error: "Tags are required." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Tags are required." },
+        { status: 400 }
+      );
     }
     if (!email) {
-      return NextResponse.json({ error: "Email is required." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Email is required." },
+        { status: 400 }
+      );
     }
 
     const timestamp = getCurrentTimestamp();
     const postIdName = `post-${timestamp}`;
-    const postFolder = `posts/${postIdName}/`;
     const isoCreatedAt = new Date().toISOString();
+    const uploadedResources: string[] = [];
 
     const contentJson = {
       title,
@@ -73,8 +85,6 @@ export async function POST(req: Request) {
       createdAt: isoCreatedAt,
     };
 
-    // Upload content.json, comments.json, and resource files
-    // (Assuming this part is correct and not causing early returns for this specific error)
     await s3.send(
       new PutObjectCommand({
         Bucket: "nihongo-n5",
@@ -91,7 +101,7 @@ export async function POST(req: Request) {
         ContentType: "application/json",
       })
     );
-    for (const file of files) {
+    for (const file of filesToUpload) {
       const arrayBuffer = await file.arrayBuffer();
       await s3.send(
         new PutObjectCommand({
@@ -125,7 +135,8 @@ export async function POST(req: Request) {
             "Body was:",
             bodyString
           );
-          return NextResponse.json( // RETURN here if parsing fails
+          return NextResponse.json(
+            // RETURN here if parsing fails
             {
               error: `Failed to parse existing posts index. ${
                 (parseError as Error).message
@@ -135,14 +146,16 @@ export async function POST(req: Request) {
           );
         }
       }
-    } catch (err: any) { // This catch is ONLY for errors from s3.send(getObjectCmd)
+    } catch (err: any) {
+      // This catch is ONLY for errors from s3.send(getObjectCmd)
       if (err.name === "NoSuchKey") {
         console.log(`File "${indexKey}" not found. A new one will be created.`);
         // indexData remains empty, which is correct. Execution continues below.
       } else {
         // For other S3 errors during fetch
         console.error(`Error fetching "${indexKey}":`, err);
-        return NextResponse.json( // RETURN here for other S3 fetch errors
+        return NextResponse.json(
+          // RETURN here for other S3 fetch errors
           { error: `Failed to retrieve posts index. ${err.message}` },
           { status: 500 }
         );
@@ -189,7 +202,6 @@ export async function POST(req: Request) {
       },
       { status: 200 }
     );
-
   } catch (error: any) {
     console.error("Overall error in POST /api/posts/upload-post:", error);
     return NextResponse.json(
