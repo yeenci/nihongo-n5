@@ -22,6 +22,9 @@ function getCurrentTimestamp() {
   return Date.now();
 }
 
+const ALL_POSTS_KEY = "posts/all-posts.json";
+const RESOURCES_BASE_PATH = "resources/";
+
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
@@ -47,10 +50,10 @@ export async function POST(req: Request) {
     if (!title) {
       return NextResponse.json({ error: "Title is required." }, { status: 400 });
     }
-    if (!description) { // Made description mandatory as per your previous code
+    if (!description) {
       return NextResponse.json({ error: "Description is required." }, { status: 400 });
     }
-    if (!tagsString || tags.length === 0) { // Made tags mandatory
+    if (!tagsString || tags.length === 0) {
       return NextResponse.json({ error: "Tags are required." }, { status: 400 });
     }
     if (!email) {
