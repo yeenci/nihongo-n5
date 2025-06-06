@@ -18,7 +18,7 @@ export interface Post {
   createdAt: string;
   tags: string[];
   comments: Comment[];
-  resourceFileNames?: string[];
+  resourceFileNames?: string[];   // post-<timestamp>-image1.jpg", "post-<timestamp>-doc.pdf
 }
 
 type PostState = {

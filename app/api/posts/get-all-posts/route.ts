@@ -13,6 +13,10 @@ const s3 = new S3Client({
   forcePathStyle: true,
 });
 
+function getCurrentTimestamp() {
+  return Date.now();
+}
+
 export async function GET() {
   const key = "posts/all-posts.json";
 
