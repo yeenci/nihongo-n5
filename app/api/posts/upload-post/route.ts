@@ -77,68 +77,50 @@ export async function POST(req: Request) {
     const isoCreatedAt = new Date().toISOString();
     const uploadedResources: string[] = [];
 
-    const contentJson = {
-      title,
-      description,
-      tags,
-      email,
-      createdAt: isoCreatedAt,
-    };
+    for (let i = 0; i < filesToUpload.length; i++) {
+      const file = filesToUpload[i];
+      const fileExtension = file.name.split(".").pop() || "";
+      const uniqueFilename = `${postIdName}-${i + 1}${
+        fileExtension ? "." + fileExtension : ""
+      }`;
+      const resourceKey = `${RESOURCES_BASE_PATH}${uniqueFilename}`;
 
-    await s3.send(
-      new PutObjectCommand({
-        Bucket: "nihongo-n5",
-        Key: `${postFolder}content.json`,
-        Body: JSON.stringify(contentJson, null, 2),
-        ContentType: "application/json",
-      })
-    );
-    await s3.send(
-      new PutObjectCommand({
-        Bucket: "nihongo-n5",
-        Key: `${postFolder}comments.json`,
-        Body: JSON.stringify([]),
-        ContentType: "application/json",
-      })
-    );
-    for (const file of filesToUpload) {
       const arrayBuffer = await file.arrayBuffer();
       await s3.send(
         new PutObjectCommand({
           Bucket: "nihongo-n5",
-          Key: `${postFolder}resources/${file.name}`,
+          Key: `posts/${resourceKey}`,
           Body: new Uint8Array(arrayBuffer),
           ContentType: file.type || "application/octet-stream",
         })
       );
+      uploadedResources.push(uniqueFilename);
     }
 
     // --- Update all-posts.json ---
-    const indexKey = `posts/all-posts.json`;
-    let indexData: Post[] = [];
+    let allPostsData: Post[] = [];
 
     try {
       const getObjectCmd = new GetObjectCommand({
         Bucket: "nihongo-n5",
-        Key: indexKey,
+        Key: ALL_POSTS_KEY,
       });
       const response = await s3.send(getObjectCmd);
       const bodyString = await response.Body?.transformToString();
 
       if (bodyString) {
         try {
-          indexData = JSON.parse(bodyString);
+          allPostsData = JSON.parse(bodyString);
         } catch (parseError) {
           console.error(
-            `Error parsing existing "${indexKey}":`,
+            `Error parsing existing "${allPostsData}":`,
             parseError,
             "Body was:",
             bodyString
           );
           return NextResponse.json(
-            // RETURN here if parsing fails
             {
-              error: `Failed to parse existing posts index. ${
+              error: `Failed to parse existing posts data. ${
                 (parseError as Error).message
               }`,
             },
@@ -147,25 +129,32 @@ export async function POST(req: Request) {
         }
       }
     } catch (err: any) {
-      // This catch is ONLY for errors from s3.send(getObjectCmd)
       if (err.name === "NoSuchKey") {
-        console.log(`File "${indexKey}" not found. A new one will be created.`);
-        // indexData remains empty, which is correct. Execution continues below.
+        console.log(
+          `File "${allPostsData}" not found. A new one will be created.`
+        );
+        return NextResponse.json([], { status: 200 });
       } else {
-        // For other S3 errors during fetch
-        console.error(`Error fetching "${indexKey}":`, err);
+        console.error(`Error fetching "${allPostsData}":`, err);
         return NextResponse.json(
-          // RETURN here for other S3 fetch errors
           { error: `Failed to retrieve posts index. ${err.message}` },
           { status: 500 }
         );
       }
     }
 
-    // THIS SECTION NOW EXECUTES REGARDLESS OF THE GetObjectCommand OUTCOME (if no hard error occurred)
+    // const contentJson = {
+    //   title,
+    //   description,
+    //   tags,
+    //   email,
+    //   createdAt: isoCreatedAt,
+    // };
+
+
     const newId =
-      indexData.length > 0
-        ? Math.max(0, ...indexData.map((post) => post.id)) + 1
+      allPostsData.length > 0
+        ? Math.max(0, ...allPostsData.map((post) => post.id)) + 1
         : 1;
 
     const newPostEntry: Post = {
@@ -179,16 +168,18 @@ export async function POST(req: Request) {
       reports: [],
       createdAt: isoCreatedAt,
       tags: tags,
+      comments: [],
+      resourceFileNames: uploadedResources.length > 0 ? uploadedResources : undefined,
     };
 
-    indexData.push(newPostEntry);
+    allPostsData.push(newPostEntry);
 
     // Upload the updated all-posts.json
     await s3.send(
       new PutObjectCommand({
         Bucket: "nihongo-n5",
-        Key: indexKey,
-        Body: JSON.stringify(indexData, null, 2),
+        Key: ALL_POSTS_KEY,
+        Body: JSON.stringify(allPostsData, null, 2),
         ContentType: "application/json",
       })
     );

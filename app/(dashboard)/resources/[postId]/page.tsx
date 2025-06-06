@@ -8,6 +8,7 @@ import { Post } from "@/app/redux/postSlice";
 import Crumbs from "@/app/components/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Heart } from "lucide-react";
 
 export default function PostDetailPage() {
   const params = useParams();
@@ -115,7 +116,7 @@ export default function PostDetailPage() {
             {currentPost.likes.length} likes - comments
           </div>
           <div className="flex gap-2">
-            <Button variant="outline">Like</Button>
+            <Button variant="outline" className="flex items-center"><Heart className="h-4 w-4" />Like</Button>
             <Input
               placeholder="Enter your comment..."
               className="outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 border border-gray-300 focus:border-gray-300 focus-visible:border-gray-300"

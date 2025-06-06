@@ -74,6 +74,9 @@ export default function PostItem({ post }: PostItemProps) {
           <p className="text-xs text-muted-foreground/80 line-clamp-3 ml-1">
             {post.likes.length} likes
           </p>
+          <p className="text-xs text-muted-foreground/80 line-clamp-3 ml-1">
+            {post.comments.length} comments
+          </p>
         </div>
       </div>
     </div>

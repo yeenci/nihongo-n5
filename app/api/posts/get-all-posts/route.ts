@@ -32,8 +32,17 @@ export async function GET() {
 
     const json = JSON.parse(Buffer.concat(chunks).toString("utf-8"));
     return NextResponse.json(json);
-  } catch (error) {
-    console.error("Failed to fetch all-posts.json", error);
-    return new Response("Error fetching all posts", { status: 500 });
+  } catch (error: any) {
+    if (error.name === "NoSuchKey") {
+      console.log(
+        `File "${key}" not found during GET request. Returning empty array.`
+      );
+      return NextResponse.json([], { status: 200 });
+    }
+    console.error("Failed to fetch all-posts.json in GET request:", error);
+    return NextResponse.json(
+      { error: "Error fetching all posts" },
+      { status: 500 }
+    );
   }
 }
