@@ -105,7 +105,7 @@ export default function PostDetailPage() {
                     className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full text-xs font-medium
                            group-hover:bg-primary/5 group-hover:text-primary transition-colors duration-150"
                   >
-                    {tag}
+                    #{tag}
                   </span>
                 ))}
               </div>
@@ -113,7 +113,7 @@ export default function PostDetailPage() {
           </div>
           image
           <div className="flex gap-2">
-            {currentPost.likes.length} likes - comments
+            {currentPost.likes.length} likes - {currentPost.comments.length} comments
           </div>
           <div className="flex gap-2">
             <Button variant="outline" className="flex items-center"><Heart className="h-4 w-4" />Like</Button>
