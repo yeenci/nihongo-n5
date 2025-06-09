@@ -367,7 +367,7 @@ export default function PostDetailPage() {
                   />
                 )}
               </div>
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 mt-4">
+              <h1 className="text-2xl font-bold tracking-tight text-primary mt-4">
                 {currentPost.title}
               </h1>
             </CardHeader>

@@ -143,7 +143,7 @@ export default function AddPostPopover({
       setTimeout(() => {
         setIsOpen(false);
         setSuccessMsg(null);
-      }, 1500);
+      }, 1000);
     } catch (error: any) {
       setError(error.message || "Failed to add post.");
     } finally {
