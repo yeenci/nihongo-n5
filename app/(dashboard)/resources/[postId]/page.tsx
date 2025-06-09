@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -13,6 +13,14 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/app/context/AuthContext";
 import { Edit, Heart, Trash2 } from "lucide-react";
 import Spinner from "@/app/components/spinner";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+
+interface Comment {
+  id: string;
+  userEmail: string;
+  text: string;
+  createdAt: string;
+}
 
 function formatDate(dateString: string) {
   if (!dateString) return "N/A";
@@ -150,30 +158,76 @@ export default function PostDetailPage() {
     );
   }
 
-  // if (currentPost === undefined)
-  //   return (
-  //     <div className="flex items-center justify-center h-screen">
-  //       Verifying post...
-  //     </div>
-  //   );
-
-  if (currentPost === null) {
+  if (currentPost === null)
     return (
-      <div>
-        <h1>Post Not Found</h1>
-        <p>The post with the name &quot;{postId}&quot; could not be found.</p>
-        <Link href="/resources">Go back to all posts</Link>
+      <div className="flex flex-col items-center justify-center h-screen text-center p-4">
+        <h1 className="text-2xl font-bold">Post Not Found</h1>
+        <p className="text-gray-600 mt-2">
+          The post with the name &quot;{postId}&quot; could not be found.
+        </p>
+        <Button asChild className="mt-6">
+          <Link href="/resources">Go back to all posts</Link>
+        </Button>
       </div>
     );
-  }
-  if (user?.email === currentPost.email) {
-    console.log("This is the person who posted this post.");
-  }
-  console.log(currentPost.email);
+
+  const isOwner = user?.email === currentPost.email;
+
+  const handleLikeToggle = () => {
+    if (!user) return;
+    const userEmail = user.email!;
+    setIsLiked((prev) => !prev);
+    setLocalLikes((prevLikes) =>
+      isLiked
+        ? prevLikes.filter((email) => email !== userEmail)
+        : [...prevLikes, userEmail]
+    );
+  };
+
+  const handlePostComment = (e: FormEvent) => {
+    e.preventDefault();
+    if (!newComment.trim() || !user) return;
+    setIsSubmitting(true);
+    setTimeout(() => {
+      // Simulate API call
+      const newCommentObject: Comment = {
+        id: `comment_${Date.now()}`,
+        userEmail: user.email!,
+        text: newComment,
+        createdAt: new Date().toISOString(),
+      };
+      setLocalComments((prev) => [newCommentObject, ...prev]);
+      setNewComment("");
+      setIsSubmitting(false);
+      // TODO: Add API call to post comment to the database
+    }, 500);
+  };
 
   return (
     <div className="py-6 px-4 h-full">
       <Crumbs paths={paths} />
+      <Card className="shadow-lg mt-4">
+        <CardHeader>
+          <div className="flex justify-between items-start gap-4">
+            <AuthorDisplay
+              email={currentPost.email}
+              date={currentPost.createdAt}
+            />
+            {isOwner && (
+              <OwnerActions
+                onEdit={() => alert("Edit clicked!")}
+                onDelete={() => alert("Delete clicked!")}
+              />
+            )}
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900 mt-4">
+            {currentPost.title}
+          </h1>
+        </CardHeader>
+          <CardContent>
+            <PostContent post={currentPost} />
+          </CardContent>
+      </Card>
       <div className="flex flex-row justify-center w-full h-full">
         {/* <div className="w-full max-w-3xl border-1 border-muted p-4"> */}
         <div className="w-full max-w-3xl">
