@@ -9,12 +9,15 @@ import Crumbs from "@/app/components/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Heart } from "lucide-react";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function PostDetailPage() {
   const params = useParams();
   const postId = params.postId as string;
 
-  const { posts: allPosts, loading: allPostsLoading } = useFetchAllPosts();
+  const { posts: allPosts, loading: allPostsLoading } = useFetchAllPosts();  
+    const { user } = useAuth();
+    console.log(user?.email);
 
   const [currentPost, setCurrentPost] = useState<Post | null | undefined>(
     undefined
@@ -53,6 +56,11 @@ export default function PostDetailPage() {
       </div>
     );
   }
+    if (user?.email === currentPost.email) {
+      console.log("This is the person who posted this post.")
+    }
+    console.log(currentPost.email);
+
 
   function formatDate(dateString: string) {
     if (!dateString) return "N/A";

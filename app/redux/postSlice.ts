@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface Comment { 
+export interface Comment {
+  id: string;
   userEmail: string;
   text: string;
   commentedAt: string;
@@ -18,7 +19,7 @@ export interface Post {
   createdAt: string;
   tags: string[];
   comments: Comment[];
-  resourceFileNames?: string[];   // post-<timestamp>-image1.jpg", "post-<timestamp>-doc.pdf
+  resourceFileNames?: string[]; // post-<timestamp>-image1.jpg", "post-<timestamp>-doc.pdf
 }
 
 type PostState = {
@@ -33,8 +34,10 @@ const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    savePost: (state, action:  PayloadAction<Post>) => {
-      const existingIndex = state.data.findIndex(p => p.id === action.payload.id);
+    savePost: (state, action: PayloadAction<Post>) => {
+      const existingIndex = state.data.findIndex(
+        (p) => p.id === action.payload.id
+      );
       if (existingIndex !== -1) {
         state.data[existingIndex] = action.payload;
       } else {
