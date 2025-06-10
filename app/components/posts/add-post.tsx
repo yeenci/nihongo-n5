@@ -182,7 +182,7 @@ export default function AddPostDialog({
             </Button>
           )}
         </DialogTrigger>
-        <DialogContent className="w-96 md:w-[500px] max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-96 md:w-[500px] max-h-[90vh]">
           <DialogHeader>
             <DialogTitle>Share Your Resource</DialogTitle>
           </DialogHeader>
