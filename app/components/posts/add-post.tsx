@@ -1,29 +1,44 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertTriangle, FilePlus, Loader2, X } from "lucide-react";
 import { ChangeEvent, FormEvent, ReactNode, useRef, useState } from "react";
 import ConfirmationModal from "../modal";
 
-interface AddPostPopoverProps {
+interface AddPostDialogProps {
   onPostAdded: () => void;
   userEmail: string | null | undefined;
   triggerBtn?: ReactNode;
+  btnVariant:
+    | "link"
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | null
+    | undefined;
+  btnIcon?: boolean | undefined;
 }
 
-export default function AddPostPopover({
+export default function AddPostDialog({
   onPostAdded,
   userEmail,
   triggerBtn,
-}: AddPostPopoverProps) {
+  btnVariant,
+  btnIcon,
+}: AddPostDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -40,7 +55,10 @@ export default function AddPostPopover({
 
   const isFormDirty = () => {
     return (
-      title !== "" || description !== "" || tags.length > 0 || files.length > 0
+      title !== "" ||
+      (description !== "<p></p>" && description !== "") ||
+      tags.length > 0 ||
+      files.length > 0
     );
   };
 
@@ -57,22 +75,22 @@ export default function AddPostPopover({
     setSuccessMsg(null);
   };
 
-  const handleCloseAttempt = () => {
-    if (isFormDirty() && !successMsg) {
+  const handleOpenChange = (open: boolean) => {
+    if (!open && isFormDirty() && !successMsg) {
       setShowConfirmCloseModal(true);
-    } else {
-      closePopoverAndReset();
+      return false; // Prevent closing
     }
-  };
-
-  const closePopoverAndReset = () => {
-    setIsOpen(false);
-    resetForm();
-    setShowConfirmCloseModal(false);
+    setIsOpen(open);
+    if (!open) {
+      resetForm();
+    }
+    return true;
   };
 
   const handleConfirmClose = () => {
-    closePopoverAndReset();
+    setShowConfirmCloseModal(false);
+    setIsOpen(false);
+    resetForm();
   };
 
   const handleTagInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -143,7 +161,7 @@ export default function AddPostPopover({
       setTimeout(() => {
         setIsOpen(false);
         setSuccessMsg(null);
-      }, 1000);
+      }, 500);
     } catch (error: any) {
       setError(error.message || "Failed to add post.");
     } finally {
@@ -151,185 +169,149 @@ export default function AddPostPopover({
     }
   };
 
-  const inputClass = `border border-muted rounded-md shadow-sm focus:outline-none focus:ring-primary/80 focus:border-primary/80 mt-1`;
-
   return (
     <>
-      <Popover
-        open={isOpen}
-        onOpenChange={(openState) => {
-          if (!openState) {
-            handleCloseAttempt();
-          } else {
-            setIsOpen(true);
-          }
-        }}
-      >
-        <PopoverTrigger asChild>
+      <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+        <DialogTrigger asChild>
           {triggerBtn ? (
             triggerBtn
           ) : (
-            <Button variant="default" size="sm">
-              <FilePlus className="mr-1 h-4 w-4" />
+            <Button variant={btnVariant} size="sm">
+              {btnIcon && <FilePlus className="mr-1 h-4 w-4" />}
               Upload Post
             </Button>
           )}
-        </PopoverTrigger>
-        <PopoverContent
-          className="w-96 md:w-[500px] p-0"
-          sideOffset={5}
-          align="end"
-        >
-          <div className="p-6 max-h-[80vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium text-primary/90">
-                Share Your Resource
-              </h3>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleCloseAttempt}
-                aria-label="Close"
-              >
-                <X className="h-4 w-4" />
-              </Button>
+        </DialogTrigger>
+        <DialogContent className="w-96 md:w-[500px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Share Your Resource</DialogTitle>
+          </DialogHeader>
+
+          {error && (
+            <div className="p-3 bg-red-50 text-red-700 border border-red-200 rounded-md text-sm flex items-center">
+              <AlertTriangle className="h-4 w-4 mr-2 flex-shrink-0" /> {error}
             </div>
+          )}
 
-            {error && (
-              <div className="mb-4 p-3 bg-red-50 text-red-700 border border-red-200 rounded-md text-sm flex items-center">
-                <AlertTriangle className="h-4 w-4 mr-2 flex-shrink-0" /> {error}
+          {successMsg && (
+            <div className="p-3 bg-green-50 text-green-700 border border-green-200 rounded-md text-sm">
+              {successMsg}
+            </div>
+          )}
+
+          {!successMsg && (
+            <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+              <div className="">
+                <Label htmlFor="dialog-title">
+                  Title <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="dialog-title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  placeholder="Enter post title"
+                  className="mt-1"
+                />
               </div>
-            )}
 
-            {successMsg && (
-              <div className="mb-4 p-3 bg-green-50 text-green-700 border border-green-200 rounded-md text-sm">
-                {successMsg}
+              <div className="">
+                <Label htmlFor="dialog-description">
+                  Description<span className="text-red-500">*</span>
+                </Label>
+                <Textarea
+                  id="dialog-description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                  rows={3}
+                  placeholder="Describe your resource"
+                  className="mt-1"
+                />
               </div>
-            )}
 
-            {!successMsg && (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Add title */}
-                <div className="">
-                  <Label htmlFor="popover-title">
-                    Title <span className="text-red-500">*</span>
-                  </Label>
+              <div className="">
+                <Label htmlFor="dialog-tags-input">
+                  Tags<span className="text-red-500">*</span>
+                </Label>
+                <div className="flex items-center gap-2 mt-1">
                   <Input
-                    id="popover-title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                    placeholder="Enter post title"
-                    className="mt-1"
+                    id="dialog-tags-input"
+                    value={currentTag}
+                    onChange={handleTagInput}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        addTag();
+                      }
+                    }}
+                    required={tags.length === 0}
+                    placeholder="Add a tag and press Enter"
+                    className="flex-grow"
                   />
-                </div>
-
-                {/* Add description */}
-                <div className="">
-                  <Label htmlFor="popover-description">
-                    Description<span className="text-red-500">*</span>
-                  </Label>
-                  <Textarea
-                    id="popover-description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                    rows={3}
-                    placeholder="Describe your resource"
-                    className="mt-1"
-                  />
-                </div>
-
-                {/* Add tags */}
-                <div className="">
-                  <Label htmlFor="popover-tags-input">
-                    Tags<span className="text-red-500">*</span>
-                  </Label>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Input
-                      id="popover-tags-input"
-                      value={currentTag}
-                      onChange={handleTagInput}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          addTag();
-                        }
-                      }}
-                      required={tags.length === 0}
-                      placeholder="Add a tag and press Enter"
-                      className="flex-grow"
-                    />
-                    <Button
-                      type="button"
-                      variant="default"
-                      size="sm"
-                      onClick={addTag}
-                      disabled={currentTag === ""}
-                    >
-                      Add
-                    </Button>
-                  </div>
-                  {tags.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="flex items-center bg-muted text-muted-foreground px-2 py-0.5 rounded-md text-xs"
-                        >
-                          {tag}
-                          <button
-                            type="button"
-                            onClick={() => removeTag(tag)}
-                            className="ml-1 opacity-70 hover:opacity-100"
-                          >
-                            <X size={12} />
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Upload resources */}
-                <div>
-                  <Label htmlFor="popover-files">Resource Files</Label>
-                  <Input
-                    id="popover-files"
-                    type="file"
-                    ref={fileInputRef}
-                    multiple
-                    onChange={handleFileChange}
-                    className="mt-1"
-                  />
-                  {files.length > 0 && (
-                    <div className="mt-1.5 text-xs text-muted-foreground">
-                      Selected: {files.map((file) => file.name).join(", ")}
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex justify-end space-x-2 pt-2">
                   <Button
                     type="button"
-                    variant="outline"
-                    onClick={handleCloseAttempt}
-                    disabled={loading}
+                    variant="default"
+                    size="sm"
+                    onClick={addTag}
+                    disabled={currentTag === ""}
                   >
-                    Cancel
-                  </Button>
-                  <Button type="submit" disabled={loading}>
-                    {loading && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    {loading ? "Adding..." : "Add Resource"}
+                    Add
                   </Button>
                 </div>
-              </form>
-            )}
-          </div>
-        </PopoverContent>
-      </Popover>
+                {tags.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="flex items-center bg-muted text-muted-foreground px-2 py-0.5 rounded-md text-xs"
+                      >
+                        {tag}
+                        <button
+                          type="button"
+                          onClick={() => removeTag(tag)}
+                          className="ml-1 opacity-70 hover:opacity-100"
+                        >
+                          <X size={12} />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="dialog-files">Resource Files</Label>
+                <Input
+                  id="dialog-files"
+                  type="file"
+                  ref={fileInputRef}
+                  multiple
+                  onChange={handleFileChange}
+                  className="mt-1"
+                />
+                {files.length > 0 && (
+                  <div className="mt-1.5 text-xs text-muted-foreground">
+                    Selected: {files.map((file) => file.name).join(", ")}
+                  </div>
+                )}
+              </div>
+
+              <DialogFooter className="pt-2">
+                <DialogClose asChild>
+                  <Button type="button" variant="outline" disabled={loading}>
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button type="submit" disabled={loading}>
+                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {loading ? "Adding..." : "Add Resource"}
+                </Button>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <ConfirmationModal
         open={showConfirmCloseModal}

@@ -98,7 +98,7 @@ export default function ResourcesPage() {
     <div className="max-w-4xl mx-auto p-4 md:p-6 font-sans">
       <div className="flex flex-row justify-between sm:items-center mb-6 gap-4">
         <h1 className="text-3xl font-bold text-primary">Shared Hub</h1>
-        <AddPostPopover onPostAdded={handlePostAdded} userEmail={user?.email} />
+        <AddPostPopover onPostAdded={handlePostAdded} userEmail={user?.email} btnVariant="default" btnIcon={true}  />
       </div>
 
       <div className="flex justify-between items-center mb-6 gap-4 p-4 border border-gray-200 rounded-lg">
@@ -158,12 +158,8 @@ export default function ResourcesPage() {
       {!loading && paginatedPosts.length === 0 && searchTerm.trim() === "" && (
         <div className="py-10 text-center text-gray-500">
           No resources available. Be the first to{" "}
-          <Link
-            href="/resources/add"
-            className="text-primary/90 hover:underline"
-          >
-            add one
-          </Link>
+          
+        <AddPostPopover onPostAdded={handlePostAdded} userEmail={user?.email} btnVariant="link"/>
           !
         </div>
       )}
