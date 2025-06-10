@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// src/components/RichTextEditor.tsx
-
 "use client";
 
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
@@ -16,7 +13,6 @@ import {
   Italic,
   List,
   ListOrdered,
-  Minus,
   Rows,
   TableIcon,
   Trash2,
@@ -25,7 +21,6 @@ import {
 
 // We import the Toggle component we just created manually
 import { Toggle } from "@/components/ui/toggle";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
 // --- Toolbar Component ---

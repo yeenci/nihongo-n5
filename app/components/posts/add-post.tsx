@@ -40,11 +40,13 @@ export default function AddPostDialog({
   btnIcon,
 }: AddPostDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [currentTag, setCurrentTag] = useState("");
   const [files, setFiles] = useState<File[]>([]);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -161,7 +163,7 @@ export default function AddPostDialog({
       setTimeout(() => {
         setIsOpen(false);
         setSuccessMsg(null);
-      }, 500);
+      }, 100);
     } catch (error: any) {
       setError(error.message || "Failed to add post.");
     } finally {

@@ -14,9 +14,10 @@ export interface Post {
   description: string;
   email: string;
   likes: string[];
-  status: string;
+  status?: "available" | "edited" | "deleted" | undefined;
   reports: string[];
   createdAt: string;
+  updatedAt?: string;
   tags: string[];
   comments: Comment[];
   resourceFileNames?: string[]; // post-<timestamp>-image1.jpg", "post-<timestamp>-doc.pdf

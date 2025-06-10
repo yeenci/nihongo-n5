@@ -19,24 +19,12 @@ function formatDate(dateString: string) {
   });
 }
 
-// const getStatusColor = (status?: string): string => {
-//   if (!status) return "text-gray-600";
-//   switch (status.toLowerCase()) {
-//     case "available":
-//       return "text-green-600";
-//     case "reported":
-//       return "text-orange-600";
-//     case "deleted":
-//       return "text-red-600";
-//     default:
-//       return "text-gray-600";
-//   }
-// };
-
 export default function PostItem({ post }: PostItemProps) {
   const router = useRouter();
   const sanitizedDescription = DOMPurify.sanitize(post.description);
-
+  if (post.status === "deleted") {
+    return null;
+  }
   return (
     <div
       className="flex py-2 gap-2 group cursor-pointer"

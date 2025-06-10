@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/card";
 
 import DOMPurify from "dompurify";
+import EditPostDialog from "@/app/components/posts/edit-post";
+import DeletePostDialog from "@/app/components/posts/delete-post";
 
 interface Comment {
   id: string;
@@ -63,28 +65,58 @@ const SimpleAvatar = ({ initials }: { initials: string }) => (
 );
 
 const OwnerActions = ({
-  onEdit,
+  post,
+  onPostEdited,
   onDelete,
 }: {
-  onEdit: () => void;
+  post: PostType;
+  onPostEdited: () => void;
   onDelete: () => void;
-}) => (
-  <div className="flex items-center gap-2">
-    <Button variant="outline" size="sm" onClick={onEdit}>
-      <Edit className="h-4 w-4" />
-    </Button>
-    <Button variant="destructive" size="sm" onClick={onDelete}>
-      <Trash2 className="h-4 w-4" />
-    </Button>
-  </div>
-);
+}) => {
+  const { user } = useAuth();
+  return (
+    <div className="flex items-center gap-2">
+      <EditPostDialog
+        postToEdit={post}
+        onPostEdited={onPostEdited}
+        userEmail={user?.email}
+        triggerBtn={
+          <Button variant="outline" size="sm">
+            <Edit className="h-4 w-4" />
+          </Button>
+        }
+      />
+      <DeletePostDialog
+        postToDelete={post}
+        onPostDeleted={onPostEdited}
+        userEmail={user?.email}
+        triggerBtn={
+          <Button variant="destructive" size="sm">
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        }
+      />
+    </div>
+  );
+};
 
-const AuthorDisplay = ({ email, date }: { email?: string; date: string }) => (
+const AuthorDisplay = ({
+  email,
+  date,
+  status,
+}: {
+  email?: string;
+  date: string;
+  status?: string;
+}) => (
   <div className="flex items-center gap-3">
     <SimpleAvatar initials={getInitials(email)} />
     <div className="text-sm">
       <p className="font-semibold text-gray-800">{getNameFromEmail(email)}</p>
-      <p className="text-xs text-gray-500">{formatDate(date)}</p>
+      <p className="text-xs text-gray-500">
+        {formatDate(date)}{" "}
+        {status !== undefined && status === "edited" && "(Edited)"}
+      </p>
     </div>
   </div>
 );
@@ -92,12 +124,15 @@ const AuthorDisplay = ({ email, date }: { email?: string; date: string }) => (
 // Post Content
 const PostContent = ({ post }: { post: PostType }) => {
   const sanitizedDescription = DOMPurify.sanitize(post.description);
+
   return (
     <div className="space-y-4">
-      <div
-        className="prose prose-sm sm:prose-base max-w-none text-muted-foreground leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
-      />
+      <div className="overflow-x-auto">
+        <div
+          className="prose prose-sm sm:prose-base max-w-none text-muted-foreground leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+        />
+      </div>
       {post.tags && post.tags.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {post.tags.map((tag) => (
@@ -141,11 +176,6 @@ const PostActions = ({
   isLoggedIn: boolean;
 }) => (
   <div className="w-full space-y-3">
-    {/* <div className="flex items-center gap-4 text-sm text-gray-500 px-1">
-            <span>{likesCount} {likesCount === 1 ? 'Like' : 'Likes'}</span>
-            <span>{commentsCount} {commentsCount === 1 ? 'Comment' : 'Comments'}</span>
-        </div> */}
-    {/* <Separator /> */}
     <div className="flex gap-2">
       <Button
         variant="ghost"
@@ -259,7 +289,11 @@ export default function PostDetailPage() {
   const params = useParams();
   const postId = params.postId as string;
   const { user } = useAuth();
-  const { posts: allPosts, loading: allPostsLoading } = useFetchAllPosts();
+  const {
+    posts: allPosts,
+    loading: allPostsLoading,
+    refetchPosts,
+  } = useFetchAllPosts();
 
   const [currentPost, setCurrentPost] = useState<Post | null | undefined>(
     undefined
@@ -274,7 +308,12 @@ export default function PostDetailPage() {
 
   const paths = [
     { label: "All Resources", href: "/resources" },
-    { label: currentPost ? currentPost.title : "Post Not Found" },
+    {
+      label:
+        currentPost && currentPost.status !== "deleted"
+          ? currentPost.title
+          : "Post Not Found",
+    },
   ];
 
   useEffect(() => {
@@ -294,26 +333,28 @@ export default function PostDetailPage() {
 
   if (allPostsLoading || currentPost === undefined) {
     return (
-      <div className="flex flex-col items-center w-full min-h-screen py-8 px-4">
-        <div className="w-full max-w-3xl">
-          <div className="flex justify-center items-center h-60">
+      <div className="flex flex-col min-h-[calc(100vh-80px)] px-4 py-6">
+        <Crumbs paths={paths} />
+        <div className="flex flex-grow flex-col items-center justify-center text-center p-4">
             <Spinner />
-          </div>
         </div>
       </div>
     );
   }
 
-  if (currentPost === null)
+  if (currentPost === null || currentPost.status === "deleted")
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-center p-4">
-        <h1 className="text-2xl font-bold">Post Not Found</h1>
-        <p className="text-gray-600 mt-2">
-          The post with the name &quot;{postId}&quot; could not be found.
-        </p>
-        <Button asChild className="mt-6">
-          <Link href="/resources">Go back to all posts</Link>
-        </Button>
+      <div className="flex flex-col min-h-[calc(100vh-80px)] px-4 py-6">
+        <Crumbs paths={paths} />
+        <div className="flex flex-grow flex-col items-center justify-center text-center p-4">
+          <h1 className="text-2xl font-bold">Post Not Found</h1>
+          <p className="text-gray-600 mt-2">
+            The post with the postId &quot;{postId}&quot; could not be found.
+          </p>
+          <Button asChild className="mt-6">
+            <Link href="/resources">Go back</Link>
+          </Button>
+        </div>
       </div>
     );
 
@@ -345,7 +386,7 @@ export default function PostDetailPage() {
       setLocalComments((prev) => [newCommentObject, ...prev]);
       setNewComment("");
       setIsSubmitting(false);
-      setIsCommentFormVisible(false); // Hide form after successful post
+      setIsCommentFormVisible(false);
     }, 500);
   };
 
@@ -364,10 +405,12 @@ export default function PostDetailPage() {
                 <AuthorDisplay
                   email={currentPost.email}
                   date={currentPost.createdAt}
+                  status={currentPost.status}
                 />
                 {isOwner && (
                   <OwnerActions
-                    onEdit={() => alert("Edit clicked!")}
+                    post={currentPost}
+                    onPostEdited={refetchPosts}
                     onDelete={() => alert("Delete clicked!")}
                   />
                 )}

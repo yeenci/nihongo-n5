@@ -2,12 +2,10 @@
 // app/resources/page.tsx
 "use client";
 
-import AddPostPopover from "@/app/components/posts/add-post";
+import AddPostDialog from "@/app/components/posts/add-post";
 import PostItem from "@/app/components/posts/post-list";
 import { useAuth } from "@/app/context/AuthContext";
 import { useFetchAllPosts } from "@/hooks/useFetchPosts";
-import Link from "next/link";
-// import { useRouter } from "next/navigation";
 import { useMemo, useState, ChangeEvent, useEffect } from "react";
 
 type SortOrder = "Newest" | "Oldest";
@@ -83,6 +81,10 @@ export default function ResourcesPage() {
     }
   };
 
+  const visiblePosts = useMemo(() => {
+    return paginatedPosts.filter(post => post.status !== "deleted");
+  }, [paginatedPosts]);
+
   const tabCommonClasses =
     "py-2 px-4 rounded-md text-sm cursor-pointer border transition-colors duration-150";
   const activeTabClasses =
@@ -98,7 +100,12 @@ export default function ResourcesPage() {
     <div className="max-w-4xl mx-auto p-4 md:p-6 font-sans">
       <div className="flex flex-row justify-between sm:items-center mb-6 gap-4">
         <h1 className="text-3xl font-bold text-primary">Shared Hub</h1>
-        <AddPostPopover onPostAdded={handlePostAdded} userEmail={user?.email} btnVariant="default" btnIcon={true}  />
+        <AddPostDialog
+          onPostAdded={handlePostAdded}
+          userEmail={user?.email}
+          btnVariant="default"
+          btnIcon={true}
+        />
       </div>
 
       <div className="flex justify-between items-center mb-6 gap-4 p-4 border border-gray-200 rounded-lg">
@@ -140,11 +147,22 @@ export default function ResourcesPage() {
         </div>
       )}
 
-      {!loading && paginatedPosts.length > 0 && (
+      {visiblePosts.length > 0 && (
         <div className="space-y-0">
-          {paginatedPosts.map((post) => (
+          {visiblePosts.map((post) => (
             <PostItem key={post.id} post={post} />
           ))}
+        </div>
+      )}
+      {visiblePosts.length === 0 && !loading && paginatedPosts.length !== 0 && (
+        <div className="py-10 text-center text-gray-500">
+          No resources available. Be the first to{" "}
+          <AddPostDialog
+            onPostAdded={handlePostAdded}
+            userEmail={user?.email}
+            btnVariant="link"
+          />
+          !
         </div>
       )}
 
@@ -158,8 +176,11 @@ export default function ResourcesPage() {
       {!loading && paginatedPosts.length === 0 && searchTerm.trim() === "" && (
         <div className="py-10 text-center text-gray-500">
           No resources available. Be the first to{" "}
-          
-        <AddPostPopover onPostAdded={handlePostAdded} userEmail={user?.email} btnVariant="link"/>
+          <AddPostDialog
+            onPostAdded={handlePostAdded}
+            userEmail={user?.email}
+            btnVariant="link"
+          />
           !
         </div>
       )}
