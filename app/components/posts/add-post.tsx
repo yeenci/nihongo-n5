@@ -11,10 +11,10 @@ import {
   DialogClose,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
 import { AlertTriangle, FilePlus, Loader2, X } from "lucide-react";
 import { ChangeEvent, FormEvent, ReactNode, useRef, useState } from "react";
 import ConfirmationModal from "../modal";
+import { RichTextEditor } from "@/components/RichTextEditor";
 
 interface AddPostDialogProps {
   onPostAdded: () => void;
@@ -219,14 +219,10 @@ export default function AddPostDialog({
                 <Label htmlFor="dialog-description">
                   Description<span className="text-red-500">*</span>
                 </Label>
-                <Textarea
-                  id="dialog-description"
+                <RichTextEditor
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                  rows={3}
+                  onChange={setDescription}
                   placeholder="Describe your resource"
-                  className="mt-1"
                 />
               </div>
 

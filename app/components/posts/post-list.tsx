@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRouter } from "next/navigation";
 import { Post } from "@/app/redux/postSlice";
+import DOMPurify from "dompurify";
 
 interface PostItemProps {
   post: Post;
@@ -34,6 +35,7 @@ function formatDate(dateString: string) {
 
 export default function PostItem({ post }: PostItemProps) {
   const router = useRouter();
+  const sanitizedDescription = DOMPurify.sanitize(post.description);
 
   return (
     <div
@@ -50,9 +52,10 @@ export default function PostItem({ post }: PostItemProps) {
         </h3>
 
         {post.description && (
-          <p className="text-sm text-muted-foreground/90 mb-3 line-clamp-1 group-hover:text-muted-foreground">
-            {post.description}
-          </p>
+          <p
+            className="text-sm text-muted-foreground/90 mb-3 line-clamp-1 group-hover:text-muted-foreground"
+            dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+          />
         )}
 
         <div className="flex flex-col lg:flex-row lg:items-center justify-between mt-auto mb-3 text-xs text-gray-500 group-hover:text-gray-600">

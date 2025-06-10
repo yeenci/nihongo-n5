@@ -21,7 +21,8 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+
+import DOMPurify from "dompurify";
 
 interface Comment {
   id: string;
@@ -89,36 +90,40 @@ const AuthorDisplay = ({ email, date }: { email?: string; date: string }) => (
 );
 
 // Post Content
-const PostContent = ({ post }: { post: PostType }) => (
-  <div className="space-y-4">
-    <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-      {post.description}
-    </p>
-    {post.tags && post.tags.length > 0 && (
-      <div className="flex flex-wrap gap-2">
-        {post.tags.map((tag) => (
-          <span
-            key={tag}
-            className="bg-primary/10 text-primary/90 px-2.5 py-1 rounded-full text-xs font-medium"
-          >
-            #{tag}
-          </span>
-        ))}
-      </div>
-    )}
-    <div className="relative w-full overflow-hidden rounded-lg aspect-video bg-gray-100">
-      {post.resourceFileNames}
-      <Image
-        src={`https://picsum.photos/seed/${post.id}/1200/630`}
-        alt={post.title}
-        fill
-        className="object-cover"
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        priority
+const PostContent = ({ post }: { post: PostType }) => {
+  const sanitizedDescription = DOMPurify.sanitize(post.description);
+  return (
+    <div className="space-y-4">
+      <div
+        className="prose prose-sm sm:prose-base max-w-none text-muted-foreground leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
       />
+      {post.tags && post.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {post.tags.map((tag) => (
+            <span
+              key={tag}
+              className="bg-primary/10 text-primary/90 px-2.5 py-1 rounded-full text-xs font-medium"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+      <div className="relative w-full overflow-hidden rounded-lg aspect-video bg-gray-100">
+        {post.resourceFileNames}
+        <Image
+          src={`https://picsum.photos/seed/${post.id}/1200/630`}
+          alt={post.title}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority
+        />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const PostActions = ({
   likesCount,
