@@ -404,8 +404,6 @@ export default function PostDetailPage() {
           comment.id === newCommentObject.id ? result.comment : comment
         )
       );
-
-      // refetchPosts();
     } catch (err: any) {
       console.error("Failed to post comment:", err.message);
       alert(`Error: ${err.message}`);
