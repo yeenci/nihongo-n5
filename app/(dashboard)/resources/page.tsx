@@ -141,11 +141,11 @@ export default function ResourcesPage() {
         </div>
       </div>
 
-      {loading && (
+      {/* {loading && (
         <div className="py-10 text-center text-gray-500">
           Loading resources...
         </div>
-      )}
+      )} */}
 
       {visiblePosts.length > 0 && (
         <div className="space-y-0">

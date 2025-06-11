@@ -186,27 +186,26 @@
   @apply bg-primary/90;
 }
 
-/* src/app/globals.css */
 
-.ProseMirror table {
+table {
   width: 100%;
   border-collapse: collapse;
   margin: 1rem 0;
   overflow: hidden;
 }
 
-.ProseMirror th,
-.ProseMirror td {
+th,
+td {
   border: 1px solid #cbd5e1;
   padding: 0.5rem 0.75rem;
   vertical-align: top;
   position: relative;
 }
 
-.ProseMirror th {
+th {
   font-weight: bold;
   text-align: left;
-  background-color: #f1f5f9; /* slate-100 */
+  background-color: #f1f5f9;
 }
 
 /* For the resizable table columns */
@@ -216,7 +215,11 @@
   top: 0;
   bottom: 0;
   width: 4px;
-  background-color: #3b82f6; /* blue-500 */
+  background-color: #3b82f6;
   cursor: col-resize;
   user-select: none;
+}
+
+p {
+  margin-bottom: 10px;
 }
