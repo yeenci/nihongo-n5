@@ -25,37 +25,12 @@ import {
 import DOMPurify from "dompurify";
 import EditPostDialog from "@/app/components/posts/edit-post";
 import DeletePostDialog from "@/app/components/posts/delete-post";
-
-function formatDate(dateString: string) {
-  if (!dateString) return "N/A";
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
-function getNameFromEmail(email?: string): string {
-  if (!email) return "Anonymous";
-  return email.split("@")[0];
-}
-
-function getInitials(email?: string): string {
-  if (!email) return "AN";
-  const name = getNameFromEmail(email);
-  const parts = name.split(/[._-]/);
-  if (parts.length > 1) return (parts[0][0] + parts[1][0]).toUpperCase();
-  return name.slice(0, 2).toUpperCase();
-}
-
-const SimpleAvatar = ({ initials }: { initials: string }) => (
-  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/5 text-sm font-semibold text-primary/80">
-    {initials}
-  </div>
-);
+import { CommentList } from "@/app/components/posts/comment-list";
+import SimpleAvatar, {
+  formatDate,
+  getInitials,
+  getNameFromEmail,
+} from "@/app/components/comment-helper";
 
 const OwnerActions = ({
   post,
@@ -250,34 +225,6 @@ const CommentForm = ({
   );
 };
 
-const CommentList = ({ comments }: { comments: Comment[] }) => (
-  <div className="w-full space-y-6 pt-4 border-t">
-    <h3 className="text-lg font-semibold text-gray-800 px-1">Comments</h3>
-    {comments.length > 0 ? (
-      comments.map((comment) => (
-        <div key={comment.id} className="flex items-start gap-3">
-          <SimpleAvatar initials={getInitials(comment.userEmail)} />
-          <div className="flex-1 bg-gray-50 p-3 rounded-lg">
-            <div className="flex items-baseline justify-between">
-              <p className="font-semibold text-sm text-gray-900">
-                {getNameFromEmail(comment.userEmail)}
-              </p>
-              <p className="text-xs text-gray-500">
-                {formatDate(comment.commentedAt)}
-              </p>
-            </div>
-            <p className="text-sm text-gray-700 mt-1 whitespace-pre-wrap">
-              {comment.text}
-            </p>
-          </div>
-        </div>
-      ))
-    ) : (
-      <p className="text-sm text-gray-500 text-center py-4">No comments yet.</p>
-    )}
-  </div>
-);
-
 export default function PostDetailPage() {
   const params = useParams();
   const postId = params.postId as string;
@@ -373,6 +320,7 @@ export default function PostDetailPage() {
       userEmail: user.email!,
       text: newComment,
       commentedAt: new Date().toISOString(),
+      status: "available",
     };
 
     const originalCommentText = newComment;
@@ -452,15 +400,15 @@ export default function PostDetailPage() {
             </CardContent>
 
             <CardFooter className="flex-col items-start gap-4">
-              <PostActions
+              {/* <PostActions
                 likesCount={localLikes.length}
                 commentsCount={localComments.length}
                 isLiked={isLiked}
                 onLike={handleLikeToggle}
-                onCommentClick={handleCommentClick} // Pass the new handler
+                onCommentClick={handleCommentClick}
                 isLoggedIn={!!user}
               />
-              {isCommentFormVisible && (
+              {isCommentFormVisible && ( */}
                 <CommentForm
                   user={user}
                   newComment={newComment}
@@ -468,9 +416,12 @@ export default function PostDetailPage() {
                   handlePostComment={handlePostComment}
                   isSubmitting={isSubmitting}
                 />
-              )}
-
-              <CommentList comments={localComments} />
+              {/* )} */}
+              <CommentList
+                comments={localComments}
+                postId={currentPost.id}
+                onCommentChange={refetchPosts}
+              />
             </CardFooter>
           </Card>
         </div>

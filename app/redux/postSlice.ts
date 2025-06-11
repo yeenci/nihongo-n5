@@ -5,6 +5,7 @@ export interface Comment {
   userEmail: string;
   text: string;
   commentedAt: string;
+  status: "available" | "edited" | "deleted";
 }
 
 export interface Post {

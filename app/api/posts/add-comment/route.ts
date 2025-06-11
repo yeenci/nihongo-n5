@@ -79,6 +79,7 @@ export async function POST(req: Request) {
       userEmail: userEmail,
       text: text,
       commentedAt: new Date().toISOString(),
+      status: "available",
     };
 
     if (!Array.isArray(postToUpdate.comments)) {
