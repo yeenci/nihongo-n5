@@ -122,7 +122,7 @@ const PostContent = ({ post }: { post: PostType }) => {
     <div className="space-y-4">
       <div className="overflow-x-auto">
         <div
-          className="prose prose-sm sm:prose-base max-w-none text-muted-foreground leading-relaxed"
+          className="description prose prose-sm sm:prose-base max-w-none text-muted-foreground leading-relaxed"
           dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
         />
       </div>

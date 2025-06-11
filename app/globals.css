@@ -220,6 +220,6 @@ th {
   user-select: none;
 }
 
-/* p {
+.description p {
   margin-bottom: 10px;
-} */
+}
