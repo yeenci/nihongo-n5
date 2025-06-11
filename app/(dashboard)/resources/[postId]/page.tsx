@@ -8,7 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { useFetchAllPosts } from "@/hooks/useFetchPosts";
-import { Post, Post as PostType } from "@/app/redux/postSlice";
+import { Post, Post as PostType, Comment } from "@/app/redux/postSlice";
 import Crumbs from "@/app/components/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,13 +25,6 @@ import {
 import DOMPurify from "dompurify";
 import EditPostDialog from "@/app/components/posts/edit-post";
 import DeletePostDialog from "@/app/components/posts/delete-post";
-
-interface Comment {
-  id: string;
-  userEmail: string;
-  text: string;
-  createdAt: string;
-}
 
 function formatDate(dateString: string) {
   if (!dateString) return "N/A";
@@ -270,7 +263,7 @@ const CommentList = ({ comments }: { comments: Comment[] }) => (
                 {getNameFromEmail(comment.userEmail)}
               </p>
               <p className="text-xs text-gray-500">
-                {formatDate(comment.createdAt)}
+                {formatDate(comment.commentedAt)}
               </p>
             </div>
             <p className="text-sm text-gray-700 mt-1 whitespace-pre-wrap">
@@ -336,7 +329,7 @@ export default function PostDetailPage() {
       <div className="flex flex-col min-h-[calc(100vh-80px)] px-4 py-6">
         <Crumbs paths={paths} />
         <div className="flex flex-grow flex-col items-center justify-center text-center p-4">
-            <Spinner />
+          <Spinner />
         </div>
       </div>
     );
@@ -371,23 +364,59 @@ export default function PostDetailPage() {
     );
   };
 
-  const handlePostComment = (e: FormEvent) => {
+  const handlePostComment = async (e: FormEvent) => {
     e.preventDefault();
-    if (!newComment.trim() || !user) return;
-    setIsSubmitting(true);
-    setTimeout(() => {
-      // Simulate API call
-      const newCommentObject: Comment = {
-        id: `comment_${Date.now()}`,
-        userEmail: user.email!,
-        text: newComment,
-        createdAt: new Date().toISOString(),
-      };
-      setLocalComments((prev) => [newCommentObject, ...prev]);
-      setNewComment("");
+    if (!newComment.trim() || !user || !currentPost) return;
+
+    const newCommentObject: Comment = {
+      id: `temp_${Date.now()}`, // Use a temporary ID for the key
+      userEmail: user.email!,
+      text: newComment,
+      commentedAt: new Date().toISOString(),
+    };
+
+    const originalCommentText = newComment;
+
+    setLocalComments((prevComments) => [newCommentObject, ...prevComments]);
+    setNewComment("");
+    setIsCommentFormVisible(false);
+
+    try {
+      const response = await fetch("/api/posts/add-comment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          postId: currentPost.id,
+          userEmail: user.email,
+          text: originalCommentText,
+        }),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to save comment to server.");
+      }
+
+      setLocalComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === newCommentObject.id ? result.comment : comment
+        )
+      );
+
+      // refetchPosts();
+    } catch (err: any) {
+      console.error("Failed to post comment:", err.message);
+      alert(`Error: ${err.message}`);
+      setLocalComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== newCommentObject.id)
+      );
+      setNewComment(originalCommentText);
+      setIsCommentFormVisible(true);
+    } finally {
       setIsSubmitting(false);
-      setIsCommentFormVisible(false);
-    }, 500);
+    }
   };
 
   const handleCommentClick = () => {
