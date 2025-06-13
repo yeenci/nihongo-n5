@@ -98,17 +98,20 @@ function CommentItem({ comment, postId, onCommentChange }: CommentItemProps) {
   };
 
   if (comment.status === "deleted") {
-    return (
-        <></>
-    //   <div className="flex items-center gap-3 text-sm italic text-gray-500">
-    //     <SimpleAvatar initials={getInitials(comment.userEmail)} />
-    //     <div className="flex items-center justify-between w-full">
-    //       <p>This comment was deleted.</p>
-    //     </div>
+    if (isOwner) {
+      return (
+        <div className="flex items-center gap-3 text-sm italic text-gray-500">
+          <SimpleAvatar initials={getInitials(comment.userEmail)} />
+          <div className="flex items-center justify-between w-full">
+            <p>This comment was deleted.</p>
+          </div>
 
-    //     {/* <Button variant="link" className="hover:underline">Reset</Button> */}
-    //   </div>
-    );
+          {/* <Button variant="link" className="hover:underline">Reset</Button> */}
+        </div>
+      );
+    } else {
+      return <></>;
+    }
   }
 
   return (
