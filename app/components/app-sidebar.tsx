@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import {
@@ -46,21 +47,21 @@ const menu_items = [
     href: "/lectures",
     icon: Library,
   },
-  {
-    title: "Progress",
-    href: "/progress",
-    icon: ChartLine,
-  },
+  // {
+  //   title: "Progress",
+  //   href: "/progress",
+  //   icon: ChartLine,
+  // },
   {
     title: "Resources",
     href: "/resources",
     icon: Share2,
   },
-  {
-    title: "Saved Words",
-    href: "/words",
-    icon: BookmarkCheck,
-  },
+  // {
+  //   title: "Saved Words",
+  //   href: "/words",
+  //   icon: BookmarkCheck,
+  // },
 ];
 
 const footer_items = [
