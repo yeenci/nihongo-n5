@@ -59,7 +59,7 @@ export function Header() {
           <PopoverContent className="w-64 mr-4 p-2">
             <div className="flex flex-col gap-1">
               {/* 1. Profile Button */}
-              <Link href="/person" passHref>
+              <Link href="/person/edit-profile" passHref>
                 <Button
                   variant="ghost"
                   className="w-full h-auto justify-start p-2"
@@ -79,7 +79,7 @@ export function Header() {
               <Separator />
 
               {/* 2. Dashboard Button */}
-              <Link href="/person/posts" passHref>
+              <Link href="/person/manage-posts" passHref>
                 <Button variant="ghost" className="w-full justify-start">
                   <LayoutDashboard className="mr-2 h-4 w-4" />
                   My Posts
