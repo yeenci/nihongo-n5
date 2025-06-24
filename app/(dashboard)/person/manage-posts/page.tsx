@@ -8,6 +8,10 @@ import React, { useMemo } from "react";
 import Link from "next/link";
 import AddPostDialog from "@/app/components/posts/add-post";
 import Spinner from "@/app/components/spinner";
+import { Post } from "@/app/redux/postSlice";
+
+
+const ManagePostItem = ({ post, onAction }: { post: Post, onAction: () => void }) => {}
 
 export default function ManagePostsPage() {
   const { user } = useAuth();
