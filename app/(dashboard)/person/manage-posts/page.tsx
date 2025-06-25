@@ -11,7 +11,9 @@ import Spinner from "@/app/components/spinner";
 import { Post } from "@/app/redux/postSlice";
 
 
-const ManagePostItem = ({ post, onAction }: { post: Post, onAction: () => void }) => {}
+const ManagePostItem = ({ post, onAction }: { post: Post, onAction: () => void }) => {
+  const post = ""
+}
 
 export default function ManagePostsPage() {
   const { user } = useAuth();
