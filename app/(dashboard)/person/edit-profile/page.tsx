@@ -1,12 +1,28 @@
-import React from 'react'
+// src/app/(your-route)/person/page.tsx (or wherever you place it)
+
+"use client";
+
+import React, { useState, useRef, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useAuth } from '@/app/context/AuthContext';
 
 export default function EditProfilePage() {
-  return (
-      <div className="flex flex-row h-full justify-center w-full">
-        <div className="w-full lg:w-4/5 xl:w-3/5 2xl:w-1/2">
-          <h1 className="text-3xl font-bold my-4 text-primary">Edit Profile</h1>
-          Edit only name, and password, address, ...
-        </div>
-      </div>
-  )
+  const { user } = useAuth();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // State for profile info
+  const [displayName, setDisplayName] = useState('');
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+
+  // State for password change
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  // UI/Feedback State
+  const [isLoading, setIsLoading] = useState(true);
+  const [isProfileSaving, setIsProfileSaving] = useState(false);
+  const [isPasswordSaving, setIsPasswordSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 }

@@ -2,11 +2,9 @@
 
 import { useAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { useFetchAllPosts } from "@/hooks/useFetchPosts";
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
-import AddPostDialog from "@/app/components/posts/add-post";
 import Spinner from "@/app/components/spinner";
 import { Post } from "@/app/redux/postSlice";
 import EditPostDialog from "@/app/components/posts/edit-post";
