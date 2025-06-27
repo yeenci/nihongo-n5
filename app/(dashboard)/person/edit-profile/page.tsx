@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/(your-route)/person/page.tsx (or wherever you place it)
 
 "use client";
@@ -10,8 +11,10 @@ import React, {
   FormEvent,
 } from "react";
 import { useAuth } from "@/app/context/AuthContext";
-import { db } from "@/app/firebase/config";
-import { doc, getDoc } from "firebase/firestore";
+import { auth, db, storage } from "@/app/firebase/config";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { updateProfile } from "firebase/auth";
 
 export default function EditProfilePage() {
   const { user } = useAuth();
@@ -64,4 +67,40 @@ export default function EditProfilePage() {
       setAvatarPreview(URL.createObjectURL(file))
     }
   }
+
+  const handleProfileSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    if (!user) return;
+
+    setIsProfileSaving(true)
+    setError(null)
+    setSuccessMessage(null)
+
+    try {
+      let photoUrl = user.photoURL;
+
+      if (avatarFile) {
+        const storageRef = ref(storage, `avatars/${user.uid}`)
+        await uploadBytes(storageRef, avatarFile)
+        photoUrl = await getDownloadURL(storageRef)
+      }
+
+      await updateProfile(auth.currentUser!, {
+        displayName: displayName, photoURL: photoUrl
+      })
+
+      const userDocRef = doc(db, 'users', user.uid)
+      await setDoc(userDocRef, {
+        displayName: displayName, email: user.email, photoUrl: photoUrl
+      }, {merge: true})
+
+      setSuccessMessage("Profile updated successfully!");
+      setAvatarFile(null);
+      setAvatarPreview(null);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsProfileSaving(false);
+    }
+  };
 }
