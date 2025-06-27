@@ -52,4 +52,16 @@ export default function EditProfilePage() {
       setIsLoading(false)
     }
   }, [user]);
+
+  const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.size > 2*1024*1024) {
+        setError("File is too large. Please select an image under 2MB.")
+        return
+      }
+      setAvatarFile(file)
+      setAvatarPreview(URL.createObjectURL(file))
+    }
+  }
 }
