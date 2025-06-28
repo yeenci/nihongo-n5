@@ -143,7 +143,7 @@ export default function ManagePostsPage() {
   }
 
   return (
-    <div className="flex flex-row h-full justify-center w-full p-4">
+    <div className="flex flex-row h-full justify-center w-full p-4 pt-6">
       <div className="w-full lg:w-4/5 xl:w-3/5 2xl:w-1/2">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-primary">Your Posts</h1>
