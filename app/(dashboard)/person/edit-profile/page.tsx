@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -205,7 +206,7 @@ export default function EditProfilePage() {
           <CardContent>
             <form onSubmit={handleProfileSubmit} className="space-y-6">
               <div className="flex items-center gap-6">
-                <div className="relative group">
+                {/* <div className="relative group">
                   <Avatar className="h-24 w-24">
                     <AvatarImage src={avatarPreview || user.photoURL || ''} alt={displayName} />
                     <AvatarFallback>{getInitials(displayName || user.email)}</AvatarFallback>
@@ -225,7 +226,7 @@ export default function EditProfilePage() {
                     className="hidden"
                     accept="image/png, image/jpeg, image/webp"
                   />
-                </div>
+                </div> */}
                 <div className="w-full">
                   <Label htmlFor="displayName">Display Name</Label>
                   <Input
