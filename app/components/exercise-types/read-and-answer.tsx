@@ -24,6 +24,7 @@ interface ReadAndAnswerProps {
   getNumOfAnswers: (question: Question) => number;
 }
 
+
 export default function ReadParagraph({ question, onSubmit }: any) {
   const [answer, setAnswer] = useState("");
   const [submitted, setSubmitted] = useState(false);
