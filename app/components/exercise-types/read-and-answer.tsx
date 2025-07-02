@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// 5. Read and choose True/False
 
 import { Question } from "@/app/constants/exercise";
 import { Button } from "@/components/ui/button";
@@ -23,7 +22,6 @@ interface ReadAndAnswerProps {
   showKana: boolean;
   getNumOfAnswers: (question: Question) => number;
 }
-
 
 export default function ReadParagraph({ question, onSubmit }: any) {
   const [answer, setAnswer] = useState("");
