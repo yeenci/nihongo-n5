@@ -59,14 +59,29 @@ Navigate to `http://localhost:3000` to start learning Japanese.
 
 ## 🎇 UI Interface <a name="ui-interface"></a>
 
-### 🏠 Homepage UI:
+### 🗝️ Login UI:
 <div align="center">
-    <img src="./readme/homepage.png" alt="Homepage">
+    <img src="./readme/loginpage.jpeg" alt="Login">
 </div>
 
-### 📘 Lesson UI:
+### 🏠 Homepage UI:
 <div align="center">
-    <img src="./readme/lesson.png" alt="Lesson">
+    <img src="./readme/homepage.jpeg" alt="Home">
+</div>
+
+### 🅰️ Alphabets UI:
+<div align="center">
+    <img src="./readme/alphabets.png" alt="Alphabets">
+</div>
+
+### 📘 All Lectures UI:
+<div align="center">
+    <img src="./readme/lectures.png" alt="All Lectures">
+</div>
+
+### 📖 Lesson UI:
+<div align="center">
+    <img src="./readme/lesson.jpeg" alt="Lesson">
 </div>
 
 ### 🈁 Vocabulary UI:
@@ -79,9 +94,24 @@ Navigate to `http://localhost:3000` to start learning Japanese.
     <img src="./readme/grammar.png" alt="Grammar">
 </div>
 
-### 📊 Progress Tracking UI:
+### 📋 Exercises UI:
 <div align="center">
-    <img src="./readme/progress.png" alt="Progress">
+    <img src="./readme/exercises.png" alt="Exercises">
+</div>
+
+### 💯 Examination UI:
+<div align="center">
+    <img src="./readme/examination.jpeg" alt="Examination">
+</div>
+
+### 🎋 All Resources UI:
+<div align="center">
+    <img src="./readme/resources.png" alt="All Resources">
+</div>
+
+### 📇 Post UI:
+<div align="center">
+    <img src="./readme/post.png" alt="Post">
 </div>
 
 ## 📚 References <a name="references"></a>
