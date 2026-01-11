@@ -79,9 +79,9 @@ Navigate to `http://localhost:3000` to start learning Japanese.
     <img src="./readme/lectures.png" alt="All Lectures">
 </div>
 
-### 📖 Lesson UI:
+### 📖 Lecture UI:
 <div align="center">
-    <img src="./readme/lesson.jpeg" alt="Lesson">
+    <img src="./readme/lecture.jpeg" alt="Lecture"> 
 </div>
 
 ### 🈁 Vocabulary UI:
