@@ -28,7 +28,7 @@ The project was developed as a **personal learning and pre-thesis project**, emp
 ### 🎯 Installation
 1. **Clone the repository:**
      ```bash
-     git clone https://github.com/chihiro-203/nihongo-n5.git
+     git clone https://github.com/yeenci/nihongo-n5.git
      cd nihongo-n5
      ```
 2. **Install dependencies:**
